@@ -105,7 +105,9 @@ for (var i = 0; i < gridWidth; i++)
 }
 
 player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Player);
-
-camera_set_view_target(view_camera[0], player);
-
 squares[playerSpawnX, playerSpawnY].character = player;
+cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
+
+camera_set_view_target(view_camera[0], cameraTarget);
+
+show_debug_message("Camera Target Initialized. Set to: " + string(camera_get_view_target(view_camera[0])));
