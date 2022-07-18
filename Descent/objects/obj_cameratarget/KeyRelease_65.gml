@@ -1,3 +1,3 @@
 /// @description release left
 
-moveRight = 0;
+moveRight += 1;

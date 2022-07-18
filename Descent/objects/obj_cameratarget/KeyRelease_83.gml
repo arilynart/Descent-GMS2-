@@ -1,3 +1,3 @@
 /// @description release down
 
-moveDown = 0;
+moveDown -= 1;
