@@ -10,7 +10,7 @@ if (position_meeting(mouse_x, mouse_y, id))
 		if (character.moving == false)
 		{
 			map.movingCharacter = character;
-			Activate(self, 60);
+			Activate(self, 40);
 		}
 	}
 	else if (activated && map.movingCharacter != 0)

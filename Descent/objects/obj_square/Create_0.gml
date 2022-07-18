@@ -59,28 +59,28 @@ function Activate(start, maxDistance)
 			//right
 			targetX = currentSquare.coordinate.x + 1;
 			targetY = currentSquare.coordinate.y;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.right, nextDistance, currentSquare);
 			}
 			//down
 			targetX = currentSquare.coordinate.x;
 			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.down, nextDistance, currentSquare);
 			}
 			//left
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.left, nextDistance, currentSquare);
 			}
 			//up
 			targetX = currentSquare.coordinate.x;
 			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.up, nextDistance, currentSquare);
 			}
@@ -92,28 +92,28 @@ function Activate(start, maxDistance)
 			//downright
 			targetX = currentSquare.coordinate.x + 1;
 			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.downRight, nextDistance, currentSquare);
 			}
 			//downleft
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.downLeft, nextDistance, currentSquare);
 			}
 			//upleft
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.upLeft, nextDistance, currentSquare);
 			}
 			//upright
 			targetX = currentSquare.coordinate.x + 1;
 			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
 				ParseSquare(currentSquare.upRight, nextDistance, currentSquare);
 			}

@@ -1,7 +1,11 @@
 /// @description Generate the grid
 
-gridWidth = room_width / 300;
-gridHeight = room_height / 300;
+
+//load blueprint
+blueprint = instance_create_layer(0, 0, "Instances", obj_blu_MistyVeil);
+
+gridWidth = blueprint.mapWidth;
+gridHeight = blueprint.mapHeight;
 gridSize = 300;
 
 playerSpawnX = 6;
@@ -9,11 +13,9 @@ playerSpawnY = 6;
 
 movingCharacter = 0;
 
-walls = ds_list_create();
-
 for (var i = 0; i < gridWidth; i++) 
 {
-	for (var j = 0; j < gridWidth; j++) 
+	for (var j = 0; j < gridHeight; j++) 
 	{
 		var newSquare = instance_create_layer(i * gridSize + gridSize / 2, j * gridSize + gridSize / 2, "Squares", obj_Square);
 		with(newSquare) 
@@ -32,7 +34,7 @@ for (var i = 0; i < gridWidth; i++)
 
 for (var i = 0; i < gridWidth; i++) 
 {
-	for (var j = 0; j < gridWidth; j++)
+	for (var j = 0; j < gridHeight; j++)
 	{
 		var sq = squares[i,j];
 		
@@ -102,6 +104,28 @@ for (var i = 0; i < gridWidth; i++)
 			+ string(sq.upLeft) + " up: " + string(sq.up) + " upright: " + string(sq.upRight));
 	}
 }
+
+//create points
+for (var i = 0; i < gridWidth + 1; i++)
+{
+	for (var j = 0; j < gridHeight + 1; j++)
+	{
+		var newPoint = instance_create_layer(i * gridSize, j * gridSize, "Points", obj_Point);
+		with(newPoint)
+		{
+			//map = self;
+			coordinate =
+			{
+				x : i,
+				y : j
+			}
+		}
+		
+		ds_list_add(blueprint.wallPoints, newPoint);
+	}
+}
+
+//create other necessary objects
 
 player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Player);
 squares[playerSpawnX, playerSpawnY].character = player;
