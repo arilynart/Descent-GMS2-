@@ -1,11 +1,8 @@
 /// @description Generate the grid
 
-gridWidth = 200;
-gridHeight = 200;
+gridWidth = room_width / 300;
+gridHeight = room_height / 300;
 gridSize = 300;
-
-room_width = gridSize * gridWidth;
-room_height = gridSize * gridHeight;
 
 playerSpawnX = 6;
 playerSpawnY = 6;

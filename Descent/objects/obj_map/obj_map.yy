@@ -1,9 +1,6 @@
 {
   "name": "obj_Map",
-  "spriteId": {
-    "name": "spr_map_GrimyInn",
-    "path": "sprites/spr_map_GrimyInn/spr_map_GrimyInn.yy",
-  },
+  "spriteId": null,
   "spriteMaskId": null,
   "visible": true,
   "solid": false,
