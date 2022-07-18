@@ -1,14 +1,16 @@
 /// @description Generate the grid
 
-gridWidth = 18;
-gridHeight = 16;
+gridWidth = 200;
+gridHeight = 200;
 gridSize = 300;
 
 room_width = gridSize * gridWidth;
 room_height = gridSize * gridHeight;
 
 playerSpawnX = 6;
-playerSpawnY = 4;
+playerSpawnY = 6;
+
+movingCharacter = 0;
 
 for (var i = 0; i < gridWidth; i++) 
 {
