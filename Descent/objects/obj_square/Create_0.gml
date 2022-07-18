@@ -27,12 +27,15 @@ activatedSquares = ds_list_create();
 parsedCoordinates = ds_list_create
 parseQueue = ds_queue_create();
 
+activated = false;
+
 function Activate(start, maxDistance) 
 {
 	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
 	
 	parseQueue = ds_queue_create();
 	parsedCoordinates = ds_list_create();
+	activatedSquares = ds_list_create();
 	
 	ds_queue_enqueue(parseQueue, start);
 	ds_list_add(parsedCoordinates, start.coordinate);
@@ -42,6 +45,7 @@ function Activate(start, maxDistance)
 	{
 		var currentSquare = ds_queue_dequeue(parseQueue);
 		currentSquare.image_alpha = 1;
+		currentSquare.activated = true;
 		ds_list_add(activatedSquares, currentSquare);
 		
 		var targetX = -1;
@@ -57,28 +61,28 @@ function Activate(start, maxDistance)
 			targetY = currentSquare.coordinate.y;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.right, nextDistance);
+				ParseSquare(currentSquare.right, nextDistance, currentSquare);
 			}
 			//down
 			targetX = currentSquare.coordinate.x;
 			targetY = currentSquare.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.down, nextDistance);
+				ParseSquare(currentSquare.down, nextDistance, currentSquare);
 			}
 			//left
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.left, nextDistance);
+				ParseSquare(currentSquare.left, nextDistance, currentSquare);
 			}
 			//up
 			targetX = currentSquare.coordinate.x;
 			targetY = currentSquare.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.up, nextDistance);
+				ParseSquare(currentSquare.up, nextDistance, currentSquare);
 			}
 		}
 		
@@ -90,40 +94,56 @@ function Activate(start, maxDistance)
 			targetY = currentSquare.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.downRight, nextDistance);
+				ParseSquare(currentSquare.downRight, nextDistance, currentSquare);
 			}
 			//downleft
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.downLeft, nextDistance);
+				ParseSquare(currentSquare.downLeft, nextDistance, currentSquare);
 			}
 			//upleft
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.upLeft, nextDistance);
+				ParseSquare(currentSquare.upLeft, nextDistance, currentSquare);
 			}
 			//upright
 			targetX = currentSquare.coordinate.x + 1;
 			targetY = currentSquare.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridWidth)
 			{
-				ParseSquare(currentSquare.upRight, nextDistance);
+				ParseSquare(currentSquare.upRight, nextDistance, currentSquare);
 			}
 		}
 	}
 }
 
-function ParseSquare(square, parseDistance)
+function Deactivate()
+{
+	var size = ds_list_size(activatedSquares);
+	
+	for (i = 0; i < size; i++)
+	{
+		var sq = ds_list_find_value(activatedSquares, i);
+		sq.image_alpha = 0;
+		sq.distance = -1;
+		sq.activated = false;
+	}
+}
+
+function ParseSquare(square, parseDistance, source)
 {
 	//show_debug_message("Parsing Square: " + string(square));
-	if (square != 0 && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) || parseDistance < square.distance))
+	if (square != 0 && square.character == 0 
+	&& ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
+	|| parseDistance < square.distance))
 	{
 		//show_debug_message("Square is valid: " + string(square));
 		square.distance = parseDistance;
+		square.closestToTarget = source;
 		ds_queue_enqueue(parseQueue, square);
 		ds_list_add(parsedCoordinates, square.coordinate);
 	}

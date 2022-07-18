@@ -9,6 +9,7 @@
     {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":4,},
     {"id":{"name":"obj_CameraTarget","path":"objects/obj_CameraTarget/obj_CameraTarget.yy",},"order":3,},
     {"id":{"name":"spr_map_GrimyInn","path":"sprites/spr_map_GrimyInn/spr_map_GrimyInn.yy",},"order":3,},
+    {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
   ],
   "Options": [
