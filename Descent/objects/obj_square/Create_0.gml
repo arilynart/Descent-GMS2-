@@ -129,6 +129,6 @@ function ParseSquare(square, parseDistance)
 	}
 	else
 	{
-		show_debug_message("Square is invalid: " + string(square));
+		show_debug_message("Square is invalid: " + string(square.coordinate));
 	}
 }
