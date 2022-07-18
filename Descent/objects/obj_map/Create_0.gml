@@ -9,6 +9,8 @@ playerSpawnY = 6;
 
 movingCharacter = 0;
 
+walls = ds_list_create();  
+
 for (var i = 0; i < gridWidth; i++) 
 {
 	for (var j = 0; j < gridWidth; j++) 

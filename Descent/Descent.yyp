@@ -10,6 +10,7 @@
     {"id":{"name":"ts_Village","path":"tilesets/ts_Village/ts_Village.yy",},"order":0,},
     {"id":{"name":"obj_CameraTarget","path":"objects/obj_CameraTarget/obj_CameraTarget.yy",},"order":3,},
     {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
+    {"id":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"order":7,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
   ],
   "Options": [

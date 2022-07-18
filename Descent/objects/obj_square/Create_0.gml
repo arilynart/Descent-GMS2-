@@ -131,6 +131,7 @@ function Deactivate()
 		sq.image_alpha = 0;
 		sq.distance = -1;
 		sq.activated = false;
+		sq.closestToTarget = 0;
 	}
 }
 
