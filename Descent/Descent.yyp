@@ -1,5 +1,12 @@
 {
   "resources": [
+    {"id":{"name":"obj_Map","path":"objects/obj_Map/obj_Map.yy",},"order":2,},
+    {"id":{"name":"spr_Player","path":"sprites/spr_Player/spr_Player.yy",},"order":0,},
+    {"id":{"name":"spr_Square","path":"sprites/spr_Square/spr_Square.yy",},"order":1,},
+    {"id":{"name":"spr_map_OvergrownTomb","path":"sprites/spr_map_OvergrownTomb/spr_map_OvergrownTomb.yy",},"order":2,},
+    {"id":{"name":"obj_Square","path":"objects/obj_Square/obj_Square.yy",},"order":1,},
+    {"id":{"name":"obj_Player","path":"objects/obj_Player/obj_Player.yy",},"order":0,},
+    {"id":{"name":"spr_map_GrimyInn","path":"sprites/spr_map_GrimyInn/spr_map_GrimyInn.yy",},"order":3,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
   ],
   "Options": [
@@ -9,7 +16,7 @@
     {"name":"Windows","path":"options/windows/options_windows.yy",},
     {"name":"operagx","path":"options/operagx/options_operagx.yy",},
   ],
-  "defaultScriptType": 0,
+  "defaultScriptType": 1,
   "isEcma": false,
   "configs": {
     "name": "Default",
