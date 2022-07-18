@@ -14,11 +14,12 @@ for (var i = 0; i < gridWidth; i++)
 {
 	for (var j = 0; j < gridWidth; j++) 
 	{
-		var newSquare = instance_create_layer(i * gridSize + gridSize / 2, j * gridSize + gridSize / 2, "Instances", obj_Square);
+		var newSquare = instance_create_layer(i * gridSize + gridSize / 2, j * gridSize + gridSize / 2, "Squares", obj_Square);
 		with(newSquare) 
 		{
-			newSquare.coordX = i;
-			newSquare.coordY = j;
+			coordinate.x = i;
+			coordinate.y = j;
+			image_alpha = 0;
 		}
 		squares[i,j] = newSquare;
 		
@@ -93,7 +94,16 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.upRight = squares[targetX, targetY];
 		}
+		
+		show_debug_message("Square gateways set: right: " + string(sq.right) 
+			+ " downright: " + string(sq.downRight) + " down: " + string(sq.down) 
+			+ " downleft: " + string(sq.downLeft) + " left: " + string(sq.left) + " upleft: "
+			+ string(sq.upLeft) + " up: " + string(sq.up) + " upright: " + string(sq.upRight));
 	}
 }
 
-player = instance_create_layer(playerSpawnX * gridSize, playerSpawnY * gridSize, "Instances", obj_Player);
+player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Player);
+
+camera_set_view_target(view_camera[0], player);
+
+squares[playerSpawnX, playerSpawnY].character = player;
