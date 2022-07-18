@@ -7,16 +7,16 @@
   "edgeFiltering": false,
   "collisionTolerance": 0,
   "bbox_left": 0,
-  "bbox_right": 3329,
+  "bbox_right": 1023,
   "bbox_top": 0,
-  "bbox_bottom": 3329,
+  "bbox_bottom": 1023,
   "origin": 0,
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
   "swfPrecision": 2.525,
-  "width": 3330,
-  "height": 3330,
+  "width": 1024,
+  "height": 1024,
   "textureGroupId": {
     "name": "Default",
     "path": "texturegroups/Default",
@@ -25,14 +25,14 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"eae45303-fea0-4504-b15b-844460584959","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"eae45303-fea0-4504-b15b-844460584959","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":{"name":"552732ae-2259-41d3-9f9c-4c8777e90948","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"eae45303-fea0-4504-b15b-844460584959","tags":[],"resourceType":"GMSpriteFrame",},
+    {"compositeImage":{"FrameId":{"name":"f2792694-2582-4460-93ae-ddfa2feeceff","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
+        {"FrameId":{"name":"f2792694-2582-4460-93ae-ddfa2feeceff","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":{"name":"d5d3ad9d-471e-4db6-aef4-80debfae04b3","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
+      ],"parent":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"f2792694-2582-4460-93ae-ddfa2feeceff","tags":[],"resourceType":"GMSpriteFrame",},
   ],
   "sequence": {
     "tracks": [
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"8bc8801b-f9c2-4ce3-b1e7-0cf7442488e5","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"eae45303-fea0-4504-b15b-844460584959","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
+            {"id":"b699aebb-d238-4658-bf8c-be8141769f2e","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"f2792694-2582-4460-93ae-ddfa2feeceff","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"SpriteFrameKeyframe",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
@@ -66,7 +66,7 @@
     "resourceType": "GMSequence",
   },
   "layers": [
-    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"552732ae-2259-41d3-9f9c-4c8777e90948","tags":[],"resourceType":"GMImageLayer",},
+    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"d5d3ad9d-471e-4db6-aef4-80debfae04b3","tags":[],"resourceType":"GMImageLayer",},
   ],
   "nineSlice": null,
   "parent": {

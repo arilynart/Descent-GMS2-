@@ -9,7 +9,7 @@ playerSpawnY = 6;
 
 movingCharacter = 0;
 
-walls = ds_list_create();  
+walls = ds_list_create();
 
 for (var i = 0; i < gridWidth; i++) 
 {
@@ -107,6 +107,19 @@ player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[pl
 squares[playerSpawnX, playerSpawnY].character = player;
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
 
+var camWidth = camera_get_view_width(view_camera[0])
+if (room_width < camWidth)
+{
+	cameraTarget.hLock = true;
+}
+var camHeight = camera_get_view_height(view_camera[0])
+if (room_height < camHeight)
+{
+	cameraTarget.vLock = true;
+}
+
 camera_set_view_target(view_camera[0], cameraTarget);
+
+
 
 show_debug_message("Camera Target Initialized. Set to: " + string(camera_get_view_target(view_camera[0])));
