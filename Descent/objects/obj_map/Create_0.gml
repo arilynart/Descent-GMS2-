@@ -7,7 +7,7 @@ blueprint = instance_find(obj_blu_MistyVeil, 0);
 
 gridWidth = blueprint.mapWidth;
 gridHeight = blueprint.mapHeight;
-gridSize = 300;
+gridSize = 288;
 
 room_width = gridWidth * gridSize;
 room_height = gridHeight * gridSize;
@@ -299,18 +299,7 @@ player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[pl
 squares[playerSpawnX, playerSpawnY].character = player;
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
 
-var camWidth = camera_get_view_width(view_camera[0])
-if (room_width < camWidth)
-{
-	cameraTarget.hLock = true;
-}
-var camHeight = camera_get_view_height(view_camera[0])
-if (room_height < camHeight)
-{
-	cameraTarget.vLock = true;
-}
-
-camera_set_view_target(view_camera[0], cameraTarget);
+//camera_set_view_target(view_camera[0], cameraTarget);
 
 
 
