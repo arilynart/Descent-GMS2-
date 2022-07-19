@@ -1,6 +1,6 @@
 {
   "resources": [
-    {"id":{"name":"obj_Blueprint","path":"objects/obj_Blueprint/obj_Blueprint.yy",},"order":0,},
+    {"id":{"name":"obj_blu_MistyVeil","path":"objects/obj_blu_MistyVeil/obj_blu_MistyVeil.yy",},"order":0,},
     {"id":{"name":"obj_Map","path":"objects/obj_Map/obj_Map.yy",},"order":2,},
     {"id":{"name":"spr_Debug1","path":"sprites/spr_Debug1/spr_Debug1.yy",},"order":2,},
     {"id":{"name":"spr_Player","path":"sprites/spr_Player/spr_Player.yy",},"order":0,},
@@ -14,7 +14,7 @@
     {"id":{"name":"obj_CameraTarget","path":"objects/obj_CameraTarget/obj_CameraTarget.yy",},"order":3,},
     {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
     {"id":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"order":0,},
-    {"id":{"name":"MapEditor","path":"rooms/MapEditor/MapEditor.yy",},"order":0,},
+    {"id":{"name":"MistyVeil","path":"rooms/MistyVeil/MistyVeil.yy",},"order":0,},
   ],
   "Options": [
     {"name":"Linux","path":"options/linux/options_linux.yy",},
@@ -30,7 +30,7 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"MapEditor","path":"rooms/MapEditor/MapEditor.yy",},},
+    {"roomId":{"name":"MistyVeil","path":"rooms/MistyVeil/MistyVeil.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Sprites.yy","order":1,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},

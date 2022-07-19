@@ -2,7 +2,8 @@
 
 
 //load blueprint
-blueprint = instance_create_layer(0, 0, "Instances", obj_Blueprint);
+blueprint = 0;
+blueprint = instance_find(obj_blu_MistyVeil, 0);
 
 gridWidth = blueprint.mapWidth;
 gridHeight = blueprint.mapHeight;
@@ -23,8 +24,11 @@ for (var i = 0; i < gridWidth; i++)
 		var newSquare = instance_create_layer(i * gridSize + gridSize / 2, j * gridSize + gridSize / 2, "Squares", obj_Square);
 		with(newSquare) 
 		{
-			coordinate.x = i;
-			coordinate.y = j;
+			coordinate =
+			{
+				x : i,
+				y : j
+			}
 			image_alpha = 0;
 		}
 		squares[i,j] = newSquare;
@@ -127,6 +131,167 @@ for (var i = 0; i < gridWidth + 1; i++)
 		ds_list_add(blueprint.wallPoints, newPoint);
 	}
 }
+
+//disconnect squares for walls
+var wallSize = array_length(blueprint.walls);
+for (var i = 0; i < wallSize; i++)
+{
+	var checkedWall = blueprint.walls[i];
+	//find orientation of wall, then disconnect square accordingly. It can only be vertical or horizontal.
+	
+	var xDiff = abs(checkedWall.point1.x - checkedWall.point2.x);
+	
+	if (xDiff > 0)
+	{
+		var bottomSquare = 0;
+		//horizontal
+		if (checkedWall.point1.x < checkedWall.point2.x)
+		{
+			//oriented normally
+			if (checkedWall.point1.x >= 0 && checkedWall.point1.x < gridWidth 
+				&& checkedWall.point1.y >= 0 && checkedWall.point1.y < gridHeight)
+			{
+				bottomSquare = squares[checkedWall.point1.x, checkedWall.point1.y];
+			}
+		}
+		else
+		{
+			//flipped
+			if (checkedWall.point2.x >= 0 && checkedWall.point2.x < gridWidth 
+				&& checkedWall.point2.y >= 0 && checkedWall.point2.y < gridHeight)
+			{
+				bottomSquare = squares[checkedWall.point2.x, checkedWall.point2.y];
+			}
+		}
+		
+			// x | v | x 
+			//---1~~~2---
+			// v | o | v 
+			
+		if (bottomSquare != 0)
+		{
+			if (bottomSquare.up != 0)
+			{
+				if (bottomSquare.up.down != 0)
+				{
+					bottomSquare.up.down = 0;
+				}
+				if (bottomSquare.up.downLeft != 0)
+				{
+					if (bottomSquare.up.downLeft.upRight != 0)
+					{
+						bottomSquare.up.downLeft.upRight = 0;
+					}
+					bottomSquare.up.downLeft = 0;
+				}
+				if (bottomSquare.up.downRight != 0)
+				{
+					if (bottomSquare.up.downRight.upLeft != 0)
+					{
+						bottomSquare.up.downRight.upLeft = 0;
+
+					}
+					bottomSquare.up.downRight = 0;
+				}
+				bottomSquare.up = 0;
+			}
+			if (bottomSquare.upRight != 0)
+			{
+				if (bottomSquare.upRight.downLeft != 0)
+				{
+					bottomSquare.upRight.downLeft = 0;
+				}
+				bottomSquare.upRight = 0;
+			}
+			if (bottomSquare.upLeft != 0)
+			{
+				if (bottomSquare.upLeft.downRight != 0)
+				{
+					bottomSquare.upLeft.downRight = 0;
+				}
+				bottomSquare.upLeft = 0;
+			}
+		
+		}
+	}
+	else
+	{
+		//vertical
+		
+		var leftSquare = 0;
+		//horizontal
+		if (checkedWall.point1.y < checkedWall.point2.y)
+		{
+			//oriented normally
+			if (checkedWall.point1.x - 1 >= 0 && checkedWall.point1.x - 1 < gridWidth 
+				&& checkedWall.point1.y >= 0 && checkedWall.point1.y < gridHeight)
+			{
+				leftSquare = squares[checkedWall.point1.x - 1, checkedWall.point1.y];
+			}
+
+		}
+		else
+		{
+			//flipped
+			if (checkedWall.point2.x - 1 >= 0 && checkedWall.point2.x - 1 < gridWidth 
+				&& checkedWall.point2.y >= 0 && checkedWall.point2.y < gridHeight)
+			{
+				leftSquare = squares[checkedWall.point2.x - 1, checkedWall.point2.y];
+			}
+		}
+		
+			// x | v | x 
+			//---1~~~2---	(rotate 90 degrees clockwise)
+			// v | o | v 
+		if (leftSquare != 0)
+		{
+			if (leftSquare.right != 0)
+			{
+				if (leftSquare.right.left != 0)
+				{
+					leftSquare.right.left = 0;
+				}
+				if (leftSquare.right.upLeft != 0)
+				{
+					if (leftSquare.right.upLeft.downRight != 0)
+					{
+						leftSquare.right.upLeft.downRight = 0;
+					}
+				
+					leftSquare.right.upLeft = 0;
+				}
+				if (leftSquare.right.downLeft != 0)
+				{
+					if (leftSquare.right.downLeft.upRight != 0)
+					{
+						leftSquare.right.downLeft.upRight = 0;
+					}
+				
+					leftSquare.right.downLeft = 0;
+				}
+
+				leftSquare.right = 0;
+			}
+			if (leftSquare.downRight != 0)
+			{
+				if(leftSquare.downRight.upLeft != 0)
+				{
+					leftSquare.downRight.upLeft = 0;
+				}
+				leftSquare.downRight = 0;
+			}
+			if (leftSquare.upRight != 0)
+			{
+				if (leftSquare.upRight.downLeft != 0)
+				{
+					leftSquare.upRight.downLeft = 0;
+				}
+				leftSquare.upRight = 0;
+			}
+		}
+	}
+}
+
 
 //create other necessary objects
 
