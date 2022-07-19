@@ -1,16 +1,20 @@
 {
   "resources": [
+    {"id":{"name":"obj_blu_MistyVeil","path":"objects/obj_blu_MistyVeil/obj_blu_MistyVeil.yy",},"order":0,},
     {"id":{"name":"obj_Map","path":"objects/obj_Map/obj_Map.yy",},"order":2,},
+    {"id":{"name":"spr_Debug1","path":"sprites/spr_Debug1/spr_Debug1.yy",},"order":2,},
     {"id":{"name":"spr_Player","path":"sprites/spr_Player/spr_Player.yy",},"order":0,},
     {"id":{"name":"spr_Square","path":"sprites/spr_Square/spr_Square.yy",},"order":1,},
-    {"id":{"name":"spr_map_OvergrownTomb","path":"sprites/spr_map_OvergrownTomb/spr_map_OvergrownTomb.yy",},"order":2,},
+    {"id":{"name":"obj_Point","path":"objects/obj_Point/obj_Point.yy",},"order":5,},
     {"id":{"name":"obj_Square","path":"objects/obj_Square/obj_Square.yy",},"order":1,},
     {"id":{"name":"obj_Player","path":"objects/obj_Player/obj_Player.yy",},"order":0,},
-    {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":4,},
+    {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":0,},
+    {"id":{"name":"spr_ts_Village","path":"sprites/spr_ts_Village/spr_ts_Village.yy",},"order":5,},
+    {"id":{"name":"ts_Village","path":"tilesets/ts_Village/ts_Village.yy",},"order":0,},
     {"id":{"name":"obj_CameraTarget","path":"objects/obj_CameraTarget/obj_CameraTarget.yy",},"order":3,},
-    {"id":{"name":"spr_map_GrimyInn","path":"sprites/spr_map_GrimyInn/spr_map_GrimyInn.yy",},"order":3,},
     {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
-    {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
+    {"id":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"order":0,},
+    {"id":{"name":"MistyVeil","path":"rooms/MistyVeil/MistyVeil.yy",},"order":0,},
   ],
   "Options": [
     {"name":"Linux","path":"options/linux/options_linux.yy",},
@@ -26,7 +30,7 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"roomId":{"name":"MistyVeil","path":"rooms/MistyVeil/MistyVeil.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Sprites.yy","order":1,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
@@ -43,6 +47,10 @@
     {"folderPath":"folders/Animation Curves.yy","order":12,"resourceVersion":"1.0","name":"Animation Curves","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Notes.yy","order":13,"resourceVersion":"1.0","name":"Notes","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Extensions.yy","order":14,"resourceVersion":"1.0","name":"Extensions","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Sprites/Characters.yy","order":8,"resourceVersion":"1.0","name":"Characters","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Sprites/Maps.yy","order":9,"resourceVersion":"1.0","name":"Maps","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Sprites/Icons.yy","order":10,"resourceVersion":"1.0","name":"Icons","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Objects/Blueprints.yy","order":4,"resourceVersion":"1.0","name":"Blueprints","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},

@@ -1,13 +1,13 @@
 /// @description Select Square
 
-if (position_meeting(mouse_x, mouse_y, id))
+if (global.grid && position_meeting(mouse_x, mouse_y, id))
 {
 	show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
 	
 	if (character != 0) 
 	{
 		//selected character. highlight grid for movement.
-		if (!character.moving)
+		if (character.moving == false)
 		{
 			map.movingCharacter = character;
 			Activate(self, 40);
