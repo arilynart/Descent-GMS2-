@@ -1,6 +1,6 @@
 {
   "resources": [
-    {"id":{"name":"obj_blu_MistyVeil","path":"objects/obj_blu_MistyVeil/obj_blu_MistyVeil.yy",},"order":0,},
+    {"id":{"name":"obj_Blueprint","path":"objects/obj_Blueprint/obj_Blueprint.yy",},"order":0,},
     {"id":{"name":"obj_Map","path":"objects/obj_Map/obj_Map.yy",},"order":2,},
     {"id":{"name":"spr_Debug1","path":"sprites/spr_Debug1/spr_Debug1.yy",},"order":2,},
     {"id":{"name":"spr_Player","path":"sprites/spr_Player/spr_Player.yy",},"order":0,},

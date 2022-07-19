@@ -45,7 +45,7 @@ else if (global.wallBuildPoint2 == 0)
 				x2 = global.wallBuildPoint1.x - step - 1;
 			}
 			
-			newWall = 
+			var newWall = 
 			{
 				point1 :
 				{
@@ -59,7 +59,7 @@ else if (global.wallBuildPoint2 == 0)
 				}
 			}
 	
-			inverseWall = 
+			var inverseWall = 
 			{
 				point1 :
 				{
@@ -75,11 +75,11 @@ else if (global.wallBuildPoint2 == 0)
 	
 			var wallExists = false;
 			var index = -1;
-			var size = ds_list_size(map.blueprint.walls);
+			var size = array_length(map.blueprint.walls);
 	
 			for (var i = 0; i < size; i++)
 			{
-				var checkedWall = ds_list_find_value(map.blueprint.walls, i);
+				var checkedWall = map.blueprint.walls[i];
 				if ((checkedWall.point1.x == newWall.point1.x && checkedWall.point1.y == newWall.point1.y
 					&& checkedWall.point2.x == newWall.point2.x && checkedWall.point2.y == newWall.point2.y)
 					|| (checkedWall.point1.x == inverseWall.point1.x && checkedWall.point1.y == inverseWall.point1.y
@@ -93,11 +93,11 @@ else if (global.wallBuildPoint2 == 0)
 			if (wallExists == true && index >= 0)
 			{
 				show_debug_message("Wall already exists. Removing.");
-				ds_list_delete(map.blueprint.walls, index);
+				array_delete(map.blueprint.walls, index, 1);
 			}
 			else
 			{
-				ds_list_add(map.blueprint.walls, newWall);
+				array_push(map.blueprint.walls, newWall);
 			}
 		}
 		for (var step = 0; step < yDiff; step++)
@@ -145,11 +145,11 @@ else if (global.wallBuildPoint2 == 0)
 	
 			var wallExists = false;
 			var index = -1;
-			var size = ds_list_size(map.blueprint.walls);
+			var size = array_length(map.blueprint.walls);
 	
 			for (var i = 0; i < size; i++)
 			{
-				var checkedWall = ds_list_find_value(map.blueprint.walls, i);
+				var checkedWall = map.blueprint.walls[i];
 				if ((checkedWall.point1.x == newWall.point1.x && checkedWall.point1.y == newWall.point1.y
 					&& checkedWall.point2.x == newWall.point2.x && checkedWall.point2.y == newWall.point2.y)
 					|| (checkedWall.point1.x == inverseWall.point1.x && checkedWall.point1.y == inverseWall.point1.y
@@ -163,11 +163,11 @@ else if (global.wallBuildPoint2 == 0)
 			if (wallExists == true && index >= 0)
 			{
 				show_debug_message("Wall already exists. Removing.");
-				ds_list_delete(map.blueprint.walls, index);
+				array_delete(map.blueprint.walls, index, 1);
 			}
 			else
 			{
-				ds_list_add(map.blueprint.walls, newWall);
+				array_push(map.blueprint.walls, newWall);
 			}
 		}
 		

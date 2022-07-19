@@ -2,7 +2,7 @@
 
 
 //load blueprint
-blueprint = instance_create_layer(0, 0, "Instances", obj_blu_MistyVeil);
+blueprint = instance_create_layer(0, 0, "Instances", obj_Blueprint);
 
 gridWidth = blueprint.mapWidth;
 gridHeight = blueprint.mapHeight;
