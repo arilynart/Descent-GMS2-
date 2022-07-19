@@ -9,3 +9,5 @@ coordinate =
 	x : -1,
 	y : -1
 }
+
+global.grid = false;

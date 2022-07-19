@@ -8,6 +8,9 @@ gridWidth = blueprint.mapWidth;
 gridHeight = blueprint.mapHeight;
 gridSize = 300;
 
+room_width = gridWidth * gridSize;
+room_height = gridHeight * gridSize;
+
 playerSpawnX = 6;
 playerSpawnY = 6;
 

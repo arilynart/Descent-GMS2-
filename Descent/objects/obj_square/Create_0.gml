@@ -1,6 +1,8 @@
 /// @description Initialize variables. Definition for square activation.
 map = instance_find(obj_Map, 0);
 
+global.grid = true;
+
 right = 0;
 downRight = 0;
 down = 0;
