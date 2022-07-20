@@ -292,6 +292,15 @@ for (var i = 0; i < wallSize; i++)
 	}
 }
 
+//interactables
+var interactableSize = ds_list_size(blueprint.interactables);
+for (var i = 0; i < interactableSize; i++)
+{
+	var interactable = ds_list_find_value(blueprint.interactables, i);
+	var targetSquare = squares[interactable.x, interactable.y];
+	
+	targetSquare.Interaction = interactable.i;
+}
 
 //create other necessary objects
 
@@ -299,8 +308,9 @@ player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[pl
 squares[playerSpawnX, playerSpawnY].character = player;
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
 
-//camera_set_view_target(view_camera[0], cameraTarget);
+#region methods
 
 
 
-show_debug_message("Camera Target Initialized. Set to: " + string(camera_get_view_target(view_camera[0])));
+
+#endregion

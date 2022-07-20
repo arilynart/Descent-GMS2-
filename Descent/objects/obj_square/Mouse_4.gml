@@ -16,6 +16,10 @@ if (character != 0)
 		Activate(self, 40);
 	}
 }
+else if (activated && Interaction != 0)
+{
+	Interaction();
+}
 else if (activated && map.movingCharacter != 0)
 {
 	//if a character is already selected and we're waiting to move, move.

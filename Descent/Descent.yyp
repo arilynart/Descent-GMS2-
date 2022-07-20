@@ -11,6 +11,7 @@
     {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":0,},
     {"id":{"name":"spr_ts_Village","path":"sprites/spr_ts_Village/spr_ts_Village.yy",},"order":5,},
     {"id":{"name":"ts_Village","path":"tilesets/ts_Village/ts_Village.yy",},"order":0,},
+    {"id":{"name":"UtilityFunctions","path":"scripts/UtilityFunctions/UtilityFunctions.yy",},"order":2,},
     {"id":{"name":"obj_CameraTarget","path":"objects/obj_CameraTarget/obj_CameraTarget.yy",},"order":3,},
     {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
     {"id":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"order":0,},

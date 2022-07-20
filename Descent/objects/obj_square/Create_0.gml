@@ -31,6 +31,9 @@ parseQueue = ds_queue_create();
 
 activated = false;
 
+Interaction = 0;
+
+#region Activation
 function Activate(start, maxDistance) 
 {
 	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
@@ -48,6 +51,15 @@ function Activate(start, maxDistance)
 		var currentSquare = ds_queue_dequeue(parseQueue);
 		currentSquare.image_alpha = 1;
 		currentSquare.activated = true;
+		if (currentSquare.Interaction != 0)
+		{
+			currentSquare.image_blend = c_blue;
+		}
+		else
+		{
+			currentSquare.image_blend = c_white;
+		}
+		
 		ds_list_add(activatedSquares, currentSquare);
 		
 		var targetX = -1;
@@ -155,3 +167,4 @@ function ParseSquare(square, parseDistance, source)
 		show_debug_message("Square is invalid.");
 	}
 }
+#endregion
