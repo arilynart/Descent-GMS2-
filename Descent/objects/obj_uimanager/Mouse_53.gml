@@ -1,4 +1,4 @@
 /// @description Advance dialogue.
 
 
-AdvanceDialogue();
+if (displayDialogue) AdvanceDialogue();

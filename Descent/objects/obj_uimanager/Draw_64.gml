@@ -3,7 +3,7 @@
 
 //draw Dialogue Box.
 var dialogueLength = array_length(dialogueArray)
-if (displayDialogue == true && dialogueLength > 0)
+if (displayDialogue && dialogueLength > 0)
 {
 	if (dialogueCount < dialogueLength)
 	{
@@ -19,6 +19,7 @@ if (displayDialogue == true && dialogueLength > 0)
 
 	//set parameters for drawing text.
 	var namePad = 4;
+	
 	var textPad = 28;
 	draw_set_color(c_white);
 	
@@ -27,10 +28,18 @@ if (displayDialogue == true && dialogueLength > 0)
 	//draw name
 	draw_set_font(fnt_Cambria24);
 	draw_text(topLeftX + namePad, topLeftY + namePad, dialogueCharacter.name);
+	
+	//draw line
+	var linePad = 8;
+	var lineWidth = 1;
+	var lineY = topLeftY + textPad + namePad + namePad
+	draw_line_width(topLeftX + linePad, lineY, bottomRightX - linePad, lineY, lineWidth);
 		
 	//draw text
 	draw_set_font(fnt_Cambria16);
-	draw_text(topLeftX + textPad + namePad, topLeftY + textPad + namePad, dialogueArray[dialogueCount]);
+	draw_text(topLeftX + textPad, 
+				topLeftY + textPad + namePad + lineWidth + linePad,
+				dialogueArray[dialogueCount]);
 	}
 	else
 	{

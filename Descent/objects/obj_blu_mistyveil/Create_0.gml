@@ -11,6 +11,7 @@ displaying = true;
 
 mapWidth = 16;
 mapHeight = 26
+mapPad = 1;
 
 mapName = "Misty Veil"
 
