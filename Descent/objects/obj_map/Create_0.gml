@@ -8,9 +8,10 @@ blueprint = instance_find(obj_blu_MistyVeil, 0);
 gridWidth = blueprint.mapWidth;
 gridHeight = blueprint.mapHeight;
 gridSize = 288;
+gridPad = gridSize * blueprint.mapPad;
 
-room_width = gridWidth * gridSize;
-room_height = gridHeight * gridSize;
+room_width = (gridWidth * gridSize) + (gridPad * 2);
+room_height = (gridHeight * gridSize) + (gridPad * 2);
 
 playerSpawnX = 6;
 playerSpawnY = 6;
@@ -21,7 +22,9 @@ for (var i = 0; i < gridWidth; i++)
 {
 	for (var j = 0; j < gridHeight; j++) 
 	{
-		var newSquare = instance_create_layer(i * gridSize + gridSize / 2, j * gridSize + gridSize / 2, "Squares", obj_Square);
+		var newSquare = instance_create_layer(gridPad + i * gridSize + gridSize / 2, 
+											  gridPad + j * gridSize + gridSize / 2, 
+											  "Squares", obj_Square);
 		with(newSquare) 
 		{
 			coordinate =
@@ -117,7 +120,8 @@ for (var i = 0; i < gridWidth + 1; i++)
 {
 	for (var j = 0; j < gridHeight + 1; j++)
 	{
-		var newPoint = instance_create_layer(i * gridSize, j * gridSize, "Points", obj_Point);
+		var newPoint = instance_create_layer(gridPad + (i * gridSize), 
+											 gridPad + (j * gridSize), "Points", obj_Point);
 		with(newPoint)
 		{
 			//map = self;
