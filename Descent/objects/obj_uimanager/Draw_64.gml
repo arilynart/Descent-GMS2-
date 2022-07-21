@@ -1,6 +1,7 @@
 /// @description Draw UI elements.
 
 
+global.UiLock = false;
 //set mouse gui
 mouseX = device_mouse_x_to_gui(0);
 mouseY = device_mouse_y_to_gui(0);
@@ -79,8 +80,8 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 	
 	uiCharacterButtons[i] = buttonStruct;
 	
-	if (mouseX >= uiCharacterButtons[i].left && mouseX <= uiCharacterButtons[i].right
-	 && mouseY >= uiCharacterButtons[i].top && mouseY <= uiCharacterButtons[i].bottom)
+	if (mouseX >= buttonStruct.left && mouseX <= buttonStruct.right
+	 && mouseY >= buttonStruct.top && mouseY <= buttonStruct.bottom)
 	{
 		draw_set_color(c_white);
 	}
@@ -114,8 +115,8 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 				
 			array_push(uiPackButtons, packButtonStruct);
 				
-			if (mouseX >= uiPackButtons[j].left && mouseX <= uiPackButtons[j].right
-			 && mouseY >= uiPackButtons[j].top && mouseY <= uiPackButtons[j].bottom)
+			if (mouseX >= packButtonStruct.left && mouseX <= packButtonStruct.right
+			 && mouseY >= packButtonStruct.top && mouseY <= packButtonStruct.bottom)
 			{
 				draw_set_color(c_white);
 			}
@@ -128,25 +129,62 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 			
 			var currentPack = ally.equippedPacks[j]
 			var packSprite = currentPack.sprite;
-			var spriteScale = (allyRadius) / sprite_get_width(packSprite);
+			var packScale = (allyRadius) / sprite_get_width(packSprite);
 			
 			draw_sprite_ext(packSprite, 0, packPosX - (allyRadius / 2), packPosY - (allyRadius / 2), 
-							spriteScale, spriteScale, image_angle, c_white, 1);
+							packScale, packScale, image_angle, c_white, 1);
 			
 			//display pack contents
 			if (packDraw == j)
 			{
+				global.UiLock = true;
 				//var inventoryPad = allyRadius / 8;
 				var contentPosY = quarterY / 2;
-				draw_set_color(c_gray);
+				
+				uiItemButtons = array_create(0);
+			
+				
 				for (var k = 0; k < currentPack.width; k++)
 				{
 					for (var l = 0; l < currentPack.height; l++)
 					{
-						draw_circle((packPosX + (allyRadius)) 
-									 + ((division + (allyRadius)) * k), 
-									 contentPosY + ((division + (allyRadius)) * l), 
-									 allyRadius, false);
+						var itemPosX = (packPosX + allyRadius) + ((division + allyRadius) * k);
+						var itemPosY = contentPosY + (division + allyRadius) * l
+						var contentButton = 
+						{
+							left : itemPosX - allyRadius,
+							top : itemPosY - allyRadius,
+							right : itemPosX + allyRadius,
+							bottom : itemPosY + allyRadius
+						}
+						
+						array_push(uiItemButtons, contentButton);
+						
+						if (mouseX >= contentButton.left && mouseX <= contentButton.right
+							&& mouseY >= contentButton.top && mouseY <= contentButton.bottom)
+						{
+							draw_set_color(c_white);
+						}
+						else
+						{
+							draw_set_color(c_gray);
+						}
+						
+						draw_circle(itemPosX, itemPosY, 
+							allyRadius, false);
+							
+						var itemIndex = k * currentPack.width + l;
+						var item = currentPack.contents[itemIndex];
+						
+						if (item != 0)
+						{
+							var itemSprite = item.sprite;
+							var itemScale = (allyRadius) / sprite_get_width(itemSprite);
+			
+							draw_sprite_ext(itemSprite, 0, itemPosX - (allyRadius / 2), itemPosY - (allyRadius / 2), 
+											itemScale, itemScale, image_angle, c_white, 1);
+						}
+
 					}
 				}
 			}

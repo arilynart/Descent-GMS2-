@@ -2,6 +2,7 @@
 
 
 global.UiManager = self;
+global.UiLock = false;
 
 fullX = display_get_gui_width();
 fullY = display_get_gui_height();
@@ -23,6 +24,7 @@ dialogueCharacter = 0;
 uiCharacterButtons = array_create(6);
 
 uiPackButtons = 0;
+uiItemButtons = 0;
 
 allyRadius = quarterY / 6
 

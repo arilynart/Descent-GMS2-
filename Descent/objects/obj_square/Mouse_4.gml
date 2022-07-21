@@ -1,7 +1,7 @@
 /// @description Select Square
 
 
-if (global.UiManager.displayDialogue) return;
+if (global.UiLock || map.blueprint.displaying || global.UiManager.displayDialogue) return;
 
 show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
 	

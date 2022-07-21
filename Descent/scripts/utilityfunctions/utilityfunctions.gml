@@ -87,19 +87,37 @@ function PackCheck(character)
 //quick-add item to the inventory
 function AutoPickup(character, item)
 {
+	show_debug_message(character.name + " is picking up item: " + string(item));
 	var lowestValue = 99;
-	var selectedPack = 0;
+	var selectedPack = 0
+	var emptyIndex = -1;
 	for (var i = 0; i < array_length(character.equippedPacks); i++)
 	{
 		var pack = character.equippedPacks[i];
-		if (pack.tier < lowestValue && array_length(pack.contents) < pack.width * pack.height)
+		var tempIndex = -1;
+		for (var j = 0; j < pack.width * pack.height; j++)
 		{
+			var tempItem = pack.contents[j]
+			if (tempItem == 0)
+			{
+				tempIndex = j; 
+				j = 99;
+			}
+		}
+		
+		if (tempIndex >= 0 && pack.tier < lowestValue)
+		{
+			emptyIndex = tempIndex;
 			lowestValue = pack.tier;
 			selectedPack = pack;
 		}
 	}
 	if (selectedPack != 0)
 	{
-		array_push(selectedPack.contents, item);
+		selectedPack.contents[emptyIndex] = item;
+	}
+	else
+	{
+		show_debug_message("No room for item. Drop something first.");
 	}
 }
