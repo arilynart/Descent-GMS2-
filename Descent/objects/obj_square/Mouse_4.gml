@@ -7,11 +7,6 @@ show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(co
 	
 if (character != 0) 
 {
-	if (activated) 
-	{
-		return; 
-	}
-	
 	global.selectedCharacter = character;
 	global.selectedSquare = self;
 	

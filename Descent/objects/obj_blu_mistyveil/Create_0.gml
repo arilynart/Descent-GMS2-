@@ -36,18 +36,6 @@ if (file_exists(fileName))
 
 #region interaction methods
 
-function BasicTest()
-{
-	show_debug_message("BasicTest Triggered.");
-	//var targetSquare = map.squares[firstTestInteractable.x, firstTestInteractable.y];
-	var adjacent = global.PlayerAdjacent(other, true);
-	show_debug_message("Adjacent? " + string(adjacent));
-	if (adjacent == true)
-	{
-		show_debug_message("You pick up one of your belongings. A package of potions.");
-	}
-}
-
 function PickupDialogue()
 {
 	var adjacent = global.PlayerAdjacent(other, false);
@@ -56,7 +44,8 @@ function PickupDialogue()
 	{
 		var dialogueArray = array_create(0);
 		array_push(dialogueArray, "You pick up one of your belongings. A package of potions.");
-		DisplayDialogue(adjacent, dialogueArray);
+		DisplayDialogue(global.nameless, dialogueArray, true);
+		other.Interaction = 0;
 	}
 }
 
