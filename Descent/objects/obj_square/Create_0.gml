@@ -2,6 +2,8 @@
 map = instance_find(obj_Map, 0);
 
 global.grid = true;
+global.previousMouse_x = mouse_x;
+global.previousMouse_y = mouse_y;
 
 right = 0;
 downRight = 0;
@@ -32,6 +34,9 @@ parseQueue = ds_queue_create();
 activated = false;
 
 Interaction = 0;
+
+highlightArray = 0;
+dehighlightArray = 0;
 
 #region Activation
 function Activate(start, maxDistance) 
