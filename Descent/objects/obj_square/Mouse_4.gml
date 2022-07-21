@@ -1,6 +1,8 @@
 /// @description Select Square
 
 
+if (global.UiManager.displayDialogue) return;
+
 show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
 	
 if (character != 0) 
@@ -9,6 +11,10 @@ if (character != 0)
 	{
 		return; 
 	}
+	
+	global.selectedCharacter = character;
+	global.selectedSquare = self;
+	
 	//selected character. highlight grid for movement.
 	if (character.moving == false)
 	{

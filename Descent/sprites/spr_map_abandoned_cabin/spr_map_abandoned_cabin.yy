@@ -8,14 +8,14 @@
   "collisionTolerance": 0,
   "swfPrecision": 2.525,
   "bbox_left": 0,
-  "bbox_right": 1023,
+  "bbox_right": 1151,
   "bbox_top": 0,
-  "bbox_bottom": 1663,
+  "bbox_bottom": 1791,
   "HTile": false,
   "VTile": false,
   "For3D": false,
-  "width": 1024,
-  "height": 1664,
+  "width": 1152,
+  "height": 1792,
   "textureGroupId": {
     "name": "Default",
     "path": "texturegroups/Default",
@@ -24,9 +24,9 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"41ad8eab-2d17-4782-ada0-c56dee1b9620","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"41ad8eab-2d17-4782-ada0-c56dee1b9620","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":{"name":"4b6bd375-74f1-43dd-9a82-e7b420b211d9","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"41ad8eab-2d17-4782-ada0-c56dee1b9620","tags":[],"resourceType":"GMSpriteFrame",},
+    {"compositeImage":{"FrameId":{"name":"c9f2a8b2-7af4-4735-8855-0747fde0ba0f","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
+        {"FrameId":{"name":"c9f2a8b2-7af4-4735-8855-0747fde0ba0f","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"LayerId":{"name":"4ce1d3ef-16f0-419a-b556-75eb7c305a7f","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
+      ],"parent":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","name":"c9f2a8b2-7af4-4735-8855-0747fde0ba0f","tags":[],"resourceType":"GMSpriteFrame",},
   ],
   "sequence": {
     "spriteId": {"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},
@@ -41,7 +41,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"MomentsEventKeyframe",},
     "tracks": [
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"96d793db-2b09-446f-82a7-271a028b0d8b","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"41ad8eab-2d17-4782-ada0-c56dee1b9620","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
+            {"id":"d52a7b25-91c3-41b5-96f3-1a8b135f18d5","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"c9f2a8b2-7af4-4735-8855-0747fde0ba0f","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"SpriteFrameKeyframe",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
@@ -65,7 +65,7 @@
     "resourceType": "GMSequence",
   },
   "layers": [
-    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"4b6bd375-74f1-43dd-9a82-e7b420b211d9","tags":[],"resourceType":"GMImageLayer",},
+    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"4ce1d3ef-16f0-419a-b556-75eb7c305a7f","tags":[],"resourceType":"GMImageLayer",},
   ],
   "nineSlice": null,
   "parent": {

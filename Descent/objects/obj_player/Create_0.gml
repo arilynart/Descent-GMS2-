@@ -12,7 +12,7 @@ team = CharacterTeams.Player;
 
 global.Player = self;
 
-moveSpeed = 12;
+moveSpeed = 18;
 
 moveQueue = ds_queue_create();
 

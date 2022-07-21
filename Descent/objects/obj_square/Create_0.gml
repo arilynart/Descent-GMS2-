@@ -51,14 +51,6 @@ function Activate(start, maxDistance)
 		var currentSquare = ds_queue_dequeue(parseQueue);
 		currentSquare.image_alpha = 1;
 		currentSquare.activated = true;
-		if (currentSquare.Interaction != 0)
-		{
-			currentSquare.image_blend = c_blue;
-		}
-		else
-		{
-			currentSquare.image_blend = c_white;
-		}
 		
 		ds_list_add(activatedSquares, currentSquare);
 		
@@ -143,6 +135,7 @@ function Deactivate()
 	{
 		var sq = ds_list_find_value(activatedSquares, i);
 		sq.image_alpha = 0;
+		sq.image_blend = c_white;
 		sq.distance = -1;
 		sq.activated = false;
 		sq.closestToTarget = 0;
@@ -152,7 +145,7 @@ function Deactivate()
 function ParseSquare(square, parseDistance, source)
 {
 	//show_debug_message("Parsing Square: " + string(square));
-	if (square != 0 && square.character == 0 
+	if (square != 0 && square.character == 0 && square.Interaction == 0
 	&& ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
 	|| parseDistance < square.distance))
 	{
@@ -164,7 +157,15 @@ function ParseSquare(square, parseDistance, source)
 	}
 	else
 	{
-		show_debug_message("Square is invalid.");
+		//show_debug_message("Square is invalid.");
+		if (square != 0 && square.Interaction != 0 && ds_list_find_index(parsedCoordinates, square.coordinate) < 0 )
+		{
+			square.image_blend = c_blue;
+			square.image_alpha = 1;
+			ds_list_add(parsedCoordinates, square.coordinate);
+			ds_list_add(activatedSquares, square);
+			square.activated = true;
+		}
 	}
 }
 #endregion

@@ -11,12 +11,11 @@ displaying = true;
 
 mapWidth = 16;
 mapHeight = 26
+mapPad = 1;
 
 mapName = "Misty Veil"
 
-show_debug_overlay(true);
-
-//all walls.
+//load walls.
 
 var fileName = string(mapName) + " SAVE.json"
 
@@ -49,13 +48,25 @@ function BasicTest()
 	}
 }
 
+function PickupDialogue()
+{
+	var adjacent = global.PlayerAdjacent(other, false);
+	show_debug_message("Adjacent? " + string(adjacent));
+	if (adjacent != 0)
+	{
+		var dialogueArray = array_create(0);
+		array_push(dialogueArray, "You pick up one of your belongings. A package of potions.");
+		DisplayDialogue(adjacent, dialogueArray);
+	}
+}
+
 #endregion
 
 firstTestInteractable = 
 {
 	x: 4,
 	y: 21,
-	i: method(id, BasicTest)
+	i: method(id, PickupDialogue)
 }
 
 ds_list_add(interactables, firstTestInteractable);
