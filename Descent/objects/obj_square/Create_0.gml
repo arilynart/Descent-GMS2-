@@ -33,6 +33,9 @@ activated = false;
 
 Interaction = 0;
 
+highlightArray = 0;
+dehighlightArray = 0;
+
 #region Activation
 function Activate(start, maxDistance) 
 {
