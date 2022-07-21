@@ -4,7 +4,7 @@
 PlayerAdjacent = function(square, requirePlayer)
 {
 	show_debug_message("Checking for adjacent players.");
-	var foundPlayer = false;
+	var foundPlayer = 0;
 	for (var i = 0; i < 8; i++)
 	{
 		var checkSquare = 0;
@@ -46,11 +46,12 @@ PlayerAdjacent = function(square, requirePlayer)
 			
 		if (checkSquare.character != 0)
 		{
+			checkSquare.Deactivate();
 			if (requirePlayer == true)
 			{
 				if (global.Player == checkSquare.character)
 				{
-					foundPlayer = true;
+					foundPlayer = checkSquare.character;
 				}
 				else
 				{
@@ -65,7 +66,7 @@ PlayerAdjacent = function(square, requirePlayer)
 				//after we add enemies we want to check to maker sure the character is allied.
 				if (checkSquare.character.team == CharacterTeams.Ally || global.Player == checkSquare.character) 
 				{
-					foundPlayer = true;
+					foundPlayer = checkSquare.character;
 				}
 			}
 		}

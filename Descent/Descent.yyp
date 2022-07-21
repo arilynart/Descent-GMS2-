@@ -8,6 +8,7 @@
     {"id":{"name":"obj_Point","path":"objects/obj_Point/obj_Point.yy",},"order":5,},
     {"id":{"name":"obj_Square","path":"objects/obj_Square/obj_Square.yy",},"order":1,},
     {"id":{"name":"obj_Player","path":"objects/obj_Player/obj_Player.yy",},"order":0,},
+    {"id":{"name":"UiFunctions","path":"scripts/UiFunctions/UiFunctions.yy",},"order":3,},
     {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":0,},
     {"id":{"name":"spr_ts_Village","path":"sprites/spr_ts_Village/spr_ts_Village.yy",},"order":5,},
     {"id":{"name":"fnt_Cambria16","path":"fonts/fnt_Cambria16/fnt_Cambria16.yy",},"order":0,},

@@ -22,19 +22,6 @@ dialogueCharacter = 0;
 
 #region Methods
 
-function DisplayDialogue(character, dialogue)
-{
-	dialogueCount = 0;
-	dialogueCharacter = character;
-	dialogueArray = dialogue;
-	displayDialogue = true;
-}
-
-function AdvanceDialogue()
-{
-	dialogueCount += 1;
-}
-
 function TestDialogue()
 {
 	var testArray = array_create(0);
@@ -47,6 +34,6 @@ function TestDialogue()
 	DisplayDialogue(global.Player, testArray);
 }
 
-TestDialogue();
+//TestDialogue();
 
 #endregion

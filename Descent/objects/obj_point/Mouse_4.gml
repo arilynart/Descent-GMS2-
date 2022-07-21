@@ -1,5 +1,8 @@
 /// @description Begin Wall Selection
 
+
+if (global.UiManager.displayDialogue) return;
+
 image_blend = c_blue;
 
 if (global.wallBuildPoint1 == 0)
