@@ -20,6 +20,18 @@ dialogueArray = array_create(0);
 displayDialogue = false;
 dialogueCharacter = 0;
 
+uiCharacterButtons = array_create(6);
+
+uiPackButtons = 0;
+
+allyRadius = quarterY / 6
+
+mouseX = 0;
+mouseY = 0;
+
+inventoryDraw = -1;
+packDraw = -1;
+
 window_set_fullscreen(true);
 
 global.nameless =

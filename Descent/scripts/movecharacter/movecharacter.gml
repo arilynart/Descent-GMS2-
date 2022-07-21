@@ -12,7 +12,6 @@ function MoveCharacter(character, target)
 	
 	while (foundCharacter == false)
 	{
-		
 		if (parsedSquare.closestToTarget != 0)
 		{
 			var square = parsedSquare.closestToTarget;

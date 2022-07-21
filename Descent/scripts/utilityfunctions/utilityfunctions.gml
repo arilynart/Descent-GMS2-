@@ -74,3 +74,32 @@ PlayerAdjacent = function(square, requirePlayer)
 	show_debug_message("Out of range.");
 	return foundPlayer;
 }
+
+//call this whenever packs are changed.
+function PackCheck(character)
+{
+	//penalize movement for overpacking.
+	
+	//check to make sure each pack doesn't overcap, prioritizing largest.
+	
+}
+
+//quick-add item to the inventory
+function AutoPickup(character, item)
+{
+	var lowestValue = 99;
+	var selectedPack = 0;
+	for (var i = 0; i < array_length(character.equippedPacks); i++)
+	{
+		var pack = character.equippedPacks[i];
+		if (pack.tier < lowestValue && array_length(pack.contents) < pack.width * pack.height)
+		{
+			lowestValue = pack.tier;
+			selectedPack = pack;
+		}
+	}
+	if (selectedPack != 0)
+	{
+		array_push(selectedPack.contents, item);
+	}
+}

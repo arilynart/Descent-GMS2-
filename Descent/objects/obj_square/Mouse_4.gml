@@ -7,14 +7,14 @@ show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(co
 	
 if (character != 0) 
 {
-	global.selectedCharacter = character;
-	global.selectedSquare = self;
-	
+
 	//selected character. highlight grid for movement.
-	if (character.moving == false)
+	if (activated == false && character.moving == false)
 	{
+		global.selectedCharacter = character;
+		global.selectedSquare = self;
 		map.movingCharacter = character;
-		Activate(self, 40);
+		Activate(self, character.maxMove * 7);
 	}
 }
 else if (activated && Interaction != 0)
