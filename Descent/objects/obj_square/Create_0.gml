@@ -158,7 +158,8 @@ function ParseSquare(square, parseDistance, source)
 	else
 	{
 		//show_debug_message("Square is invalid.");
-		if (square != 0 && square.Interaction != 0 && ds_list_find_index(parsedCoordinates, square.coordinate) < 0 )
+		if (square != 0 && square.Interaction != 0 
+			&& ds_list_find_index(parsedCoordinates, square.coordinate) < 0 )
 		{
 			square.image_blend = c_blue;
 			square.image_alpha = 1;

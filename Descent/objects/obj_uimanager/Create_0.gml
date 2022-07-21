@@ -20,6 +20,13 @@ dialogueArray = array_create(0);
 displayDialogue = false;
 dialogueCharacter = 0;
 
+window_set_fullscreen(true);
+
+global.nameless =
+{
+	name: ""
+}
+
 #region Methods
 
 function TestDialogue()
@@ -31,7 +38,7 @@ function TestDialogue()
 	
 	array_push(testArray, line1, line2);
 	
-	DisplayDialogue(global.Player, testArray);
+	DisplayDialogue(global.Player, testArray, true);
 }
 
 //TestDialogue();
