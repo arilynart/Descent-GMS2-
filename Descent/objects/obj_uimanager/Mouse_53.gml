@@ -27,9 +27,33 @@ else
 		if (mouseX >= button.left && mouseX <= button.right
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
-			//enable drawing for character stuff
-			if (packDraw == i) packDraw = -1;
-			else packDraw = i;
+			//enable drawing for pack stuff
+			if (packDraw == i)
+			{
+				packDraw = -1;
+				itemDraw = -1;
+			}
+			else
+			{
+				packDraw = i;
+				itemDraw = -1;
+			}
+		}
+	}
+	if (packDraw >= 0)
+	{
+		for (var i = 0; i < array_length(uiItemButtons); i++)
+		{
+			var button = uiItemButtons[i];
+		
+			//if we're clicking on i's button
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				//enable drawing for item stuff
+				if (itemDraw == i) itemDraw = -1;
+				else itemDraw = i;
+			}
 		}
 	}
 }

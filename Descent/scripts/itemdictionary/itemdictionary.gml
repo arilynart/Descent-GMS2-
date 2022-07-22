@@ -58,8 +58,16 @@ FindItem = function(type, index, quantity)
 						quantity : quantity,
 						index : index,
 						type : type,
-						consume : method(global, ConsumeMedicine)
+						methods : ds_list_create()
 					}
+					
+					var Consume = 
+					{
+						name : "Drink",
+						description : "Heals the drinker for 25 HP.",
+						Execute : method(global, ConsumeMedicine)
+					}
+					ds_list_add(item.methods, Consume);
 					
 					return item;
 					break;
@@ -90,11 +98,15 @@ FindItem = function(type, index, quantity)
 
 #region Methods
 
+// Always pass the character who uses the item. 
+
+//standard methods. Move and discard.
+
 ConsumeMedicine = function(character)
 {
 	var dialogue = array_create(1);
 	dialogue[0] = character.name + " drinks a vial of medicine.";
-	DisplayDialogue();
+	DisplayDialogue(character, dialogue, true);
 }
 
 #endregion

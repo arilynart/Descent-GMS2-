@@ -33,6 +33,7 @@ mouseY = 0;
 
 inventoryDraw = -1;
 packDraw = -1;
+itemDraw = -1;
 
 window_set_fullscreen(true);
 

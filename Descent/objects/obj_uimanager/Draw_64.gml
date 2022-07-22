@@ -138,7 +138,6 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 			if (packDraw == j)
 			{
 				global.UiLock = true;
-				//var inventoryPad = allyRadius / 8;
 				var contentPosY = quarterY / 2;
 				
 				uiItemButtons = array_create(0);
@@ -183,6 +182,38 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 			
 							draw_sprite_ext(itemSprite, 0, itemPosX - (allyRadius / 2), itemPosY - (allyRadius / 2), 
 											itemScale, itemScale, image_angle, c_white, 1);
+									
+									
+							if (itemDraw == itemIndex)
+							{
+							//display info panel
+								
+								//backgorund
+								draw_set_color(c_black);
+								var infoPanelX = fullX - quarterX;
+								var infoPanelY = fullY = quarterY;
+								draw_circle(infoPanelX, infoPanelY, quarterY, false);
+								
+								draw_set_color(c_dkgray);
+								draw_line_width(infoPanelX, infoPanelY - quarterY, infoPanelX + quarterX,  infoPanelY + quarterY, outlineRadius);
+								draw_line_width(0, halfY, quarterY, halfY + quarterY, outlineRadius);
+								draw_line_width(halfY, halfY, quarterY, halfY + quarterY, outlineRadius);
+								
+								draw_set_color(c_gray);
+								draw_circle(quarterY, quarterY, outlineRadius, false);
+								draw_circle(quarterY, halfY + quarterY, outlineRadius, false);
+								draw_circle(halfY, halfY, outlineRadius, false);
+								
+								//item image, name, and description
+								draw_circle(quarterY, halfY - (quarterY / 2), allyRadius, false);
+								draw_sprite_ext(itemSprite, 0, quarterY - (allyRadius / 2), 
+												halfY - (quarterY / 2) - (allyRadius / 2), itemScale, itemScale, 
+												image_angle, c_white, 1);
+												
+								draw_set_halign(fa_center)
+								draw_set_font(fnt_Cambria24);
+								draw_text(quarterY, halfY - (quarterY / 4), item.name);
+							}
 						}
 
 					}
