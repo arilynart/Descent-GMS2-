@@ -63,8 +63,7 @@ FindItem = function(type, index, quantity)
 						quantity : quantity,
 						index : index,
 						type : type,
-						character : 0,
-						pack : 0,
+						packSlot : 0,
 						slot : -1,
 						methods : ds_list_create()
 					}
@@ -143,7 +142,6 @@ ItemCopy = function(item)
 		quantity : item.quantity,
 		index : item.index,
 		type : item.type,
-		character : item.character,
 		pack : item.pack,
 		slot : item.slot,
 		methods : item.methods
@@ -156,11 +154,76 @@ ItemCopy = function(item)
 
 ItemDiscard = function(character, item)
 {
-	item.pack.contents[item.slot] = 0;
+	character.equippedPacks[item.pack].contents[item.slot] = 0;
 }
 
 ItemMove = function(character, item)
 {
+	show_debug_message("Moving item:   Previous ItemToMove: " + string(ItemToMove));
+	
+	if (ItemToMove != 0)
+	{
+		ItemMovetoSlot(character, ItemToMove.pack, ItemToMove.slot);
+	}
+	
+
+	ItemToMove = item;
+	ItemDiscard(character, item);
+}
+
+function ItemMovetoSlot(character, packIndex, slot)
+{
+	show_debug_message("Moving item to: " + string(slot));
+	var pack = character.equippedPacks[packIndex];
+	var quantityToSort = ItemToMove.quantity;
+	var sortedQuantity = 0;
+	
+	while (sortedQuantity < quantityToSort)
+	{
+		if (pack.contents[slot] != 0)
+		{
+			//combine with previous item (don't pass in a slot of a different item type)
+		
+			if (pack.contents[slot].type == ItemToMove.type && pack.contents[slot].index == ItemToMove.index)
+			{
+				pack.contents[slot].quantity += ItemToMove.quantity;
+				if (pack.contents[slot].quantity > pack.contents[slot].maxQuantity)
+				{
+					var overcap = pack.contents[slot].quantity - pack.contents[slot].maxQuantity;
+					pack.contents[slot].quantity = pack.contents[slot].maxQuantity;
+					ItemToMove.quantity = overcap;
+					if (pack.contents[slot] == ItemToMove.pack.contents[ItemToMove.slot])
+					{
+						AutoPickup(ItemToMove.character, ItemToMove);
+						sortedQuantity = quantityToSort;
+					}
+					else
+					{
+						sortedQuantity = quantityToSort - overcap;
+						pack = ItemToMove.pack;
+						slot = ItemToMove.slot;
+					}
+				}
+				else
+				{
+					sortedQuantity = quantityToSort;
+				}
+			}
+			else
+			{
+				show_debug_message("Cannot add item to slot. Running AutoPickup instead.");
+				sortedQuantity = quantityToSort;
+				AutoPickup(ItemToMove.character, ItemToMove);
+			}
+		}
+		else
+		{
+			pack.contents[slot] = ItemToMove;
+			sortedQuantity = quantityToSort;
+		}
+	}
+	
+	ItemToMove = 0;
 	
 }
 

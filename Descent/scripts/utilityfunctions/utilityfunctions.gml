@@ -150,9 +150,11 @@ function AutoPickup(character, item)
 		var lowestValue = 99;
 		selectedPack = -1;
 		emptyIndex = -1;
+		var packIndex = -1
 		for (var i = 0; i < array_length(character.equippedPacks); i++)
 		{
 			var pack = character.equippedPacks[i];
+			
 			var tempIndex = -1;
 			for (var j = 0; j < pack.width * pack.height; j++)
 			{
@@ -168,13 +170,13 @@ function AutoPickup(character, item)
 			{
 				emptyIndex = tempIndex;
 				lowestValue = pack.tier;
+				packIndex = i;
 				selectedPack = pack;
 			}
 		}
 		if (selectedPack != -1)
 		{
-			item.character = character;
-			item.pack = selectedPack;
+			item.pack = packIndex;
 			item.slot = emptyIndex;
 			selectedPack.contents[emptyIndex] = item;
 		}
