@@ -91,53 +91,57 @@ function AutoPickup(character, item)
 	
 	var quantityToSort = item.quantity;
 	var sortedQuantity = 0;
-
 	
-	for (var h = 0; sortedQuantity < quantityToSort; h++)
+	if (item.maxQuantity > 1)
 	{
-		var selectedPack = -1
-		var emptyIndex = -1;
-		for (var i = 0; i < array_length(character.equippedPacks); i++)
+		for (var h = 0; sortedQuantity < quantityToSort; h++)
 		{
-			var pack = character.equippedPacks[i];
-			var tempIndex = -1;
-			for (var j = 0; j < pack.width * pack.height; j++)
+			var selectedPack = -1
+			var emptyIndex = -1;
+			for (var i = 0; i < array_length(character.equippedPacks); i++)
 			{
-				var tempItem = pack.contents[j]
-				if (tempItem != 0 && tempItem.type == item.type && tempItem.index == item.index 
-					&& tempItem.quantity < tempItem.maxQuantity)
+				var pack = character.equippedPacks[i];
+				var tempIndex = -1;
+				for (var j = 0; j < pack.width * pack.height; j++)
 				{
-					selectedPack = pack;
-					emptyIndex = j;
+					var tempItem = pack.contents[j]
+					if (tempItem != 0 && tempItem.type == item.type && tempItem.index == item.index 
+						&& tempItem.quantity < tempItem.maxQuantity)
+					{
+						selectedPack = pack;
+						emptyIndex = j;
+					}
 				}
 			}
-		}
-		if (selectedPack != -1)
-		{
-			var itemToCombineTo = selectedPack.contents[emptyIndex];
-			
-			itemToCombineTo.quantity += quantityToSort - sortedQuantity;
-			
-			if (itemToCombineTo.quantity > itemToCombineTo.maxQuantity)
+			if (selectedPack != -1)
 			{
-				sortedQuantity = quantityToSort - (itemToCombineTo.quantity - itemToCombineTo.maxQuantity);
-				itemToCombineTo.quantity = itemToCombineTo.maxQuantity;
-				item.quantity -= sortedQuantity;
+				var itemToCombineTo = selectedPack.contents[emptyIndex];
+			
+				itemToCombineTo.quantity += quantityToSort - sortedQuantity;
+			
+				if (itemToCombineTo.quantity > itemToCombineTo.maxQuantity)
+				{
+					sortedQuantity = quantityToSort - (itemToCombineTo.quantity - itemToCombineTo.maxQuantity);
+					itemToCombineTo.quantity = itemToCombineTo.maxQuantity;
+					item.quantity -= sortedQuantity;
+				}
+				else
+				{
+					sortedQuantity = quantityToSort;
+				}
 			}
 			else
 			{
-				sortedQuantity = quantityToSort;
+				//nothing found. break loop.
+				show_debug_message("No packs found. Breaking loop.");
+				break;
 			}
-		}
-		else
-		{
-			//nothing found. break loop.
-			show_debug_message("No packs found. Breaking loop.");
-			break;
-		}
 		
 		
+		}
 	}
+	
+	
 	if (sortedQuantity < quantityToSort)
 	{
 		show_debug_message("Searching for empty slot.");
