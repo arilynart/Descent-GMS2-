@@ -77,8 +77,10 @@ else
 				}
 			}
 		}
-		if (itemDraw >= 0)
+		var character = global.Allies[inventoryDraw];
+		if (itemDraw >= 0 && character.equippedPacks[packDraw].contents[itemDraw] != 0)
 		{
+			var item = character.equippedPacks[packDraw].contents[itemDraw];
 			for (var i = 0; (i < array_length(uiMethodButtons) && i < 6); i++)
 			{
 				var button = uiMethodButtons[i];
@@ -86,19 +88,56 @@ else
 				if (mouseX >= button.left && mouseX <= button.right
 					&& mouseY >= button.top && mouseY <= button.bottom)
 				{
-					var character = global.Allies[inventoryDraw];
-					var item = character.equippedPacks[packDraw].contents[itemDraw]
+					
+					
 					ds_list_find_value(item.methods, i).Execute(character, item);
 					
-					itemDraw = -1;
+					//itemDraw = -1;
 					split = 0;
 				}
 			}
-			if (splitArea != 0 && mouseX >= splitArea.left && mouseX <= splitArea.right
-				&& mouseY >= splitArea.top && mouseY <= splitArea.bottom)
+			
+			if (split != 0)
 			{
-				dragSplit = true;
+				if (mouseX >= confirmSplit.left && mouseX <=  confirmSplit.right
+					&& mouseY >= confirmSplit.top && mouseY <= confirmSplit.bottom)
+				{
+					show_debug_message("Confirm Click");
+					var splitItem = global.ItemCopy(item);
+					splitItem.quantity = splitValue;
+					character.equippedPacks[packDraw].contents[itemDraw].quantity -= splitValue;
+					if (character.equippedPacks[packDraw].contents[itemDraw].quantity <= 0)
+					{
+						global.ItemDiscard(character, character.equippedPacks[packDraw].contents[itemDraw]);
+					}
+					
+					splitItem.pack = tempItemPack;
+					splitItem.slot = 0;
+					tempItemPack.contents[0] = splitItem;
+					
+					split.Execute(character, splitItem);
+					
+					split = 0;
+				}
+				else if (mouseX >= cancelSplit.left && mouseX <=  cancelSplit.right
+						 && mouseY >= cancelSplit.top && mouseY <= cancelSplit.bottom)
+				{
+					show_debug_message("Cancel Click");
+					split = 0;
+				}
+				else if (mouseX >= splitArea.left && mouseX <= splitArea.right
+					&& mouseY >= splitArea.top && mouseY <= splitArea.bottom)
+				{
+					dragSplit = true;
+				}
 			}
+			
+			
+		}
+		else
+		{
+			itemDraw = -1;
+			
 		}
 	}
 }

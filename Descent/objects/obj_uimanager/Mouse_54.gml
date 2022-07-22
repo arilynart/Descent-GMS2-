@@ -20,7 +20,10 @@ else if (itemDraw >= 0)
 				var item = character.equippedPacks[packDraw].contents[itemDraw]
 				var tempMethod = ds_list_find_value(item.methods, i);
 			
-				if (tempMethod.split) split = tempMethod;
+				if (tempMethod.split)  
+				{
+					split = tempMethod;
+				}
 				
 		}
 	}

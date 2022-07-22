@@ -173,6 +173,9 @@ function AutoPickup(character, item)
 		}
 		if (selectedPack != -1)
 		{
+			item.character = character;
+			item.pack = selectedPack;
+			item.slot = emptyIndex;
 			selectedPack.contents[emptyIndex] = item;
 		}
 		else

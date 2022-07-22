@@ -45,7 +45,10 @@ splitValue = 0;
 confirmSplit = 0;
 cancelSplit = 0;
 
-tempItem = 0;
+tempItemPack =
+{
+	contents : array_create(1)	
+}
 
 window_set_fullscreen(true);
 

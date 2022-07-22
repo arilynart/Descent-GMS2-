@@ -63,6 +63,9 @@ FindItem = function(type, index, quantity)
 						quantity : quantity,
 						index : index,
 						type : type,
+						character : 0,
+						pack : 0,
+						slot : -1,
 						methods : ds_list_create()
 					}
 					
@@ -105,7 +108,7 @@ FindItem = function(type, index, quantity)
 
 #region Methods
 
-FindItemOnCharacter = function(character, item)
+ItemFindOnCharacter = function(character, item)
 {
 	for (var i = 0; i < array_length(character.equippedPacks); i++)
 	{
@@ -129,40 +132,45 @@ FindItemOnCharacter = function(character, item)
 	return 0;
 }
 
+ItemCopy = function(item)
+{
+	var newItem = 
+	{
+		name : item.name,
+		description : item.description,
+		sprite : item.sprite,
+		maxQuantity : item.maxQuantity,
+		quantity : item.quantity,
+		index : item.index,
+		type : item.type,
+		character : item.character,
+		pack : item.pack,
+		slot : item.slot,
+		methods : item.methods
+	}
+	
+	return newItem;
+}
+
 //standard methods. Move and discard.
 
 ItemDiscard = function(character, item)
 {
-	var fetchItem = FindItemOnCharacter(character, item);
-	
-	if (fetchItem != 0)
-	{
-		//delete item
-		fetchItem.item.quantity--;
-		if (fetchItem.item.quantity <= 0) fetchItem.pack.contents[fetchItem.index] = 0;
-	}
+	item.pack.contents[item.slot] = 0;
 }
 
 ItemMove = function(character, item)
 {
-	var fetchItem = FindItemOnCharacter(character, item);
 	
-	if (fetchItem != 0)
-	{
-		//delete item
-		ItemToMove = item;
-	}
 }
 
 //custom methods
 
 ConsumeMedicine = function(character, item)
 {
-	var dialogue = array_create(1);
-	dialogue[0] = character.name + " drinks a vial of medicine.";
-	DisplayDialogue(global.nameless, dialogue, false);
 	
-	ItemDiscard(character, item);
+	item.quantity--;
+	if (item.quantity <= 0) ItemDiscard(character, item);
 }
 
 #endregion
