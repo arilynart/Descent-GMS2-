@@ -71,7 +71,8 @@ FindItem = function(type, index, quantity)
 						name : "Drink",
 						description : "Applies 5 Regen when consumed.",
 						sprite : spr_Consume,
-						Execute : method(global, ConsumeMedicine)
+						Execute : method(global, ConsumeMedicine),
+						split : false
 					}
 					ds_list_add(item.methods, Move, Trash, Consume);
 					
@@ -173,7 +174,8 @@ Trash =
 	name : "Trash",
 	description : "Destroy the item.",
 	sprite : spr_Discard,
-	Execute : method(global, ItemDiscard)
+	Execute : method(global, ItemDiscard),
+	split : true
 }
 
 
@@ -183,7 +185,8 @@ Move =
 	name : "Move",
 	description : "Move the item.",
 	sprite : spr_Move,
-	Execute : method(global, ItemMove)
+	Execute : method(global, ItemMove),
+	split : true
 }
 
 #endregion

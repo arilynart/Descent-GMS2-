@@ -18,12 +18,14 @@ else
 				inventoryDraw = -1;
 				packDraw = -1;
 				itemDraw = -1;
+				split = 0;
 			}
 			else
 			{
 				inventoryDraw = i;
 				packDraw = -1;
 				itemDraw = -1;
+				split = 0;
 			}
 		}
 	}
@@ -42,11 +44,13 @@ else
 			{
 				packDraw = -1;
 				itemDraw = -1;
+				split = 0;
 			}
 			else
 			{
 				packDraw = i;
 				itemDraw = -1;
+				split = 0;
 			}
 		}
 	}
@@ -61,8 +65,16 @@ else
 			 && mouseY >= button.top && mouseY <= button.bottom)
 			{
 				//enable drawing for item stuff
-				if (itemDraw == i) itemDraw = -1;
-				else itemDraw = i;
+				if (itemDraw == i) 
+				{
+					itemDraw = -1;
+					split = 0;
+				}
+				else 
+				{
+					itemDraw = i;
+					split = 0;
+				}
 			}
 		}
 		if (itemDraw >= 0)
@@ -79,7 +91,13 @@ else
 					ds_list_find_value(item.methods, i).Execute(character, item);
 					
 					itemDraw = -1;
+					split = 0;
 				}
+			}
+			if (splitArea != 0 && mouseX >= splitArea.left && mouseX <= splitArea.right
+				&& mouseY >= splitArea.top && mouseY <= splitArea.bottom)
+			{
+				dragSplit = true;
 			}
 		}
 	}

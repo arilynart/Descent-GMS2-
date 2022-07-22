@@ -36,6 +36,17 @@ inventoryDraw = -1;
 packDraw = -1;
 itemDraw = -1;
 
+split = 0;
+dragSplit = false;
+dragX = 0;
+splitArea = 0;
+splitValue = 0;
+
+confirmSplit = 0;
+cancelSplit = 0;
+
+tempItem = 0;
+
 window_set_fullscreen(true);
 
 global.nameless =

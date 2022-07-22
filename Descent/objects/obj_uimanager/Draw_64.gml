@@ -143,13 +143,12 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 				
 				uiItemButtons = array_create(0);
 			
-				
-				for (var k = 0; k < currentPack.width; k++)
+				for (var l = 0; l < currentPack.height; l++)
 				{
-					for (var l = 0; l < currentPack.height; l++)
+					for (var k = 0; k < currentPack.width; k++)
 					{
 						var itemPosX = (packPosX + allyRadius) + ((division + allyRadius) * k);
-						var itemPosY = contentPosY + (division + allyRadius) * l
+						var itemPosY = contentPosY + (division + allyRadius) * l;
 						var contentButton = 
 						{
 							left : itemPosX - allyRadius,
@@ -318,10 +317,96 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 									draw_sprite_ext(methodSprite, 0, methodX - (allyRadius / 2), 
 													methodY - (allyRadius / 2), methodScale, methodScale, 
 													image_angle, c_white, 1);
+													
+									if (split != 0)
+									{
+										//draw split menu for current item
+										
+										draw_set_color(c_black);
+										draw_roundrect(thirdX, halfY - division, fullX - thirdX, halfY + division, false);
+										draw_set_color(c_gray);
+										draw_line_width(thirdX + division, halfY, fullX - thirdX - division, 
+														halfY, outlineRadius)
+;
+										
+										if (dragX == 0) dragX = halfX;
+										
+										draw_roundrect(dragX - division / 4, halfY - division / 2, 
+														dragX + division / 4, halfY + division / 2, false);
+										splitArea =
+										{
+											left : thirdX + division,
+											top : halfY - division,
+											right : fullX - thirdX - division,
+											bottom : halfY + division
+										}
+										
+										draw_circle(thirdX, halfY, allyRadius, false);
+										draw_circle(fullX - thirdX, halfY, allyRadius, false);
+										
+										var splitSprite = split.sprite;
+										var splitScale = (allyRadius) / sprite_get_width(splitSprite);
+										
+										draw_sprite_ext(splitSprite, 0, thirdX - (allyRadius / 2), 
+														halfY - (allyRadius / 2), splitScale, splitScale, 
+														image_angle, c_white, 1);
+														
+										//confirm & cancel buttons
+										var confirmX = halfX - thirdX / 4;
+										var confirmY = halfY + division;
+										
+										draw_circle(confirmX, confirmY, allyRadius, false);
+										
+										confirmSplit =
+										{
+											left : confirmX - allyRadius,
+											top : confirmY - allyRadius,
+											right : confirmX + allyRadius,
+											bottom : confirmY + allyRadius,
+										}
+										
+										var confirmSprite = spr_Confirm;
+										var confirmScale = (allyRadius) / sprite_get_width(confirmSprite);
+										
+										draw_sprite_ext(confirmSprite, 0, confirmX - (allyRadius / 2), 
+														confirmY - (allyRadius / 2), confirmScale, confirmScale, 
+														image_angle, c_black, 1);
+										
+										var cancelX = halfX + thirdX / 4;
+										
+										
+										draw_circle(cancelX, confirmY, allyRadius, false);
+										
+										cancelSplit = confirmSplit;
+										cancelSplit.left = cancelX - allyRadius;
+										cancelSplit.right = cancelX + allyRadius;
+										
+										var cancelSprite = spr_Cancel;
+										var cancelScale = (allyRadius) / sprite_get_width(cancelSprite);
+										
+										draw_sprite_ext(cancelSprite, 0, cancelX - (allyRadius / 2), 
+														confirmY - (allyRadius / 2), cancelScale, cancelScale, 
+														image_angle, c_black, 1);
+														
+										//split amount
+														
+										var splitMax = thirdX - division * 2;
+										var splitRatio = (dragX - (thirdX + division)) / (splitMax)
+										splitValue = clamp(ceil(item.quantity * splitRatio), 1, item.quantity);
+										
+										draw_set_color(c_black);
+										draw_set_font(fnt_Cambria24O);
+										draw_set_halign(fa_center);
+										
+										draw_text(fullX - thirdX, halfY - 12, string(splitValue));
+										
+										
+									}
 								}
 							}
 						}
 
+					
 					}
 				}
 			}
