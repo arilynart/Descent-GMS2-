@@ -13,8 +13,18 @@ else
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
 			//enable drawing for character stuff
-			if (inventoryDraw == i) inventoryDraw = -1;
-			else inventoryDraw = i;
+			if (inventoryDraw == i)
+			{
+				inventoryDraw = -1;
+				packDraw = -1;
+				itemDraw = -1;
+			}
+			else
+			{
+				inventoryDraw = i;
+				packDraw = -1;
+				itemDraw = -1;
+			}
 		}
 	}
 
@@ -53,6 +63,23 @@ else
 				//enable drawing for item stuff
 				if (itemDraw == i) itemDraw = -1;
 				else itemDraw = i;
+			}
+		}
+		if (itemDraw >= 0)
+		{
+			for (var i = 0; (i < array_length(uiMethodButtons) && i < 6); i++)
+			{
+				var button = uiMethodButtons[i];
+
+				if (mouseX >= button.left && mouseX <= button.right
+					&& mouseY >= button.top && mouseY <= button.bottom)
+				{
+					var character = global.Allies[inventoryDraw];
+					var item = character.equippedPacks[packDraw].contents[itemDraw]
+					ds_list_find_value(item.methods, i).Execute(character, item);
+					
+					itemDraw = -1;
+				}
 			}
 		}
 	}

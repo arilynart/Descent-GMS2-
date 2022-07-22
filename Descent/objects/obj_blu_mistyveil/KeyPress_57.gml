@@ -1,7 +1,7 @@
 /// @description Load map
 
 var fileName = string(mapName) + " SAVE.json"
-walls = array_create();
+walls = array_create(0);
 
 if (file_exists(fileName))
 {

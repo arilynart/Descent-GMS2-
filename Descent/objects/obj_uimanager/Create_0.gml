@@ -25,6 +25,7 @@ uiCharacterButtons = array_create(6);
 
 uiPackButtons = 0;
 uiItemButtons = 0;
+uiMethodButtons = 0;
 
 allyRadius = quarterY / 6
 
@@ -39,7 +40,7 @@ window_set_fullscreen(true);
 
 global.nameless =
 {
-	name: ""
+	name : ""
 }
 
 #region Methods
@@ -54,6 +55,23 @@ function TestDialogue()
 	array_push(testArray, line1, line2);
 	
 	DisplayDialogue(global.Player, testArray, true);
+}
+
+function DrawPrompt(text)
+{
+	if (text != "")
+	{
+		var topY = fullY - quarterY / 2;
+		var bottomY = fullY - (quarterY / 4)
+		draw_set_color(c_black);
+		draw_roundrect(quarterX, topY, fullX - quarterX, bottomY, false);
+		
+		var yDiff = bottomY - topY;
+		draw_set_color(c_white);
+		draw_set_halign(fa_center);
+		draw_set_font(fnt_Cambria24);
+		draw_text(halfX, topY + yDiff / 8, text);
+	}
 }
 
 //TestDialogue();

@@ -57,13 +57,13 @@ with (starterPack2)
 }
 
 
-var testItem = global.FindItem(ItemTypes.Consumable, 0, 1);
-var testItem2 = global.FindItem(ItemTypes.Consumable, 0, 2);
+var testItem = global.FindItem(ItemTypes.Consumable, 0, 5);
+var testItem2 = global.FindItem(ItemTypes.Consumable, 0, 7);
 
-starterPack2.contents[0] = testItem2;
 array_push(equippedPacks, starterPack1, starterPack2);
 
 AutoPickup(self, testItem);
+AutoPickup(self, testItem2);
 
 #endregion
 

@@ -5,6 +5,7 @@
     {"id":{"name":"obj_Map","path":"objects/obj_Map/obj_Map.yy",},"order":2,},
     {"id":{"name":"spr_Debug1","path":"sprites/spr_Debug1/spr_Debug1.yy",},"order":2,},
     {"id":{"name":"spr_Player","path":"sprites/spr_Player/spr_Player.yy",},"order":0,},
+    {"id":{"name":"spr_Move","path":"sprites/spr_Move/spr_Move.yy",},"order":2,},
     {"id":{"name":"spr_Square","path":"sprites/spr_Square/spr_Square.yy",},"order":1,},
     {"id":{"name":"obj_Point","path":"objects/obj_Point/obj_Point.yy",},"order":5,},
     {"id":{"name":"obj_Square","path":"objects/obj_Square/obj_Square.yy",},"order":1,},
@@ -12,7 +13,9 @@
     {"id":{"name":"UiFunctions","path":"scripts/UiFunctions/UiFunctions.yy",},"order":3,},
     {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":0,},
     {"id":{"name":"spr_Pack1","path":"sprites/spr_Pack1/spr_Pack1.yy",},"order":1,},
+    {"id":{"name":"spr_Consume","path":"sprites/spr_Consume/spr_Consume.yy",},"order":0,},
     {"id":{"name":"spr_Potions","path":"sprites/spr_Potions/spr_Potions.yy",},"order":2,},
+    {"id":{"name":"spr_Discard","path":"sprites/spr_Discard/spr_Discard.yy",},"order":1,},
     {"id":{"name":"spr_ts_Village","path":"sprites/spr_ts_Village/spr_ts_Village.yy",},"order":5,},
     {"id":{"name":"fnt_Cambria16","path":"fonts/fnt_Cambria16/fnt_Cambria16.yy",},"order":0,},
     {"id":{"name":"ts_Village","path":"tilesets/ts_Village/ts_Village.yy",},"order":0,},
@@ -23,6 +26,7 @@
     {"id":{"name":"ItemDictionary","path":"scripts/ItemDictionary/ItemDictionary.yy",},"order":4,},
     {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
     {"id":{"name":"spr_map_Abandoned_Cabin","path":"sprites/spr_map_Abandoned_Cabin/spr_map_Abandoned_Cabin.yy",},"order":0,},
+    {"id":{"name":"fnt_Cambria24O","path":"fonts/fnt_Cambria24O/fnt_Cambria24O.yy",},"order":2,},
     {"id":{"name":"MistyVeil","path":"rooms/MistyVeil/MistyVeil.yy",},"order":0,},
   ],
   "Options": [
@@ -63,6 +67,7 @@
     {"folderPath":"folders/Objects/UI.yy","order":7,"resourceVersion":"1.0","name":"UI","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Sprites/Icons/Items.yy","order":3,"resourceVersion":"1.0","name":"Items","tags":[],"resourceType":"GMFolder",},
     {"folderPath":"folders/Sprites/Icons/Items/Packs.yy","order":1,"resourceVersion":"1.0","name":"Packs","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Sprites/Icons/Items/Methods.yy","order":3,"resourceVersion":"1.0","name":"Methods","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},

@@ -10,6 +10,8 @@ enum ItemTypes
 	Lumium
 }
 
+ItemToMove = 0;
+
 FindItem = function(type, index, quantity)
 {
 	switch(type)
@@ -49,12 +51,15 @@ FindItem = function(type, index, quantity)
 			{
 				case 0:
 					//medicine.
-					
+					var maxQuantity = 10;
+					quantity = clamp(quantity, 1, maxQuantity);
+
 					var item =
 					{
 						name : "Medicine",
+						description : "A vial of common herbalist medicine for\ntreating wounds.",
 						sprite : spr_Potions,
-						maxQuantity : 10,
+						maxQuantity : maxQuantity,
 						quantity : quantity,
 						index : index,
 						type : type,
@@ -64,10 +69,11 @@ FindItem = function(type, index, quantity)
 					var Consume = 
 					{
 						name : "Drink",
-						description : "Heals the drinker for 25 HP.",
+						description : "Applies 5 Regen when consumed.",
+						sprite : spr_Consume,
 						Execute : method(global, ConsumeMedicine)
 					}
-					ds_list_add(item.methods, Consume);
+					ds_list_add(item.methods, Move, Trash, Consume);
 					
 					return item;
 					break;
@@ -98,15 +104,86 @@ FindItem = function(type, index, quantity)
 
 #region Methods
 
-// Always pass the character who uses the item. 
+FindItemOnCharacter = function(character, item)
+{
+	for (var i = 0; i < array_length(character.equippedPacks); i++)
+	{
+		var testPack = character.equippedPacks[i];
+		for (var j = 0; j < array_length(testPack.contents); j++)
+		{
+			var testItem = testPack.contents[j];
+			if (item == testItem)
+			{
+				var fetchedItem =
+				{
+					character : character,
+					pack : testPack,
+					index: j,
+					item : testItem
+				}
+				return fetchedItem;
+			}
+		}
+	}
+	return 0;
+}
 
 //standard methods. Move and discard.
 
-ConsumeMedicine = function(character)
+ItemDiscard = function(character, item)
+{
+	var fetchItem = FindItemOnCharacter(character, item);
+	
+	if (fetchItem != 0)
+	{
+		//delete item
+		fetchItem.item.quantity--;
+		if (fetchItem.item.quantity <= 0) fetchItem.pack.contents[fetchItem.index] = 0;
+	}
+}
+
+ItemMove = function(character, item)
+{
+	var fetchItem = FindItemOnCharacter(character, item);
+	
+	if (fetchItem != 0)
+	{
+		//delete item
+		ItemToMove = item;
+	}
+}
+
+//custom methods
+
+ConsumeMedicine = function(character, item)
 {
 	var dialogue = array_create(1);
 	dialogue[0] = character.name + " drinks a vial of medicine.";
-	DisplayDialogue(character, dialogue, true);
+	DisplayDialogue(global.nameless, dialogue, false);
+	
+	ItemDiscard(character, item);
+}
+
+#endregion
+
+#region Structs
+
+Trash = 
+{
+	name : "Trash",
+	description : "Destroy the item.",
+	sprite : spr_Discard,
+	Execute : method(global, ItemDiscard)
+}
+
+
+
+Move = 
+{
+	name : "Move",
+	description : "Move the item.",
+	sprite : spr_Move,
+	Execute : method(global, ItemMove)
 }
 
 #endregion

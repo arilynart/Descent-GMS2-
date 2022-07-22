@@ -131,8 +131,9 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 			var packSprite = currentPack.sprite;
 			var packScale = (allyRadius) / sprite_get_width(packSprite);
 			
-			draw_sprite_ext(packSprite, 0, packPosX - (allyRadius / 2), packPosY - (allyRadius / 2), 
-							packScale, packScale, image_angle, c_white, 1);
+			draw_sprite_ext(packSprite, 0, packPosX - (allyRadius / 2), 
+							packPosY - (allyRadius / 2), packScale, packScale, image_angle, 
+							c_white, 1);
 			
 			//display pack contents
 			if (packDraw == j)
@@ -180,39 +181,144 @@ for (var i = 0; (i < allySize && i < 6) ; i++)
 							var itemSprite = item.sprite;
 							var itemScale = (allyRadius) / sprite_get_width(itemSprite);
 			
-							draw_sprite_ext(itemSprite, 0, itemPosX - (allyRadius / 2), itemPosY - (allyRadius / 2), 
-											itemScale, itemScale, image_angle, c_white, 1);
+							draw_sprite_ext(itemSprite, 0, itemPosX - (allyRadius / 2), 
+											itemPosY - (allyRadius / 2), itemScale, itemScale, 
+											image_angle, c_white, 1);
 									
-									
+							if (item.maxQuantity > 1)
+							{
+								
+								
+								draw_set_halign(fa_right);
+								
+								draw_set_font(fnt_Cambria24O);
+								draw_set_color(c_black);
+								draw_text(contentButton.right, contentButton.top, string(item.quantity));
+								
+								draw_set_font(fnt_Cambria24);
+								draw_set_color(c_white);
+								draw_text(contentButton.right, contentButton.top, string(item.quantity));
+							}
+							
+							
+								
 							if (itemDraw == itemIndex)
 							{
 							//display info panel
 								
 								//backgorund
 								draw_set_color(c_black);
-								var infoPanelX = fullX - quarterX;
-								var infoPanelY = fullY = quarterY;
+								var infoPanelX = fullX - quarterY;
+								var infoPanelY = fullY - quarterY;
 								draw_circle(infoPanelX, infoPanelY, quarterY, false);
 								
 								draw_set_color(c_dkgray);
-								draw_line_width(infoPanelX, infoPanelY - quarterY, infoPanelX + quarterX,  infoPanelY + quarterY, outlineRadius);
-								draw_line_width(0, halfY, quarterY, halfY + quarterY, outlineRadius);
-								draw_line_width(halfY, halfY, quarterY, halfY + quarterY, outlineRadius);
+								draw_line_width(infoPanelX, infoPanelY - quarterY, infoPanelX 
+											  + quarterY, infoPanelY, outlineRadius);
+								draw_line_width(infoPanelX, infoPanelY + quarterY, infoPanelX 
+											  + quarterY, infoPanelY, outlineRadius);
+								draw_line_width(infoPanelX - quarterY, infoPanelY, infoPanelX, 
+												infoPanelY - quarterY, outlineRadius);
+								draw_line_width(infoPanelX - quarterY, infoPanelY, infoPanelX, 
+												infoPanelY + quarterY, outlineRadius);
 								
 								draw_set_color(c_gray);
-								draw_circle(quarterY, quarterY, outlineRadius, false);
-								draw_circle(quarterY, halfY + quarterY, outlineRadius, false);
-								draw_circle(halfY, halfY, outlineRadius, false);
+								draw_circle(infoPanelX, infoPanelY - quarterY, 
+											outlineRadius, false);
+								draw_circle(infoPanelX + quarterY, infoPanelY, 
+											outlineRadius, false);
+								draw_circle(infoPanelX, infoPanelY + quarterY, 
+											outlineRadius, false);
+								draw_circle(infoPanelX - quarterY, infoPanelY, 
+											outlineRadius, false);
 								
 								//item image, name, and description
-								draw_circle(quarterY, halfY - (quarterY / 2), allyRadius, false);
-								draw_sprite_ext(itemSprite, 0, quarterY - (allyRadius / 2), 
-												halfY - (quarterY / 2) - (allyRadius / 2), itemScale, itemScale, 
-												image_angle, c_white, 1);
+								draw_circle(infoPanelX, infoPanelY - (quarterY / 2), 
+											allyRadius, false);
+								draw_sprite_ext(itemSprite, 0, infoPanelX - (allyRadius / 2), infoPanelY 
+												- (quarterY / 2) - (allyRadius / 2), 
+												itemScale, itemScale, image_angle, c_white, 1);
 												
 								draw_set_halign(fa_center)
 								draw_set_font(fnt_Cambria24);
-								draw_text(quarterY, halfY - (quarterY / 4), item.name);
+								draw_text(infoPanelX, infoPanelY - (quarterY / 4), item.name);
+								draw_set_font(fnt_Cambria16);
+								draw_text(infoPanelX, infoPanelY, item.description);
+								
+								if (item.maxQuantity > 1) draw_text(infoPanelX, infoPanelY - (division / 2), 
+																	string(item.quantity) + " / " 
+																	+ string(item.maxQuantity));
+								
+								
+								
+								//draw all item methods (maximum of 6, 2 base)
+								uiMethodButtons = array_create(0);
+								
+								for (var m = 0; (m < ds_list_size(item.methods) && m < 6); m++)
+								{
+									var drawMethod = ds_list_find_value(item.methods, m);
+									
+									var methodX = 0;
+									var methodY = 0;
+									
+									switch (m)
+									{
+										case 0:
+											methodX = infoPanelX - division * 3;
+											methodY = infoPanelY - division;
+											break;
+										case 1:
+											methodX = infoPanelX - division * 2;
+											methodY = infoPanelY - division * 2;
+											break;
+										case 2:
+											methodX = infoPanelX - division;
+											methodY = infoPanelY - division * 3;
+											break;
+										case 3:
+											methodX = infoPanelX + division;
+											methodY = infoPanelY - division * 3;
+											break;
+										case 4:
+											methodX = infoPanelX + division * 2;
+											methodY = infoPanelY - division * 2;
+											break;
+										case 5:
+											methodX = infoPanelX + division * 3;
+											methodY = infoPanelY - division;
+											break;
+									}
+									
+									var methodSprite = drawMethod.sprite;
+									var methodScale = (allyRadius) / sprite_get_width(methodSprite);
+									
+									var methodButton = 
+									{
+										left : methodX - (allyRadius),
+										top : methodY - (allyRadius),
+										right : methodX + (allyRadius),
+										bottom : methodY + (allyRadius)
+									}
+									
+									array_push(uiMethodButtons, methodButton);
+									
+									if (mouseX >= methodButton.left && mouseX <= methodButton.right
+										&& mouseY >= methodButton.top && mouseY <= methodButton.bottom)
+									{
+										DrawPrompt(drawMethod.description);
+										draw_set_color(c_gray);
+									}
+									else
+									{
+										draw_set_color(c_dkgray);
+									}
+									
+									
+									draw_circle(methodX, methodY, allyRadius, false);
+									draw_sprite_ext(methodSprite, 0, methodX - (allyRadius / 2), 
+													methodY - (allyRadius / 2), methodScale, methodScale, 
+													image_angle, c_white, 1);
+								}
 							}
 						}
 

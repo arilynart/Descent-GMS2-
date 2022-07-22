@@ -88,36 +88,92 @@ function PackCheck(character)
 function AutoPickup(character, item)
 {
 	show_debug_message(character.name + " is picking up item: " + string(item));
-	var lowestValue = 99;
-	var selectedPack = 0
-	var emptyIndex = -1;
-	for (var i = 0; i < array_length(character.equippedPacks); i++)
+	
+	var quantityToSort = item.quantity;
+	var sortedQuantity = 0;
+
+	
+	for (var h = 0; sortedQuantity < quantityToSort; h++)
 	{
-		var pack = character.equippedPacks[i];
-		var tempIndex = -1;
-		for (var j = 0; j < pack.width * pack.height; j++)
+		var selectedPack = -1
+		var emptyIndex = -1;
+		for (var i = 0; i < array_length(character.equippedPacks); i++)
 		{
-			var tempItem = pack.contents[j]
-			if (tempItem == 0)
+			var pack = character.equippedPacks[i];
+			var tempIndex = -1;
+			for (var j = 0; j < pack.width * pack.height; j++)
 			{
-				tempIndex = j; 
-				j = 99;
+				var tempItem = pack.contents[j]
+				if (tempItem != 0 && tempItem.type == item.type && tempItem.index == item.index 
+					&& tempItem.quantity < tempItem.maxQuantity)
+				{
+					selectedPack = pack;
+					emptyIndex = j;
+				}
 			}
 		}
-		
-		if (tempIndex >= 0 && pack.tier < lowestValue)
+		if (selectedPack != -1)
 		{
-			emptyIndex = tempIndex;
-			lowestValue = pack.tier;
-			selectedPack = pack;
+			var itemToCombineTo = selectedPack.contents[emptyIndex];
+			
+			itemToCombineTo.quantity += quantityToSort - sortedQuantity;
+			
+			if (itemToCombineTo.quantity > itemToCombineTo.maxQuantity)
+			{
+				sortedQuantity = quantityToSort - (itemToCombineTo.quantity - itemToCombineTo.maxQuantity);
+				itemToCombineTo.quantity = itemToCombineTo.maxQuantity;
+				item.quantity -= sortedQuantity;
+			}
+			else
+			{
+				sortedQuantity = quantityToSort;
+			}
 		}
+		else
+		{
+			//nothing found. break loop.
+			show_debug_message("No packs found. Breaking loop.");
+			break;
+		}
+		
+		
 	}
-	if (selectedPack != 0)
+	if (sortedQuantity < quantityToSort)
 	{
-		selectedPack.contents[emptyIndex] = item;
-	}
-	else
-	{
-		show_debug_message("No room for item. Drop something first.");
+		show_debug_message("Searching for empty slot.");
+	
+		//no previous items to merge with. add remaining to empty slot.
+		var lowestValue = 99;
+		selectedPack = -1;
+		emptyIndex = -1;
+		for (var i = 0; i < array_length(character.equippedPacks); i++)
+		{
+			var pack = character.equippedPacks[i];
+			var tempIndex = -1;
+			for (var j = 0; j < pack.width * pack.height; j++)
+			{
+				var tempItem = pack.contents[j]
+				if (tempItem == 0)
+				{
+					tempIndex = j; 
+					j = 99;
+				}
+			}
+		
+			if (tempIndex >= 0 && pack.tier < lowestValue)
+			{
+				emptyIndex = tempIndex;
+				lowestValue = pack.tier;
+				selectedPack = pack;
+			}
+		}
+		if (selectedPack != -1)
+		{
+			selectedPack.contents[emptyIndex] = item;
+		}
+		else
+		{
+			show_debug_message("No room for item. Drop something first.");
+		}
 	}
 }
