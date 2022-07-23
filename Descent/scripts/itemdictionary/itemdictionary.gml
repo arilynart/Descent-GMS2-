@@ -51,7 +51,7 @@ FindItem = function(type, index, quantity)
 			{
 				case 0:
 					//medicine.
-					var maxQuantity = 10;
+					var maxQuantity = 3;
 					quantity = clamp(quantity, 1, maxQuantity);
 
 					var item =
@@ -63,7 +63,7 @@ FindItem = function(type, index, quantity)
 						quantity : quantity,
 						index : index,
 						type : type,
-						packSlot : 0,
+						pack : 0,
 						slot : -1,
 						methods : ds_list_create()
 					}
@@ -181,7 +181,11 @@ function ItemMovetoSlot(character, packIndex, slot)
 	var sortedQuantity = 0;
 	var pack = 0;
 	if (packIndex >= 0) pack = character.equippedPacks[packIndex];
-	else pack = global.UiManager.tempItemPack;
+	else
+	{
+		AutoPickup(character, global.ItemToMove);
+		sortedQuantity = quantityToSort;
+	}
 	while (sortedQuantity < quantityToSort)
 	{
 		
@@ -203,19 +207,23 @@ function ItemMovetoSlot(character, packIndex, slot)
 					
 					if (pack.contents[slot] == nativePack.contents[global.ItemToMove.slot])
 					{
+						show_debug_message("Cannot add item to the starting slot. Running AutoPickup instead.");
 						AutoPickup(character, global.ItemToMove);
 						sortedQuantity = quantityToSort;
 					}
 					else
 					{
 						if (global.ItemToMove.pack >= 0)
-						{ 
+						{
+							show_debug_message("Overcapped quantity. Resetting to original slot.");
 							sortedQuantity = quantityToSort - overcap;
+							packIndex = global.ItemToMove.pack;
 							pack = character.equippedPacks[global.ItemToMove.pack];
 							slot = global.ItemToMove.slot;
 						}
 						else
 						{
+							show_debug_message("Overcapped quantity. Since object was split, running auto pickup.");
 							sortedQuantity = quantityToSort;
 							AutoPickup(character, global.ItemToMove);
 						}

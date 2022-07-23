@@ -1,7 +1,12 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-if (split != 0)
+if (global.ItemToMove != 0 && inventoryDraw <= 0)
+{
+	var character = global.Allies[inventoryDraw];
+	ItemMovetoSlot(character, global.ItemToMove.pack, global.ItemToMove.slot);
+}
+else if (split != 0)
 {
 	split = 0;
 	dragX = 0;

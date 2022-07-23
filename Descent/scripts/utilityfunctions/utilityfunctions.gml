@@ -92,7 +92,9 @@ function AutoPickup(character, item)
 	var quantityToSort = item.quantity;
 	var sortedQuantity = 0;
 	
-	if (item.maxQuantity > 1)
+	var addItem = global.ItemCopy(item);
+	
+	if (addItem.maxQuantity > 1)
 	{
 		for (var h = 0; sortedQuantity < quantityToSort; h++)
 		{
@@ -105,7 +107,7 @@ function AutoPickup(character, item)
 				for (var j = 0; j < pack.width * pack.height; j++)
 				{
 					var tempItem = pack.contents[j]
-					if (tempItem != 0 && tempItem.type == item.type && tempItem.index == item.index 
+					if (tempItem != 0 && tempItem.type == addItem.type && tempItem.index == addItem.index 
 						&& tempItem.quantity < tempItem.maxQuantity)
 					{
 						selectedPack = pack;
@@ -172,13 +174,14 @@ function AutoPickup(character, item)
 				lowestValue = pack.tier;
 				packIndex = i;
 				selectedPack = pack;
+				i = 99;
 			}
 		}
 		if (selectedPack != -1)
 		{
-			item.pack = packIndex;
-			item.slot = emptyIndex;
-			selectedPack.contents[emptyIndex] = item;
+			addItem.pack = packIndex;
+			addItem.slot = emptyIndex;
+			selectedPack.contents[emptyIndex] = addItem;
 		}
 		else
 		{

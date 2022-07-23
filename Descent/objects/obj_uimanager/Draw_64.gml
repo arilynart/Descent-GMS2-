@@ -53,6 +53,13 @@ if (displayDialogue && dialogueLength > 0)
 else
 {
 	//draw character selection HUD
+	
+	if (global.ItemToMove != 0)
+	{
+		var quantityInsert = " x " + string(global.ItemToMove.quantity);
+		if (global.ItemToMove.quantity <= 1) quantityInsert = "";
+		DrawPrompt("Moving " + global.ItemToMove.name + quantityInsert + ".  Right click to cancel.");
+	}
 
 	//make the circles into diamonds instead.
 	draw_set_circle_precision(4);
