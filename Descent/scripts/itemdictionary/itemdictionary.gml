@@ -179,7 +179,9 @@ function ItemMovetoSlot(character, packIndex, slot)
 	
 	var quantityToSort = global.ItemToMove.quantity;
 	var sortedQuantity = 0;
-	var pack = character.equippedPacks[packIndex];
+	var pack = 0;
+	if (packIndex >= 0) pack = character.equippedPacks[packIndex];
+	else pack = global.UiManager.tempItemPack;
 	while (sortedQuantity < quantityToSort)
 	{
 		
@@ -210,6 +212,7 @@ function ItemMovetoSlot(character, packIndex, slot)
 						{ 
 							sortedQuantity = quantityToSort - overcap;
 							pack = character.equippedPacks[global.ItemToMove.pack];
+							slot = global.ItemToMove.slot;
 						}
 						else
 						{
