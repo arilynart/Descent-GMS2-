@@ -110,7 +110,7 @@ else
 					{
 					
 					
-						ds_list_find_value(item.methods, i).Execute(character, item);
+						ds_list_find_value(item.methods, i).Execute(character, pack, item);
 					
 						//itemDraw = -1;
 						split = 0;
@@ -126,16 +126,16 @@ else
 						var splitItem = global.ItemCopy(item);
 						splitItem.quantity = splitValue;
 						character.equippedPacks[packDraw].contents[itemDraw].quantity -= splitValue;
-						if (character.equippedPacks[packDraw].contents[itemDraw].quantity <= 0)
+						if (item.quantity <= 0)
 						{
-							global.ItemDiscard(character, character.equippedPacks[packDraw].contents[itemDraw]);
+							global.ItemDiscard(character, pack, item);
 						}
 					
-						splitItem.pack = tempItemPack;
+						splitItem.pack = -1;
 						splitItem.slot = 0;
 						tempItemPack.contents[0] = splitItem;
 					
-						split.Execute(character, splitItem);
+						split.Execute(character, tempItemPack, splitItem);
 					
 						split = 0;
 					}
