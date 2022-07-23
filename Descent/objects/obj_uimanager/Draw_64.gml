@@ -218,7 +218,7 @@ else
 							draw_circle(itemPosX, itemPosY, 
 								allyRadius, false);
 							
-							var itemIndex = k * currentPack.width + l;
+							var itemIndex = l * currentPack.width + k;
 							var item = currentPack.contents[itemIndex];
 						
 							if (item != 0)

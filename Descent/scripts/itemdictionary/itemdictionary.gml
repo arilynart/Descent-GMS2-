@@ -159,49 +159,52 @@ ItemDiscard = function(character, item)
 
 ItemMove = function(character, item)
 {
-	show_debug_message("Moving item:   Previous ItemToMove: " + string(ItemToMove));
+	show_debug_message("Moving item:   Previous global.ItemToMove: " + string(global.ItemToMove));
 	
-	if (ItemToMove != 0)
+	if (global.ItemToMove != 0)
 	{
-		ItemMovetoSlot(character, ItemToMove.pack, ItemToMove.slot);
+		ItemMovetoSlot(character, global.ItemToMove.pack, global.ItemToMove.slot);
 	}
 	
 
-	ItemToMove = item;
+	global.ItemToMove = item;
 	ItemDiscard(character, item);
 }
 
 function ItemMovetoSlot(character, packIndex, slot)
 {
 	show_debug_message("Moving item to: " + string(slot));
-	var pack = character.equippedPacks[packIndex];
-	var quantityToSort = ItemToMove.quantity;
+	
+	var quantityToSort = global.ItemToMove.quantity;
 	var sortedQuantity = 0;
 	
 	while (sortedQuantity < quantityToSort)
 	{
+		var pack = character.equippedPacks[packIndex];
 		if (pack.contents[slot] != 0)
 		{
 			//combine with previous item (don't pass in a slot of a different item type)
 		
-			if (pack.contents[slot].type == ItemToMove.type && pack.contents[slot].index == ItemToMove.index)
+			if (pack.contents[slot].type == global.ItemToMove.type && pack.contents[slot].index == global.ItemToMove.index)
 			{
-				pack.contents[slot].quantity += ItemToMove.quantity;
+				pack.contents[slot].quantity += global.ItemToMove.quantity;
 				if (pack.contents[slot].quantity > pack.contents[slot].maxQuantity)
 				{
 					var overcap = pack.contents[slot].quantity - pack.contents[slot].maxQuantity;
 					pack.contents[slot].quantity = pack.contents[slot].maxQuantity;
-					ItemToMove.quantity = overcap;
-					if (pack.contents[slot] == ItemToMove.pack.contents[ItemToMove.slot])
+					global.ItemToMove.quantity = overcap;
+					if (pack.contents[slot] == character.equippedPacks[global.ItemToMove.pack].contents[global.ItemToMove.slot])
 					{
-						AutoPickup(ItemToMove.character, ItemToMove);
+						AutoPickup(character, global.ItemToMove);
 						sortedQuantity = quantityToSort;
 					}
 					else
 					{
 						sortedQuantity = quantityToSort - overcap;
-						pack = ItemToMove.pack;
-						slot = ItemToMove.slot;
+						packIndex = global.ItemToMove.pack;
+						pack = character.equippedPacks[global.ItemToMove.pack];
+						
+						slot = global.ItemToMove.slot;
 					}
 				}
 				else
@@ -213,17 +216,20 @@ function ItemMovetoSlot(character, packIndex, slot)
 			{
 				show_debug_message("Cannot add item to slot. Running AutoPickup instead.");
 				sortedQuantity = quantityToSort;
-				AutoPickup(ItemToMove.character, ItemToMove);
+				AutoPickup(character, global.ItemToMove);
 			}
 		}
 		else
 		{
-			pack.contents[slot] = ItemToMove;
+			global.ItemToMove.pack = packIndex;
+			global.ItemToMove.slot = slot;
+			pack.contents[slot] = global.ItemToMove;
+			
 			sortedQuantity = quantityToSort;
 		}
 	}
 	
-	ItemToMove = 0;
+	global.ItemToMove = 0;
 	
 }
 
