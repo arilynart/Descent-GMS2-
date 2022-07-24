@@ -39,6 +39,7 @@ highlightArray = 0;
 dehighlightArray = 0;
 
 #region Activation
+
 function Activate(start, maxDistance) 
 {
 	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));

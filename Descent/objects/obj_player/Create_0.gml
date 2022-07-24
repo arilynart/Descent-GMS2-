@@ -14,7 +14,7 @@ global.Player = self;
 
 global.Allies = array_create(0);
 
-array_push(global.Allies, self);
+array_push(global.Allies, self, self, self, self, self, self);
 
 moveSpeed = 18;
 moveQueue = ds_queue_create();

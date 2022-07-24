@@ -19,6 +19,7 @@
     {"id":{"name":"spr_Discard","path":"sprites/spr_Discard/spr_Discard.yy",},"order":1,},
     {"id":{"name":"spr_Confirm","path":"sprites/spr_Confirm/spr_Confirm.yy",},"order":4,},
     {"id":{"name":"spr_ts_Village","path":"sprites/spr_ts_Village/spr_ts_Village.yy",},"order":5,},
+    {"id":{"name":"spr_Mosk","path":"sprites/spr_Mosk/spr_Mosk.yy",},"order":1,},
     {"id":{"name":"fnt_Cambria16","path":"fonts/fnt_Cambria16/fnt_Cambria16.yy",},"order":0,},
     {"id":{"name":"ts_Village","path":"tilesets/ts_Village/ts_Village.yy",},"order":0,},
     {"id":{"name":"UtilityFunctions","path":"scripts/UtilityFunctions/UtilityFunctions.yy",},"order":2,},
