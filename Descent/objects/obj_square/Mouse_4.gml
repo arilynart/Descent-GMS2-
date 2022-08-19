@@ -14,7 +14,7 @@ if (character != 0)
 		global.selectedCharacter = character;
 		global.selectedSquare = self;
 		map.movingCharacter = character;
-		Activate(self, character.maxMove * 7);
+		Activate(self, character.maxMove);
 	}
 }
 else if (activated && Interaction != 0)

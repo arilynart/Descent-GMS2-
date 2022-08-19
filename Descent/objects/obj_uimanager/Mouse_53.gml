@@ -110,7 +110,7 @@ else
 					{
 					
 					
-						ds_list_find_value(item.methods, i).Execute(character, pack, item);
+						ds_list_find_value(global.FindItem(item.type, item.index, item.quantity).methods, i).Execute(character, pack, item);
 					
 						//itemDraw = -1;
 						split = 0;

@@ -58,7 +58,7 @@ else
 	{
 		var quantityInsert = " x " + string(global.ItemToMove.quantity);
 		if (global.ItemToMove.quantity <= 1) quantityInsert = "";
-		DrawPrompt("Moving " + global.ItemToMove.name + quantityInsert + ".  Right click to cancel.");
+		DrawPrompt("Moving " + global.FindItem(global.ItemToMove.type, global.ItemToMove.index, global.ItemToMove.quantity).name + quantityInsert + ".  Right click to cancel.");
 	}
 
 	//make the circles into diamonds instead.
@@ -230,26 +230,26 @@ else
 						
 							if (item != 0)
 							{
-								var itemSprite = item.sprite;
+								var fetchedItem = global.FindItem(item.type, item.index, item.quantity);
+								var itemSprite = fetchedItem.sprite;
 								var itemScale = (allyRadius) / sprite_get_width(itemSprite);
 			
 								draw_sprite_ext(itemSprite, 0, itemPosX - (allyRadius / 2), 
 												itemPosY - (allyRadius / 2), itemScale, itemScale, 
 												image_angle, c_white, 1);
 									
-								if (item.maxQuantity > 1)
+								if (fetchedItem.maxQuantity > 1)
 								{
 								
 								
 									draw_set_halign(fa_right);
-								
-									draw_set_font(fnt_Cambria24O);
-									draw_set_color(c_black);
-									draw_text(contentButton.right, contentButton.top, string(item.quantity));
-								
 									draw_set_font(fnt_Cambria24);
+								
+									draw_text_outline(contentButton.right, contentButton.top, string(fetchedItem.quantity), c_black, 1);
+								
+									
 									draw_set_color(c_white);
-									draw_text(contentButton.right, contentButton.top, string(item.quantity));
+									draw_text(contentButton.right, contentButton.top, string(fetchedItem.quantity));
 								}
 							
 							
@@ -293,22 +293,22 @@ else
 												
 									draw_set_halign(fa_center)
 									draw_set_font(fnt_Cambria24);
-									draw_text(infoPanelX, infoPanelY - (quarterY / 4), item.name);
+									draw_text(infoPanelX, infoPanelY - (quarterY / 4), fetchedItem.name);
 									draw_set_font(fnt_Cambria16);
-									draw_text(infoPanelX, infoPanelY, item.description);
+									draw_text(infoPanelX, infoPanelY, fetchedItem.description);
 								
-									if (item.maxQuantity > 1) draw_text(infoPanelX, infoPanelY - (division / 2), 
-																		string(item.quantity) + " / " 
-																		+ string(item.maxQuantity));
+									if (fetchedItem.maxQuantity > 1) draw_text(infoPanelX, infoPanelY - (division / 2), 
+																		string(fetchedItem.quantity) + " / " 
+																		+ string(fetchedItem.maxQuantity));
 								
 								
 								
 									//draw all item methods (maximum of 6, 2 base)
 									uiMethodButtons = array_create(0);
 								
-									for (var m = 0; (m < ds_list_size(item.methods) && m < 6); m++)
+									for (var m = 0; (m < ds_list_size(fetchedItem.methods) && m < 6); m++)
 									{
-										var drawMethod = ds_list_find_value(item.methods, m);
+										var drawMethod = ds_list_find_value(fetchedItem.methods, m);
 									
 										var methodX = 0;
 										var methodY = 0;
@@ -472,7 +472,7 @@ else
 														
 											var splitMax = thirdX - division * 2;
 											var splitRatio = (dragX - (thirdX + division)) / (splitMax)
-											splitValue = clamp(ceil(item.quantity * splitRatio), 1, item.quantity);
+											splitValue = clamp(ceil(fetchedItem.quantity * splitRatio), 1, fetchedItem.quantity);
 										
 											draw_set_color(c_black);
 											draw_set_font(fnt_Cambria24O);

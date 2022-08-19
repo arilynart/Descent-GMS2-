@@ -135,16 +135,12 @@ ItemCopy = function(item)
 {
 	var newItem = 
 	{
-		name : item.name,
-		description : item.description,
-		sprite : item.sprite,
 		maxQuantity : item.maxQuantity,
 		quantity : item.quantity,
 		index : item.index,
 		type : item.type,
 		pack : item.pack,
 		slot : item.slot,
-		methods : item.methods
 	}
 	
 	return newItem;

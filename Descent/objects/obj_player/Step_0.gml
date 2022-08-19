@@ -2,7 +2,7 @@
 
 if (moving)
 {
-	if (moveTarget == 0 && !ds_queue_empty(moveQueue))
+	if (moveTarget == 0 && ds_queue_empty(moveQueue) == false)
 	{
 		moveTarget = ds_queue_dequeue(moveQueue);
 		move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);

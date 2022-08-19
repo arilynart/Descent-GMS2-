@@ -2,8 +2,6 @@
 map = instance_find(obj_Map, 0);
 
 global.grid = true;
-global.previousMouse_x = mouse_x;
-global.previousMouse_y = mouse_y;
 
 right = 0;
 downRight = 0;
