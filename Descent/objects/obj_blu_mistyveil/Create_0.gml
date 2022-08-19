@@ -75,14 +75,16 @@ firstTestInteractable =
 	x: 4,
 	y: 21,
 	Execute: method(id, PickupDialogue),
-	item: item0
+	item: item0,
+	sprite: global.FindItem(item0.type, item0.index, item0.quantity).sprite
 }
 secondTestInteractable = 
 {
 	x: 4,
 	y: 22,
 	Execute: method(id, PickupDialogue),
-	item: item0
+	item: item0,
+	sprite: global.FindItem(item0.type, item0.index, item0.quantity).sprite
 }
 
 
