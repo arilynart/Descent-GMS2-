@@ -8,7 +8,7 @@ if (position_meeting(mouse_x, mouse_y, id))
 	
 	//if the previous mouse position is 
 	
-	if (activated && character == 0 && Interaction == 0)
+	if (activated && character == 0 && interaction == 0)
 	{
 		highlightArray = ds_list_create();
 		var foundCharacter = -1;

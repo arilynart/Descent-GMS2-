@@ -31,7 +31,7 @@ parseQueue = ds_queue_create();
 
 activated = false;
 
-Interaction = 0;
+interaction = 0;
 
 highlightArray = 0;
 dehighlightArray = 0;
@@ -149,7 +149,7 @@ function Deactivate()
 function ParseSquare(square, parseDistance, source)
 {
 	//show_debug_message("Parsing Square: " + string(square));
-	if (square != 0 && square.character == 0 && square.Interaction == 0
+	if (square != 0 && square.character == 0 && square.interaction == 0
 	&& ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
 	|| parseDistance < square.distance))
 	{
@@ -162,7 +162,7 @@ function ParseSquare(square, parseDistance, source)
 	else
 	{
 		//show_debug_message("Square is invalid.");
-		if (square != 0 && square.Interaction != 0 
+		if (square != 0 && square.interaction != 0 
 			&& ds_list_find_index(parsedCoordinates, square.coordinate) < 0 )
 		{
 			square.image_blend = c_blue;

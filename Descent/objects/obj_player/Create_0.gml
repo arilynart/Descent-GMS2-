@@ -27,7 +27,7 @@ uiScale = 0.25;
 
 name = "Sythal";
 baseMaxMove = 6;
-maxMove = baseMaxMove;
+maxMove = baseMaxMove * 10;
 
 #region Packs
 
@@ -56,30 +56,9 @@ with (starterPack2)
 	contents = array_create(width * height);
 }
 
-var testItem = 
-{
-	type : ItemTypes.Consumable,
-	index : 0,
-	quantity : 1,
-	maxQuantity : global.FindItem(ItemTypes.Consumable, 0, 1).maxQuantity,
-	pack : 0,
-	slot : 0
-}
-var testItem2 = 
-{
-	type : ItemTypes.Consumable,
-	index : 0,
-	quantity : 3,
-	maxQuantity : global.FindItem(ItemTypes.Consumable, 0, 1).maxQuantity,
-	pack : 0,
-	slot : 0
-}
+
 
 array_push(equippedPacks, starterPack1, starterPack2);
-
-AutoPickup(self, testItem);
-AutoPickup(self, testItem2);
-AutoPickup(self, testItem2);
 
 #endregion
 

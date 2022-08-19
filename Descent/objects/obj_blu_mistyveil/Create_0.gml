@@ -36,31 +36,56 @@ if (file_exists(fileName))
 
 #region interaction methods
 
-function PickupDialogue()
+function PickupDialogue(interaction)
 {
+	var item = interaction.item;
 	var adjacent = global.PlayerAdjacent(other, false);
 	show_debug_message("Adjacent? " + string(adjacent));
+	var quant = "";
 	if (adjacent != 0)
 	{
 		var dialogueArray = array_create(0);
-		array_push(dialogueArray, "You pick up one of your belongings. A package of potions.");
+		if (item.quantity > 1) quant = " x" + string(item.quantity);
+		array_push(dialogueArray, "You pick up " + global.FindItem(item.type, item.index, item.quantity).name + quant + ".");
+		AutoPickup(adjacent, item);
 		DisplayDialogue(global.nameless, dialogueArray, true);
-		other.Interaction = 0;
+		other.interaction = 0;
+	}
+	else
+	{
+		var dialogueArray = array_create(0);
+		array_push(dialogueArray, "Out of range.");
+		DisplayDialogue(global.nameless, dialogueArray, true);
 	}
 }
 
 #endregion
+var item0 = 
+{
+	type : ItemTypes.Consumable,
+	index : 0,
+	quantity : 3,
+	maxQuantity : global.FindItem(ItemTypes.Consumable, 0, 1).maxQuantity,
+	pack : 0,
+	slot : 0
+}
 
 firstTestInteractable = 
 {
 	x: 4,
 	y: 21,
-	i: method(id, PickupDialogue)
+	Execute: method(id, PickupDialogue),
+	item: item0
+}
+secondTestInteractable = 
+{
+	x: 4,
+	y: 22,
+	Execute: method(id, PickupDialogue),
+	item: item0
 }
 
-ds_list_add(interactables, firstTestInteractable);
 
-
-
+ds_list_add(interactables, firstTestInteractable, secondTestInteractable);
 
 #endregion

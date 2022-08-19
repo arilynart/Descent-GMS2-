@@ -303,7 +303,7 @@ for (var i = 0; i < interactableSize; i++)
 	var interactable = ds_list_find_value(blueprint.interactables, i);
 	var targetSquare = squares[interactable.x, interactable.y];
 	
-	targetSquare.Interaction = interactable.i;
+	targetSquare.interaction = interactable;
 }
 
 //create other necessary objects

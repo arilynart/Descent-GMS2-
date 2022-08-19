@@ -17,9 +17,9 @@ if (character != 0)
 		Activate(self, character.maxMove);
 	}
 }
-else if (activated && Interaction != 0)
+else if (activated && interaction != 0)
 {
-	Interaction();
+	interaction.Execute(interaction);
 }
 else if (activated && map.movingCharacter != 0)
 {
