@@ -1,4 +1,4 @@
-/// @description override
+/// @description draw ui over map
 
 if (displaying == true)
 {
@@ -15,3 +15,5 @@ if (displaying == true)
 						25);
 	}
 }
+
+//draw interactables

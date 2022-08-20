@@ -303,13 +303,15 @@ for (var i = 0; i < interactableSize; i++)
 	var interactable = ds_list_find_value(blueprint.interactables, i);
 	var targetSquare = squares[interactable.x, interactable.y];
 	
-	targetSquare.Interaction = interactable.i;
+	targetSquare.interaction = interactable;
 }
 
 //create other necessary objects
 
 player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Player);
 squares[playerSpawnX, playerSpawnY].character = player;
+player.positionX = playerSpawnX;
+player.positionY = playerSpawnY;
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
 
 #region methods

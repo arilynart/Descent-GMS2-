@@ -1,25 +1,34 @@
 /// @description Select Square
 
 
-if (global.UiManager.displayDialogue) return;
+if ((global.UiLock && global.SquareLock == false) || map.blueprint.displaying || global.UiManager.displayDialogue) return;
 
 show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
-	
+
+if (activated && global.SelectSquareExecute != 0)
+{
+	if (interaction == 0)
+	{
+		global.SelectSquareExecute(self);
+	}
+	return;
+}
+
 if (character != 0) 
 {
-	global.selectedCharacter = character;
-	global.selectedSquare = self;
-	
+
 	//selected character. highlight grid for movement.
-	if (character.moving == false)
+	if (activated == false && character.moving == false)
 	{
+		global.selectedCharacter = character;
+		global.selectedSquare = self;
 		map.movingCharacter = character;
-		Activate(self, 40);
+		Activate(self, character.maxMove);
 	}
 }
-else if (activated && Interaction != 0)
+else if (activated && interaction != 0)
 {
-	Interaction();
+	interaction.Execute(interaction);
 }
 else if (activated && map.movingCharacter != 0)
 {

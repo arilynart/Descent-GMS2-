@@ -36,31 +36,37 @@ if (file_exists(fileName))
 
 #region interaction methods
 
-function PickupDialogue()
-{
-	var adjacent = global.PlayerAdjacent(other, false);
-	show_debug_message("Adjacent? " + string(adjacent));
-	if (adjacent != 0)
-	{
-		var dialogueArray = array_create(0);
-		array_push(dialogueArray, "You pick up one of your belongings. A package of potions.");
-		DisplayDialogue(global.nameless, dialogueArray, true);
-		other.Interaction = 0;
-	}
-}
+
 
 #endregion
+var item0 = 
+{
+	type : ItemTypes.Consumable,
+	index : 0,
+	quantity : 3,
+	maxQuantity : global.FindItem(ItemTypes.Consumable, 0, 1).maxQuantity,
+	pack : 0,
+	slot : 0
+}
 
 firstTestInteractable = 
 {
 	x: 4,
 	y: 21,
-	i: method(id, PickupDialogue)
+	Execute: method(id, PickupDialogue),
+	item: item0,
+	sprite: global.FindItem(item0.type, item0.index, item0.quantity).sprite
+}
+secondTestInteractable = 
+{
+	x: 4,
+	y: 22,
+	Execute: method(id, PickupDialogue),
+	item: item0,
+	sprite: global.FindItem(item0.type, item0.index, item0.quantity).sprite
 }
 
-ds_list_add(interactables, firstTestInteractable);
 
-
-
+ds_list_add(interactables, firstTestInteractable, secondTestInteractable);
 
 #endregion

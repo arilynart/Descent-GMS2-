@@ -74,3 +74,118 @@ PlayerAdjacent = function(square, requirePlayer)
 	show_debug_message("Out of range.");
 	return foundPlayer;
 }
+
+//call this whenever packs are changed.
+function PackCheck(character)
+{
+	//penalize movement for overpacking.
+	
+	//check to make sure each pack doesn't overcap, prioritizing largest.
+	
+}
+
+//quick-add item to the inventory
+function AutoPickup(character, item)
+{
+	show_debug_message(character.name + " is picking up item: " + string(item));
+	
+	var quantityToSort = item.quantity;
+	var sortedQuantity = 0;
+	
+	var addItem = global.ItemCopy(item);
+	
+	if (addItem.maxQuantity > 1)
+	{
+		for (var h = 0; sortedQuantity < quantityToSort; h++)
+		{
+			var selectedPack = -1
+			var emptyIndex = -1;
+			for (var i = 0; i < array_length(character.equippedPacks); i++)
+			{
+				var pack = character.equippedPacks[i];
+				var tempIndex = -1;
+				for (var j = 0; j < pack.width * pack.height; j++)
+				{
+					var tempItem = pack.contents[j]
+					if (tempItem != 0 && tempItem.type == addItem.type && tempItem.index == addItem.index 
+						&& tempItem.quantity < tempItem.maxQuantity)
+					{
+						selectedPack = pack;
+						emptyIndex = j;
+					}
+				}
+			}
+			if (selectedPack != -1)
+			{
+				var itemToCombineTo = selectedPack.contents[emptyIndex];
+			
+				itemToCombineTo.quantity += quantityToSort - sortedQuantity;
+			
+				if (itemToCombineTo.quantity > itemToCombineTo.maxQuantity)
+				{
+					sortedQuantity = quantityToSort - (itemToCombineTo.quantity - itemToCombineTo.maxQuantity);
+					itemToCombineTo.quantity = itemToCombineTo.maxQuantity;
+					item.quantity -= sortedQuantity;
+				}
+				else
+				{
+					sortedQuantity = quantityToSort;
+				}
+			}
+			else
+			{
+				//nothing found. break loop.
+				show_debug_message("No packs found. Breaking loop.");
+				break;
+			}
+		
+		
+		}
+	}
+	
+	
+	if (sortedQuantity < quantityToSort)
+	{
+		show_debug_message("Searching for empty slot.");
+	
+		//no previous items to merge with. add remaining to empty slot.
+		var lowestValue = 99;
+		selectedPack = -1;
+		emptyIndex = -1;
+		var packIndex = -1
+		for (var i = 0; i < array_length(character.equippedPacks); i++)
+		{
+			var pack = character.equippedPacks[i];
+			
+			var tempIndex = -1;
+			for (var j = 0; j < pack.width * pack.height; j++)
+			{
+				var tempItem = pack.contents[j]
+				if (tempItem == 0)
+				{
+					tempIndex = j; 
+					j = 99;
+				}
+			}
+		
+			if (tempIndex >= 0 && pack.tier < lowestValue)
+			{
+				emptyIndex = tempIndex;
+				lowestValue = pack.tier;
+				packIndex = i;
+				selectedPack = pack;
+				i = 99;
+			}
+		}
+		if (selectedPack != -1)
+		{
+			addItem.pack = packIndex;
+			addItem.slot = emptyIndex;
+			selectedPack.contents[emptyIndex] = addItem;
+		}
+		else
+		{
+			show_debug_message("No room for item. Drop something first.");
+		}
+	}
+}

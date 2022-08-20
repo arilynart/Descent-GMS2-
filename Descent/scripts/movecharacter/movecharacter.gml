@@ -12,7 +12,6 @@ function MoveCharacter(character, target)
 	
 	while (foundCharacter == false)
 	{
-		
 		if (parsedSquare.closestToTarget != 0)
 		{
 			var square = parsedSquare.closestToTarget;
@@ -21,6 +20,7 @@ function MoveCharacter(character, target)
 			if (square.character == character)
 			{
 				foundCharacter = true;
+				square.character.maxMove -= ds_list_find_value(path, 0).distance;
 				square.Deactivate();
 			}
 			else
@@ -44,7 +44,7 @@ function MoveCharacter(character, target)
 		show_debug_message("Path Found. Executing.");
 		var pathLength = ds_list_size(path);
 		//send character along path until the end.
-		for (i = 1; i <= pathLength; i++)
+		for (var i = 1; i <= pathLength; i++)
 		{
 			var index = pathLength - i;
 			
