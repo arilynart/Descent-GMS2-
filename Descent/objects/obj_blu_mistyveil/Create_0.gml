@@ -36,28 +36,7 @@ if (file_exists(fileName))
 
 #region interaction methods
 
-function PickupDialogue(interaction)
-{
-	var item = interaction.item;
-	var adjacent = global.PlayerAdjacent(other, false);
-	show_debug_message("Adjacent? " + string(adjacent));
-	var quant = "";
-	if (adjacent != 0)
-	{
-		var dialogueArray = array_create(0);
-		if (item.quantity > 1) quant = " x" + string(item.quantity);
-		array_push(dialogueArray, "You pick up " + global.FindItem(item.type, item.index, item.quantity).name + quant + ".");
-		AutoPickup(adjacent, item);
-		DisplayDialogue(global.nameless, dialogueArray, true);
-		other.interaction = 0;
-	}
-	else
-	{
-		var dialogueArray = array_create(0);
-		array_push(dialogueArray, "Out of range.");
-		DisplayDialogue(global.nameless, dialogueArray, true);
-	}
-}
+
 
 #endregion
 var item0 = 

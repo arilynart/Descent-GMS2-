@@ -3,6 +3,7 @@
 
 global.UiManager = self;
 global.UiLock = false;
+global.SquareLock = false;
 
 fullX = display_get_gui_width();
 fullY = display_get_gui_height();

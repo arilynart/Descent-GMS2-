@@ -1,5 +1,7 @@
 /// @description UI events
 
+if (global.SquareLock) return;
+
 if (displayDialogue) AdvanceDialogue();
 else
 {
@@ -33,6 +35,7 @@ else
 	if (inventoryDraw >= 0)
 	{
 		var character = global.Allies[inventoryDraw];
+		
 		for (var i = 0; (i < 6 && i < array_length(uiPackButtons)); i++)
 		{
 			var button = uiPackButtons[i];
@@ -100,6 +103,7 @@ else
 		
 			if (itemDraw >= 0 && pack.contents[itemDraw] != 0)
 			{
+				if (character.moving) return;
 				var item = pack.contents[itemDraw];
 				for (var i = 0; (i < array_length(uiMethodButtons) && i < 6); i++)
 				{

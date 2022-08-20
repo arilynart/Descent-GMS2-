@@ -27,7 +27,7 @@ uiScale = 0.25;
 
 name = "Sythal";
 baseMaxMove = 6;
-maxMove = baseMaxMove * 10;
+maxMove = baseMaxMove * 100;
 
 #region Packs
 
@@ -61,4 +61,3 @@ with (starterPack2)
 array_push(equippedPacks, starterPack1, starterPack2);
 
 #endregion
-

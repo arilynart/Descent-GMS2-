@@ -310,6 +310,8 @@ for (var i = 0; i < interactableSize; i++)
 
 player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Player);
 squares[playerSpawnX, playerSpawnY].character = player;
+player.positionX = playerSpawnX;
+player.positionY = playerSpawnY;
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
 
 #region methods

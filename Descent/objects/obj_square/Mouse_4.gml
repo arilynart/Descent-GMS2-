@@ -1,10 +1,19 @@
 /// @description Select Square
 
 
-if (global.UiLock || map.blueprint.displaying || global.UiManager.displayDialogue) return;
+if ((global.UiLock && global.SquareLock == false) || map.blueprint.displaying || global.UiManager.displayDialogue) return;
 
 show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
-	
+
+if (activated && global.SelectSquareExecute != 0)
+{
+	if (interaction == 0)
+	{
+		global.SelectSquareExecute(self);
+	}
+	return;
+}
+
 if (character != 0) 
 {
 

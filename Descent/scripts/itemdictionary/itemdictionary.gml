@@ -76,7 +76,7 @@ FindItem = function(type, index, quantity)
 						Execute : method(global, ConsumeMedicine),
 						split : false
 					}
-					ds_list_add(item.methods, Move, Trash, Consume);
+					ds_list_add(item.methods, Trash, Move, Place, Consume);
 					
 					return item;
 					break;
@@ -251,6 +251,65 @@ function ItemMovetoSlot(character, packIndex, slot)
 	
 }
 
+global.SelectSquareExecute = 0;
+global.ItemToPlace = 0;
+ItemPlace = function(character, pack, item)
+{
+	//select grid square for placing
+	if (global.ItemToPlace != 0)
+	{
+		
+		ItemMovetoSlot(character, global.ItemToPlace.pack, global.ItemToPlace.slot);
+	}
+
+	global.ItemToPlace = item;
+	SelectSquareToPlace(character);
+	ItemDiscard(character, pack, item);
+}
+
+function SelectSquareToPlace(character)
+{
+	global.SquareLock = true;
+	
+	var map = instance_find(obj_Map, 0);
+	if (map.movingCharacter != 0) map.movingCharacter.currentSquare.Deactivate();
+	
+	character.currentSquare.Activate(character.currentSquare, 1.5);
+	global.SelectSquareExecute = method(global, global.FinishPlaceItem);
+	global.selectedSquare = character.currentSquare;
+}
+
+FinishPlaceItem = function(square)
+{
+	show_debug_message("FinishPlaceItem");
+	if (square.character != 0)
+	{
+		AutoPickup(square.character, global.ItemToPlace);
+		
+	}
+	else
+	{
+		interactable = 
+		{
+			x: square.coordinate.x,
+			y: square.coordinate.y,
+			Execute: method(global, PickupDialogue),
+			item: global.ItemToPlace,
+			sprite: global.FindItem(global.ItemToPlace.type, global.ItemToPlace.index, global.ItemToPlace.quantity).sprite
+		}
+		square.interaction = interactable;
+	}
+	global.ItemToPlace = 0;
+	global.SelectSquareExecute = 0;
+	global.SquareLock = false;
+	global.selectedSquare.Deactivate();
+	
+	var ui = instance_find(obj_UiManager, 0);
+	ui.inventoryDraw = -1;
+	ui.packDraw = -1;
+	ui.itemDraw = -1;
+}
+
 //custom methods
 
 ConsumeMedicine = function(character, pack, item)
@@ -281,6 +340,15 @@ Move =
 	description : "Move the item.",
 	sprite : spr_Move,
 	Execute : method(global, ItemMove),
+	split : true
+}
+
+Place =
+{
+	name : "Place",
+	description : "Place the item on the grid, allowing other characters to pick it up.",
+	sprite : spr_Place,
+	Execute : method(global, ItemPlace),
 	split : true
 }
 
