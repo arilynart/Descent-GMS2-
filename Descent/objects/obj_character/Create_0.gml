@@ -12,3 +12,6 @@ currentSquare = 0;
 
 moveRight = 0;
 moveDown = 0;
+
+velocityX = 0;
+velocityY = 0;

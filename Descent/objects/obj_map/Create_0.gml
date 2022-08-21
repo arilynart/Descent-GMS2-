@@ -31,7 +31,7 @@ for (var i = 0; i < gridWidth; i++)
 				x : i,
 				y : j
 			}
-			image_alpha = 0;
+			//image_alpha = 0;
 		}
 		squares[i,j] = newSquare;
 		
