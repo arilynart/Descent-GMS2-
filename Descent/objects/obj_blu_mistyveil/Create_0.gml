@@ -40,11 +40,6 @@ if (file_exists(fileName))
 
 #region interactables
 
-#region interaction methods
-
-
-
-#endregion
 var item0 = 
 {
 	type : ItemTypes.Consumable,
