@@ -31,7 +31,7 @@ if (displayDialogue && dialogueLength > 0)
 		
 		//draw name
 		draw_set_font(fnt_Cambria24);
-		draw_text(topLeftX + namePad, topLeftY + namePad, dialogueCharacter.name);
+		draw_text(topLeftX + namePad, topLeftY + namePad, dialogueCharacter.characterStats.name);
 	
 		//draw line
 		var linePad = 8;
@@ -144,7 +144,7 @@ else
 		}
 	
 		draw_circle(posX, posY, allyRadius, false);
-		draw_sprite_ext(ally.sprite_index, -1, posX, posY, ally.uiScale, ally.uiScale, 
+		draw_sprite_ext(ally.sprite_index, -1, posX, posY, ally.characterStats.uiScale, ally.characterStats.uiScale, 
 						image_angle, c_white, 1);
 	
 		if (inventoryDraw == i)
@@ -153,7 +153,7 @@ else
 			var packPosX = 0;
 			var packPosY = 0;
 			uiPackButtons = array_create(0);
-			for (var j = 0; j < array_length(ally.equippedPacks); j++)
+			for (var j = 0; j < array_length(ally.characterStats.equippedPacks); j++)
 			{
 				packPosX = quarterX + ((allyRadius + division) * j);
 				packPosY = quarterY / 4;
@@ -180,7 +180,7 @@ else
 				
 				draw_circle(packPosX, packPosY, allyRadius, false);
 			
-				var currentPack = ally.equippedPacks[j]
+				var currentPack = ally.characterStats.equippedPacks[j]
 				var packSprite = currentPack.sprite;
 				var packScale = (allyRadius) / sprite_get_width(packSprite);
 			

@@ -3,7 +3,7 @@
 
 function DisplayDialogue(character, dialogue, leftClicked)
 {
-	show_debug_message("Displaying Dialogue from " + string(character.name) + ". Array: " 
+	show_debug_message("Displaying Dialogue from " + string(character.characterStats.name) + ". Array: " 
 					   + string(dialogue));
 	var manager = global.UiManager;
 	

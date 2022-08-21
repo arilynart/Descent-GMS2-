@@ -61,7 +61,7 @@ else
 		}
 		if (packDraw >= 0)
 		{
-			var pack = character.equippedPacks[packDraw];
+			var pack = character.characterStats.equippedPacks[packDraw];
 			for (var i = 0; i < array_length(uiItemButtons); i++)
 			{
 				var button = uiItemButtons[i];
@@ -129,7 +129,7 @@ else
 						show_debug_message("Confirm Click");
 						var splitItem = global.ItemCopy(item);
 						splitItem.quantity = splitValue;
-						character.equippedPacks[packDraw].contents[itemDraw].quantity -= splitValue;
+						character.characterStats.equippedPacks[packDraw].contents[itemDraw].quantity -= splitValue;
 						if (item.quantity <= 0)
 						{
 							global.ItemDiscard(character, pack, item);

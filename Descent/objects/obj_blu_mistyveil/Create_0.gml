@@ -6,6 +6,7 @@ wallPoints = ds_list_create();
 
 walls = array_create(0);
 interactables = ds_list_create();
+characters = ds_list_create();
 
 displaying = true;
 
@@ -14,6 +15,11 @@ mapHeight = 26
 mapPad = 1;
 
 mapName = "Misty Veil"
+
+enum Maps
+{
+	MistyVeil
+}
 
 //load walls.
 
@@ -68,5 +74,21 @@ secondTestInteractable =
 
 
 ds_list_add(interactables, firstTestInteractable, secondTestInteractable);
+
+#endregion
+
+#region characters
+
+playerSpawnX = 6;
+playerSpawnY = 6;
+
+var forsakenSoul0 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul0.spawnX = 9;
+forsakenSoul0.spawnY = 24;
+var forsakenSoul1 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul1.spawnX = 11;
+forsakenSoul1.spawnY = 25;
+
+ds_list_add(characters, forsakenSoul0, forsakenSoul1);
 
 #endregion
