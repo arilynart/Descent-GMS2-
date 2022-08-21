@@ -85,7 +85,10 @@ playerSpawnY = 6;
 var forsakenSoul0 = global.FindCharacter(CharacterClass.Monster, 0);
 forsakenSoul0.spawnX = 9;
 forsakenSoul0.spawnY = 24;
+var forsakenSoul1 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul1.spawnX = 11;
+forsakenSoul1.spawnY = 25;
 
-ds_list_add(characters, forsakenSoul0);
+ds_list_add(characters, forsakenSoul0, forsakenSoul1);
 
 #endregion
