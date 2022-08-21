@@ -33,3 +33,5 @@ targetResolutionX = 0;
 targetResolutionY = 0;
 timer = 0;
 maxTime = 300000;
+
+lerpSpeed = 0.08;

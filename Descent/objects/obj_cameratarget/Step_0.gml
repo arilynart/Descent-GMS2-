@@ -2,43 +2,29 @@
 
 if (global.UiManager.displayDialogue) return;
 
-camera_set_view_pos(camera, x - (camera_get_view_width(camera) / 2), y - (camera_get_view_height(camera) / 2));
+
 
 var cameraX = camera_get_view_x(camera) + (camera_get_view_width(camera) / 2);
 var cameraY = camera_get_view_y(camera) + (camera_get_view_height(camera) / 2);
 
-/*if (hLock == true || vLock == true)
+if (followingCharacter != 0)
 {
-	if (hLock == true)
-	{
-		x = room_width / 2;
-	}
-	if (vLock == true)
-	{
-		y = room_height / 2;
-	}
+	x = followingCharacter.x;
+	y = followingCharacter.y;
 }
-else 
-{*/
-	if (followingCharacter != 0)
-	{
-		x = followingCharacter.x;
-		y = followingCharacter.y;
-	}
-	else
-	{
-		if (x != cameraX)
-		{
-			x = cameraX;
-		}
+else
+{
+	//if (x != cameraX)
+	//{
+	//	x = cameraX;
+	//}
 
-		if (y != cameraY)
-		{
-			y = cameraY;
-		}
-	}
-//}
-
+	//if (y != cameraY)
+	//{
+	//	y = cameraY;
+	//}
+}
+	
 var velocityX = (moveRight * spd);
 var velocityY = (moveDown * spd);
 
@@ -90,4 +76,14 @@ if (targetResolutionX > 0)
 			show_debug_message("Target resolution reached. Resetting resolution.");
 		}
 	}
+}
+
+x = clamp(x, 0, room_width);
+y = clamp(y, 0, room_height);
+
+if (cameraX != x || cameraY != y)
+{
+	var tempX = lerp(cameraX, x, lerpSpeed);
+	var tempY = lerp(cameraY, y, lerpSpeed);
+	camera_set_view_pos(camera, tempX - (camera_get_view_width(camera) / 2), tempY - (camera_get_view_height(camera) / 2));
 }
