@@ -53,11 +53,63 @@ else if (global.selectedCharacter == id)
 		velocityX *= 0.75;
 		velocityY *= 0.75;
 	}
-	if (position_meeting(x + velocityX, y, obj_Square) == false)
+	
+	//check each border of the sprite's collision based on the direction we are moving
+	var collisionWidthHalf = (bbox_right - bbox_left) / 2;
+	var collisionHeightHalf = (bbox_bottom - bbox_top) / 2;
+	
+	if (velocityX > 0 && !position_meeting(x + velocityX + collisionWidthHalf, y, currentSquare))
+	{
+		if (currentSquare.right == 0) velocityX = 0;
+		else if (velocityY > 0 && !position_meeting(x, y + velocityY + collisionHeightHalf, currentSquare))
+		{
+			if (currentSquare.downRight == 0)
+			{
+				velocityY = 0;
+			}
+		}
+		else if (velocityY < 0 && !position_meeting(x, y + velocityY - collisionHeightHalf, currentSquare))
+		{
+			if (currentSquare.upRight == 0)
+			{
+				velocityY = 0;
+			}
+		}
+	}
+	else if (velocityX < 0 && !position_meeting(x + velocityX - collisionWidthHalf, y, currentSquare))
+	{
+		if (currentSquare.left == 0) velocityX = 0;
+		else if (velocityY > 0 && !position_meeting(x, y + velocityY + collisionHeightHalf, currentSquare))
+		{
+			if (currentSquare.downLeft == 0)
+			{
+				velocityY = 0;
+			}
+		}
+		else if (velocityY < 0 && !position_meeting(x, y + velocityY - collisionHeightHalf, currentSquare))
+		{
+			if (currentSquare.upLeft == 0)
+			{
+				velocityY = 0;
+			}
+		}
+	}
+	
+	if (velocityY > 0 && !position_meeting(x, y + velocityY + collisionHeightHalf, currentSquare))
+	{
+		if (currentSquare.down == 0) velocityY = 0;
+	}
+	else if (velocityY < 0 && !position_meeting(x, y + velocityY - collisionHeightHalf, currentSquare))
+	{
+		if (currentSquare.up == 0) velocityY = 0;
+	}
+	
+	
+	if (!position_meeting(x + velocityX, y, obj_Square))
 	{
 		velocityX = 0;
 	}
-	if (position_meeting(x, y + velocityY, obj_Square) == false)
+	if (!position_meeting(x, y + velocityY, obj_Square))
 	{
 		velocityY = 0;
 	}
@@ -75,10 +127,10 @@ else if (global.selectedCharacter == id)
 	
 	if (position_meeting(x, y, obj_Square))
 	{
-				
-		if (currentSquare != other)
+		var otherSquare = instance_position(x, y, obj_Square);
+		if (currentSquare != otherSquare)
 		{
-			currentSquare = other;
+			currentSquare = otherSquare;
 		}
 	}
 }

@@ -308,8 +308,10 @@ for (var i = 0; i < interactableSize; i++)
 #region characters
 
 //player
-player = instance_create_layer(squares[blueprint.playerSpawnX, blueprint.playerSpawnY].x, squares[blueprint.playerSpawnX, blueprint.playerSpawnY].y, "Characters", obj_Character);
-squares[blueprint.playerSpawnX, blueprint.playerSpawnY].character = player;
+var playerSpawnSquare = squares[blueprint.playerSpawnX, blueprint.playerSpawnY];
+player = instance_create_layer(playerSpawnSquare.x, playerSpawnSquare.y, "Characters", obj_Character);
+player.currentSquare = playerSpawnSquare;
+playerSpawnSquare.character = player;
 global.Player = player;
 player.characterStats = global.FindCharacter(CharacterClass.Player, 0);
 player.sprite_index = player.characterStats.sprite;

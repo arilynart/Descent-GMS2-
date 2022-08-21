@@ -1,3 +1,3 @@
 /// @description move right
 
-moveRight += 1;
+moveRight = 1;

@@ -1,3 +1,3 @@
 /// @description move down
 
-moveDown += 1;
+moveDown = 1;
