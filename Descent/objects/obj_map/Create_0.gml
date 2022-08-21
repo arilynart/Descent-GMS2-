@@ -308,10 +308,14 @@ for (var i = 0; i < interactableSize; i++)
 
 //create other necessary objects
 
-player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Player);
+player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Character);
 squares[playerSpawnX, playerSpawnY].character = player;
-player.positionX = playerSpawnX;
-player.positionY = playerSpawnY;
+global.Player = player;
+player.characterStats = global.FindCharacter(CharacterClass.Player, 0);
+
+global.Allies = array_create(0);
+array_push(global.Allies, player);
+
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
 
 #region methods

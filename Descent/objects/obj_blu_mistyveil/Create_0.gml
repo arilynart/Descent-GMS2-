@@ -6,6 +6,7 @@ wallPoints = ds_list_create();
 
 walls = array_create(0);
 interactables = ds_list_create();
+characters = ds_list_create();
 
 displaying = true;
 
@@ -14,6 +15,11 @@ mapHeight = 26
 mapPad = 1;
 
 mapName = "Misty Veil"
+
+enum Maps
+{
+	MistyVeil
+}
 
 //load walls.
 
@@ -68,5 +74,21 @@ secondTestInteractable =
 
 
 ds_list_add(interactables, firstTestInteractable, secondTestInteractable);
+
+#endregion
+
+#region characters
+
+var forsakenBanshee0 = 
+{
+	x : 8,
+	y : 21,
+	name : "Forsaken Banshee",
+	team : CharacterTeams.Enemy,
+	sprite : spr_ForsakenBanshee
+}
+
+
+ds_list_add(characters, forsakenBanshee0);
 
 #endregion

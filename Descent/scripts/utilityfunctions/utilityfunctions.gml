@@ -55,16 +55,16 @@ PlayerAdjacent = function(square, requirePlayer)
 				}
 				else
 				{
-					if (checkSquare.character.team == CharacterTeams.Ally)
+					if (checkSquare.character.characterStats.team == CharacterTeams.Ally)
 					{
-						show_debug_message(string(checkSquare.character.name) + " doesn't know what to do with that.");
+						show_debug_message(string(checkSquare.character.characterStats.name) + " doesn't know what to do with that.");
 					}
 				}
 			}
 			else 
 			{
 				//after we add enemies we want to check to maker sure the character is allied.
-				if (checkSquare.character.team == CharacterTeams.Ally || global.Player == checkSquare.character) 
+				if (checkSquare.character.characterStats.team == CharacterTeams.Ally || global.Player == checkSquare.character) 
 				{
 					foundPlayer = checkSquare.character;
 				}
@@ -87,7 +87,7 @@ function PackCheck(character)
 //quick-add item to the inventory
 function AutoPickup(character, item)
 {
-	show_debug_message(character.name + " is picking up item: " + string(item));
+	show_debug_message(character.characterStats.name + " is picking up item: " + string(item));
 	
 	var quantityToSort = item.quantity;
 	var sortedQuantity = 0;
@@ -100,9 +100,9 @@ function AutoPickup(character, item)
 		{
 			var selectedPack = -1
 			var emptyIndex = -1;
-			for (var i = 0; i < array_length(character.equippedPacks); i++)
+			for (var i = 0; i < array_length(character.characterStats.equippedPacks); i++)
 			{
-				var pack = character.equippedPacks[i];
+				var pack = character.characterStats.equippedPacks[i];
 				var tempIndex = -1;
 				for (var j = 0; j < pack.width * pack.height; j++)
 				{
@@ -153,9 +153,9 @@ function AutoPickup(character, item)
 		selectedPack = -1;
 		emptyIndex = -1;
 		var packIndex = -1
-		for (var i = 0; i < array_length(character.equippedPacks); i++)
+		for (var i = 0; i < array_length(character.characterStats.equippedPacks); i++)
 		{
-			var pack = character.equippedPacks[i];
+			var pack = character.characterStats.equippedPacks[i];
 			
 			var tempIndex = -1;
 			for (var j = 0; j < pack.width * pack.height; j++)

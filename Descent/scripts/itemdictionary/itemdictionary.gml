@@ -109,9 +109,9 @@ FindItem = function(type, index, quantity)
 
 ItemFindOnCharacter = function(character, item)
 {
-	for (var i = 0; i < array_length(character.equippedPacks); i++)
+	for (var i = 0; i < array_length(character.characterStats.equippedPacks); i++)
 	{
-		var testPack = character.equippedPacks[i];
+		var testPack = character.characterStats.equippedPacks[i];
 		for (var j = 0; j < array_length(testPack.contents); j++)
 		{
 			var testItem = testPack.contents[j];
@@ -150,7 +150,7 @@ ItemCopy = function(item)
 
 ItemDiscard = function(character, pack, item)
 {
-	if (item.pack >= 0) pack = character.equippedPacks[item.pack];
+	if (item.pack >= 0) pack = character.characterStats.equippedPacks[item.pack];
 	else pack = global.UiManager.tempItemPack;
 	pack.contents[item.slot] = 0;
 }
@@ -176,7 +176,7 @@ function ItemMovetoSlot(character, packIndex, slot)
 	var quantityToSort = global.ItemToMove.quantity;
 	var sortedQuantity = 0;
 	var pack = 0;
-	if (packIndex >= 0) pack = character.equippedPacks[packIndex];
+	if (packIndex >= 0) pack = character.characterStats.equippedPacks[packIndex];
 	else
 	{
 		AutoPickup(character, global.ItemToMove);
@@ -198,7 +198,7 @@ function ItemMovetoSlot(character, packIndex, slot)
 					pack.contents[slot].quantity = pack.contents[slot].maxQuantity;
 					global.ItemToMove.quantity = overcap;
 					var nativePack = 0;
-					if (global.ItemToMove.pack >= 0) nativePack = character.equippedPacks[global.ItemToMove.pack];
+					if (global.ItemToMove.pack >= 0) nativePack = character.characterStats.equippedPacks[global.ItemToMove.pack];
 					else nativePack = global.UiManager.tempItemPack;
 					
 					if (pack.contents[slot] == nativePack.contents[global.ItemToMove.slot])
@@ -214,7 +214,7 @@ function ItemMovetoSlot(character, packIndex, slot)
 							show_debug_message("Overcapped quantity. Resetting to original slot.");
 							sortedQuantity = quantityToSort - overcap;
 							packIndex = global.ItemToMove.pack;
-							pack = character.equippedPacks[global.ItemToMove.pack];
+							pack = character.characterStats.equippedPacks[global.ItemToMove.pack];
 							slot = global.ItemToMove.slot;
 						}
 						else
@@ -305,7 +305,6 @@ FinishPlaceItem = function(square)
 	global.selectedSquare.Deactivate();
 	
 	var ui = instance_find(obj_UiManager, 0);
-	ui.inventoryDraw = -1;
 	ui.packDraw = -1;
 	ui.itemDraw = -1;
 }

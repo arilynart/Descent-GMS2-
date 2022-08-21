@@ -53,9 +53,13 @@ tempItemPack =
 
 window_set_fullscreen(true);
 
-global.nameless =
+var emptyStats =
 {
 	name : ""
+}
+global.nameless =
+{
+	characterStats : emptyStats
 }
 
 #region Methods
