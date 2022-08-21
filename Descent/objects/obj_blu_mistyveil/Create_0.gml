@@ -79,16 +79,13 @@ ds_list_add(interactables, firstTestInteractable, secondTestInteractable);
 
 #region characters
 
-var forsakenBanshee0 = 
-{
-	x : 8,
-	y : 21,
-	name : "Forsaken Banshee",
-	team : CharacterTeams.Enemy,
-	sprite : spr_ForsakenBanshee
-}
+playerSpawnX = 6;
+playerSpawnY = 6;
 
+var forsakenSoul0 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul0.spawnX = 9;
+forsakenSoul0.spawnY = 24;
 
-ds_list_add(characters, forsakenBanshee0);
+ds_list_add(characters, forsakenSoul0);
 
 #endregion

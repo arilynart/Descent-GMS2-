@@ -13,8 +13,7 @@ gridPad = gridSize * blueprint.mapPad;
 room_width = (gridWidth * gridSize) + (gridPad * 2);
 room_height = (gridHeight * gridSize) + (gridPad * 2);
 
-playerSpawnX = 6;
-playerSpawnY = 6;
+
 
 movingCharacter = 0;
 
@@ -306,21 +305,31 @@ for (var i = 0; i < interactableSize; i++)
 	targetSquare.interaction = interactable;
 }
 
-//create other necessary objects
+#region characters
 
-player = instance_create_layer(squares[playerSpawnX, playerSpawnY].x, squares[playerSpawnX, playerSpawnY].y, "Characters", obj_Character);
-squares[playerSpawnX, playerSpawnY].character = player;
+//player
+player = instance_create_layer(squares[blueprint.playerSpawnX, blueprint.playerSpawnY].x, squares[blueprint.playerSpawnX, blueprint.playerSpawnY].y, "Characters", obj_Character);
+squares[blueprint.playerSpawnX, blueprint.playerSpawnY].character = player;
 global.Player = player;
 player.characterStats = global.FindCharacter(CharacterClass.Player, 0);
+player.sprite_index = player.characterStats.sprite;
 
 global.Allies = array_create(0);
 array_push(global.Allies, player);
 
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
+//blueprint characters
 
-#region methods
-
-
+var characterSize = ds_list_size(blueprint.characters);
+for (var i = 0; i < characterSize; i++)
+{
+	var cha = ds_list_find_value(blueprint.characters, i);
+	var square = squares[cha.spawnX, cha.spawnY];
+	var newCharacter = instance_create_layer(square.x, square.y, "Characters", obj_Character);
+	square.character = newCharacter;
+	newCharacter.characterStats = cha;
+	newCharacter.sprite_index = cha.sprite;
+}
 
 
 #endregion

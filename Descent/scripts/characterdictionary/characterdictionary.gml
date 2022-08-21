@@ -48,6 +48,27 @@ FindCharacter = function(class, index)
 		case CharacterClass.Monster:
 			switch (index)
 			{
+				case 0:
+					var character = global.BaseCharacter();
+					character.name = "Forsaken Soul";
+					character.team = CharacterTeams.Enemy;
+					character.class = class;
+					character.sprite = spr_ForsakenBanshee;
+					array_push(character.packSlots, 1);
+
+					var starterPack1 = {};
+					with (starterPack1)
+					{
+						sprite = spr_Pack1;
+						tier = 1;
+						width = 1;
+						height = 2;
+						contents = array_create(width * height);
+					}
+
+					array_push(character.equippedPacks, starterPack1);
+					return character;
+					break;
 				default:
 					return 0;
 					break;
@@ -67,9 +88,9 @@ BaseCharacter = function()
 		spawnX : 0,
 		spawnY : 0,
 		name : "",
-		team : CharacterTeams.NPC,
+		team : CharacterTeams.Neutral,
 		class : CharacterClass.Monster,
-		sprite : spr_ForsakenBanshee,
+		sprite : spr_Cancel,
 		uiScale : 0.25,
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
@@ -82,7 +103,7 @@ BaseCharacter = function()
 enum CharacterTeams
 {
 	Ally,
-	NPC,
+	Neutral,
 	Enemy
 }
 
