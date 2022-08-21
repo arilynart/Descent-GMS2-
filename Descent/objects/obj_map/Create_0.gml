@@ -13,7 +13,7 @@ gridPad = gridSize * blueprint.mapPad;
 room_width = (gridWidth * gridSize) + (gridPad * 2);
 room_height = (gridHeight * gridSize) + (gridPad * 2);
 
-
+global.InCombat = false;
 
 movingCharacter = 0;
 
@@ -313,11 +313,13 @@ squares[blueprint.playerSpawnX, blueprint.playerSpawnY].character = player;
 global.Player = player;
 player.characterStats = global.FindCharacter(CharacterClass.Player, 0);
 player.sprite_index = player.characterStats.sprite;
+global.selectedCharacter = player;
 
 global.Allies = array_create(0);
 array_push(global.Allies, player);
 
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);
+
 //blueprint characters
 
 var characterSize = ds_list_size(blueprint.characters);

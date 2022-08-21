@@ -9,3 +9,6 @@ moveTarget = 0;
 maxMove = characterStats.baseMaxMove * 100;
 
 currentSquare = 0;
+
+moveRight = 0;
+moveDown = 0;

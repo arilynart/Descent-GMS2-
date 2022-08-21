@@ -18,7 +18,8 @@ if (character != 0)
 {
 
 	//selected character. highlight grid for movement.
-	if (activated == false && character.moving == false && character.characterStats.team == CharacterTeams.Ally)
+	if (activated == false && character.moving == false && global.InCombat
+	 && character.characterStats.team == CharacterTeams.Ally)
 	{
 		global.selectedCharacter = character;
 		global.selectedSquare = self;
