@@ -32,7 +32,7 @@ if (position_meeting(mouse_x, mouse_y, id))
 		{
 			var squareToHighlight = ds_list_find_value(highlightArray, i);
 		
-			squareToHighlight.image_blend = c_aqua;
+			squareToHighlight.image_blend = c_yellow;
 		}
 	
 		dehighlightArray = highlightArray;

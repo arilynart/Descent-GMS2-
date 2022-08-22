@@ -272,7 +272,11 @@ function SelectSquareToPlace(character)
 	global.SquareLock = true;
 	
 	var map = instance_find(obj_Map, 0);
-	if (map.movingCharacter != 0) map.movingCharacter.currentSquare.Deactivate();
+	if (map.movingCharacter != 0)
+	{
+		map.movingCharacter.currentSquare.Deactivate();
+		map.movingCharacter = 0;
+	}
 	
 	character.currentSquare.Activate(character.currentSquare, 1.5);
 	global.SelectSquareExecute = method(global, global.FinishPlaceItem);

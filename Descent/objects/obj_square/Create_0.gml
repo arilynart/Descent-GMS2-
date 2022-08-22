@@ -38,6 +38,8 @@ encounterTrigger = -1;
 highlightArray = 0;
 dehighlightArray = 0;
 
+interactionColor = c_fuchsia;
+
 #region Activation
 
 function Activate(start, maxDistance) 
@@ -55,8 +57,14 @@ function Activate(start, maxDistance)
 	while (!ds_queue_empty(parseQueue))
 	{
 		var currentSquare = ds_queue_dequeue(parseQueue);
-		currentSquare.image_alpha = 1;
+		currentSquare.image_alpha = 0.3;
 		currentSquare.activated = true;
+		
+		if (currentSquare.interaction != 0)
+		{
+			currentSquare.image_blend = interactionColor;
+			currentSquare.image_alpha = 1;
+		}
 		
 		ds_list_add(activatedSquares, currentSquare);
 		
@@ -156,6 +164,7 @@ function ParseSquare(square, parseDistance, source)
 	|| parseDistance < square.distance))
 	{
 		//show_debug_message("Square is valid: " + string(square));
+		
 		square.distance = parseDistance;
 		square.closestToTarget = source;
 		ds_queue_enqueue(parseQueue, square);
@@ -164,15 +173,7 @@ function ParseSquare(square, parseDistance, source)
 	else
 	{
 		//show_debug_message("Square is invalid.");
-		if (square != 0 && square.interaction != 0 
-			&& ds_list_find_index(parsedCoordinates, square.coordinate) < 0 )
-		{
-			square.image_blend = c_blue;
-			square.image_alpha = 1;
-			ds_list_add(parsedCoordinates, square.coordinate);
-			ds_list_add(activatedSquares, square);
-			square.activated = true;
-		}
+		
 	}
 }
 #endregion
