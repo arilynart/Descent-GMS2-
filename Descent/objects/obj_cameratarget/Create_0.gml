@@ -33,3 +33,8 @@ timer = 0;
 maxTime = 300000;
 
 lerpSpeed = 0.08;
+
+function LockCamera(duration)
+{
+	alarm_set(0, duration);
+}

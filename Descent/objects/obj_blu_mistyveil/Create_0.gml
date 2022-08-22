@@ -7,6 +7,7 @@ wallPoints = ds_list_create();
 walls = array_create(0);
 interactables = ds_list_create();
 characters = ds_list_create();
+encounters = ds_list_create();
 
 displaying = true;
 
@@ -85,5 +86,26 @@ forsakenSoul1.spawnX = 11;
 forsakenSoul1.spawnY = 25;
 
 ds_list_add(characters, forsakenSoul0, forsakenSoul1);
+
+#endregion
+
+#region combat encounters
+
+var firstEncounterEver =
+{
+	startIndex : 0,
+	endIndex : 1,
+	alive : true,
+	respawn : true,
+	triggers : ds_list_create()
+}
+hallwayTrigger =
+{
+	x : 12,
+	y : 23
+}
+ds_list_add(firstEncounterEver.triggers, hallwayTrigger);
+
+ds_list_add(encounters, firstEncounterEver);
 
 #endregion

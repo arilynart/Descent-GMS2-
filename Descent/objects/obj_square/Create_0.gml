@@ -20,7 +20,7 @@ coordinate =
 
 distance = -1;
 
-closestToTarget = 0;
+closestToTarget = self;
 
 character = 0;
 
@@ -32,6 +32,8 @@ parseQueue = ds_queue_create();
 activated = false;
 
 interaction = 0;
+
+encounterTrigger = -1;
 
 highlightArray = 0;
 dehighlightArray = 0;

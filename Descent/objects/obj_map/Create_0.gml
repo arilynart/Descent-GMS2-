@@ -14,6 +14,7 @@ room_width = (gridWidth * gridSize) + (gridPad * 2);
 room_height = (gridHeight * gridSize) + (gridPad * 2);
 
 global.InCombat = false;
+global.Combatants = ds_list_create();
 
 movingCharacter = 0;
 
@@ -31,7 +32,7 @@ for (var i = 0; i < gridWidth; i++)
 				x : i,
 				y : j
 			}
-			//image_alpha = 0;
+			image_alpha = 0;
 		}
 		squares[i,j] = newSquare;
 		
@@ -307,6 +308,8 @@ for (var i = 0; i < interactableSize; i++)
 
 #region characters
 
+spawnedCharacters = ds_list_create();
+
 //player
 var playerSpawnSquare = squares[blueprint.playerSpawnX, blueprint.playerSpawnY];
 player = instance_create_layer(playerSpawnSquare.x, playerSpawnSquare.y, "Characters", obj_Character);
@@ -331,9 +334,29 @@ for (var i = 0; i < characterSize; i++)
 	var square = squares[cha.spawnX, cha.spawnY];
 	var newCharacter = instance_create_layer(square.x, square.y, "Characters", obj_Character);
 	square.character = newCharacter;
+	newCharacter.currentSquare = square;
 	newCharacter.characterStats = cha;
 	newCharacter.sprite_index = cha.sprite;
+	ds_list_add(spawnedCharacters, newCharacter);
 }
 
+#endregion
+
+#region combat encounters
+
+var combatSize = ds_list_size(blueprint.encounters);
+for (var i = 0; i < combatSize; i++)
+{
+	var combat = ds_list_find_value(blueprint.encounters, i);
+	
+	//set triggers
+	var triggerSize = ds_list_size(combat.triggers);
+	for (var j = 0; j < triggerSize; j++)
+	{
+		var trigger = ds_list_find_value(combat.triggers, j);
+		
+		squares[trigger.x, trigger.y].encounterTrigger = i;
+	}
+}
 
 #endregion

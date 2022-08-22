@@ -1,13 +1,13 @@
 /// @description actual movement
 
-if (global.UiManager.displayDialogue) return;
-
-
+if (global.UiManager.displayDialogue) LockCamera(1);
 
 var cameraX = camera_get_view_x(camera) + (camera_get_view_width(camera) / 2);
 var cameraY = camera_get_view_y(camera) + (camera_get_view_height(camera) / 2);
 
-if (global.InCombat)
+show_debug_message("Camera Lock: " + string(alarm_get(0)));
+
+if (global.InCombat && alarm_get(0) <= 0)
 {
 	var velocityX = (moveRight * spd);
 	var velocityY = (moveDown * spd);
