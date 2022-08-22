@@ -71,7 +71,7 @@
     "backdropXOffset": 0.0,
     "backdropYOffset": 0.0,
     "xorigin": 160,
-    "yorigin": 231,
+    "yorigin": 264,
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"spr_ForsakenBanshee","path":"sprites/spr_ForsakenBanshee/spr_ForsakenBanshee.yy",},

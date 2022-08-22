@@ -18,7 +18,8 @@ if (character != 0)
 {
 
 	//selected character. highlight grid for movement.
-	if (activated == false && character.moving == false && character.characterStats.team == CharacterTeams.Ally)
+	if (activated == false && character.moving == false && global.InCombat
+	 && character.characterStats.team == CharacterTeams.Ally)
 	{
 		global.selectedCharacter = character;
 		global.selectedSquare = self;
@@ -30,7 +31,7 @@ else if (activated && interaction != 0)
 {
 	interaction.Execute(interaction);
 }
-else if (activated && map.movingCharacter != 0)
+else if (activated && map.movingCharacter != 0 && interaction == 0)
 {
 	//if a character is already selected and we're waiting to move, move.
 	show_debug_message("Moving " + string(map.movingCharacter) + " to " + string(coordinate));

@@ -9,8 +9,6 @@ defaultVSpeed = camera_get_view_speed_y(view_camera[0]);
 moveRight = 0;
 moveDown = 0;
 followingCharacter = 0;
-hLock = false;
-vLock = false;
 
 camera = view_camera[0];
 
