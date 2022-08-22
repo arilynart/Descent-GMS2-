@@ -149,7 +149,7 @@ function Deactivate()
 function ParseSquare(square, parseDistance, source)
 {
 	//show_debug_message("Parsing Square: " + string(square));
-	if (square != 0 && square.character == 0 && square.interaction == 0
+	if (square != 0 && square.character == 0
 	&& ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
 	|| parseDistance < square.distance))
 	{

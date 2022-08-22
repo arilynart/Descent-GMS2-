@@ -144,7 +144,7 @@ else
 		}
 	
 		draw_circle(posX, posY, allyRadius, false);
-		draw_sprite_ext(ally.sprite_index, -1, posX, posY, ally.characterStats.uiScale, ally.characterStats.uiScale, 
+		draw_sprite_ext(ally.sprite_index, ally.image_index, posX, posY, ally.characterStats.uiScale, ally.characterStats.uiScale, 
 						image_angle, c_white, 1);
 	
 		if (inventoryDraw == i)

@@ -47,7 +47,15 @@ if (global.InCombat)
 }
 else if (global.selectedCharacter == id)
 {
-
+	var otherSquare = instance_position(x, y, obj_Square);
+	if (currentSquare != otherSquare)
+	{
+		currentSquare.character = 0;
+		currentSquare = otherSquare;
+		otherSquare.character = id;
+	}
+	
+	show_debug_message("Current Square: " + string(currentSquare.coordinate.x) + ", " + string(currentSquare.coordinate.y));
 	
 	velocityX = (moveRight * moveSpeed);
 	velocityY = (moveDown * moveSpeed);
@@ -60,12 +68,8 @@ else if (global.selectedCharacter == id)
 	
 	
 	//check each border of the sprite's collision based on the direction we are moving
-	var collisionWidthHalf = ceil((bbox_right - bbox_left) / 2);
-	var collisionHeightHalf = ceil((bbox_bottom - bbox_top) / 2);
-	var collisionCenterX = bbox_left + collisionWidthHalf;
-	var collisionCenterY = bbox_top + collisionHeightHalf;
 	
-	if (velocityX > 0 && !position_meeting(collisionCenterX + velocityX + collisionWidthHalf, collisionCenterY, currentSquare))
+	if (velocityX > 0 && !position_meeting(bbox_right + velocityX, y, currentSquare))
 	{
 		if (currentSquare.right == 0 || currentSquare.right.character != 0)
 		{
@@ -85,7 +89,10 @@ else if (global.selectedCharacter == id)
 			{
 				if (topRightSquare.right == 0 || topRightSquare.character != 0) velocityX = 0;
 			}
-			if (velocityY > 0 && !position_meeting(collisionCenterX + velocityX + collisionWidthHalf, collisionCenterY + velocityY + collisionHeightHalf, currentSquare))
+			var bottomMeeting = instance_position(bbox_right + velocityX, bbox_bottom + velocityY, obj_Square);
+			var topMeeting = instance_position(bbox_right + velocityX, bbox_top + velocityY, obj_Square);
+			if (velocityY > 0 && bottomMeeting != currentSquare.right
+			 && !position_meeting(bbox_right + velocityX, bbox_bottom + velocityY, currentSquare))
 			{
 				if (currentSquare.downRight == 0 || currentSquare.downRight.character != 0)
 				{
@@ -93,7 +100,8 @@ else if (global.selectedCharacter == id)
 					velocityY = 0;
 				}
 			}
-			else if (velocityY < 0 && !position_meeting(collisionCenterX + velocityX + collisionWidthHalf, collisionCenterY + velocityY - collisionHeightHalf, currentSquare))
+			else if (velocityY < 0 && topMeeting != currentSquare.right
+				  && !position_meeting(bbox_right + velocityX, bbox_top + velocityY, currentSquare))
 			{
 				if (currentSquare.upRight == 0 || currentSquare.upRight.character != 0)
 				{
@@ -105,7 +113,7 @@ else if (global.selectedCharacter == id)
 		//check the two right corners. If the square either of them are touching does not have a right wall, don't allow the movement.
 		
 	}
-	else if (velocityX < 0 && !position_meeting(collisionCenterX + velocityX - collisionWidthHalf, collisionCenterY, currentSquare))
+	else if (velocityX < 0 && !position_meeting(bbox_left + velocityX, y, currentSquare))
 	{
 		if (currentSquare.left == 0 || currentSquare.left.character != 0)
 		{
@@ -124,8 +132,10 @@ else if (global.selectedCharacter == id)
 			{
 				if (topLeftSquare.left == 0 || topLeftSquare.character != 0) velocityX = 0;
 			}
-			
-			if (velocityY > 0 && !position_meeting(collisionCenterX + velocityX - collisionWidthHalf, collisionCenterY + velocityY + collisionHeightHalf, currentSquare))
+			var bottomMeeting = instance_position(bbox_left + velocityX, bbox_bottom + velocityY, obj_Square);
+			var topMeeting = instance_position(bbox_left + velocityX, bbox_top + velocityY, obj_Square);
+			if (velocityY > 0 && bottomMeeting != currentSquare.left
+			 && !position_meeting(bbox_left + velocityX, bbox_bottom + velocityY, currentSquare))
 			{
 				if (currentSquare.downLeft == 0 || currentSquare.downLeft.character != 0)
 				{
@@ -133,7 +143,8 @@ else if (global.selectedCharacter == id)
 					velocityY = 0;
 				}
 			}
-			else if (velocityY < 0 && !position_meeting(collisionCenterX + velocityX - collisionWidthHalf, collisionCenterY + velocityY - collisionHeightHalf, currentSquare))
+			else if (velocityY < 0 && topMeeting != currentSquare.left
+				 && !position_meeting(bbox_left + velocityX, bbox_top + velocityY, currentSquare))
 			{
 				if (currentSquare.upLeft == 0 || currentSquare.upLeft.character != 0)
 				{
@@ -143,7 +154,7 @@ else if (global.selectedCharacter == id)
 			}
 		}
 	}
-	if (velocityY > 0 && !position_meeting(collisionCenterX, collisionCenterY + velocityY + collisionHeightHalf, currentSquare))
+	if (velocityY > 0 && !position_meeting(x, bbox_bottom + velocityY, currentSquare))
 	{
 		if (currentSquare.down == 0 || currentSquare.down.character != 0) velocityY = 0;
 		else
@@ -161,7 +172,7 @@ else if (global.selectedCharacter == id)
 		}
 	}
 	
-	if (velocityY < 0 && !position_meeting(collisionCenterX, collisionCenterY + velocityY - collisionHeightHalf, currentSquare))
+	if (velocityY < 0 && !position_meeting(x, bbox_top + velocityY, currentSquare))
 	{
 		if (currentSquare.up == 0 || currentSquare.up.character != 0) velocityY = 0;
 		else
@@ -179,11 +190,11 @@ else if (global.selectedCharacter == id)
 		}
 	}
 	
-	if (!position_meeting(collisionCenterX + velocityX, collisionCenterY, obj_Square))
+	if (!position_meeting(x + velocityX, y, obj_Square))
 	{
 		velocityX = 0;
 	}
-	if (!position_meeting(collisionCenterX, collisionCenterY + velocityY, obj_Square))
+	if (!position_meeting(x, y + velocityY, obj_Square))
 	{
 		velocityY = 0;
 	}
@@ -191,6 +202,6 @@ else if (global.selectedCharacter == id)
 	
 	
 	
-	show_debug_message("coordinates: (" + string(collisionCenterX) + ", " + string (collisionCenterY) + ") | velocityY: " + string(velocityY));
+	show_debug_message("coordinates: (" + string(x) + ", " + string (y) + ") | velocityY: " + string(velocityY));
 	
 }

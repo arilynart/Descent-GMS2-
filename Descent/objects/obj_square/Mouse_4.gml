@@ -31,7 +31,7 @@ else if (activated && interaction != 0)
 {
 	interaction.Execute(interaction);
 }
-else if (activated && map.movingCharacter != 0)
+else if (activated && map.movingCharacter != 0 && interaction == 0)
 {
 	//if a character is already selected and we're waiting to move, move.
 	show_debug_message("Moving " + string(map.movingCharacter) + " to " + string(coordinate));
