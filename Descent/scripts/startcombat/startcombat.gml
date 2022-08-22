@@ -13,7 +13,11 @@ function StartCombat(index)
 		
 		global.cameraTarget.LockCamera(120);
 		
-		if (!global.InCombat) global.Combatants = ds_list_create();
+		if (!global.InCombat)
+		{
+			global.Combatants = ds_list_create();
+			global.Turns = ds_list_create();
+		}
 		
 		global.InCombat = true;
 
@@ -30,13 +34,51 @@ function StartCombat(index)
 			ds_list_add(global.Combatants, character);
 		}
 		
+		randomize();
 		
 		var combatantSize = ds_list_size(global.Combatants)
 		for (var i = 0; i < combatantSize; i++)
 		{
 			var character = ds_list_find_value(global.Combatants, i);
 			MoveCharacter(character, character.currentSquare);
+			
+			//roll initiative
+			var baseInitiative = character.characterStats.tempo * 10;
+			var roll = irandom(9);
+			var initiativeRoll = baseInitiative + roll;
+			
+			var existingTurnSize = ds_list_size(global.Turns);
+			var validInitiative = false;
+			
+			while (!validInitiative)
+			{
+				
+				validInitiative = true;
+				
+				for (var j = 0; j < existingTurnSize; j++)
+				{
+					var turn = ds_list_find_value(global.Turns, j);
+					if (turn.initiative == initiativeRoll)
+					{
+						validInitiative = false;
+						
+						var newRoll = irandom(9);
+						initiativeRoll = baseInitiative + newRoll;
+					}
+				}
+			}
+			
+			var newTurn = 
+			{
+				character : character,
+				initiative : initiativeRoll
+			}
+			
+			ds_list_add(global.Turns, newTurn);
 		}
+		
+		
+		
 		
 	}
 	

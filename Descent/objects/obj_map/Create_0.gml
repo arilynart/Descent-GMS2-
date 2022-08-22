@@ -15,6 +15,7 @@ room_height = (gridHeight * gridSize) + (gridPad * 2);
 
 global.InCombat = false;
 global.Combatants = ds_list_create();
+global.Turns = ds_list_create();
 
 movingCharacter = 0;
 

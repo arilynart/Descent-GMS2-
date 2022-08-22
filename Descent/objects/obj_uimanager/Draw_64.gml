@@ -493,8 +493,33 @@ else
 			}
 		
 		}
-	
+		
+		if (global.InCombat)
+		{
+			//draw turn order
+			
+			var turnSize = ds_list_size(global.Turns);
+			
+			//draw backdrop
+			var turnX = fullX - allyRadius;
 
+			draw_set_color(c_black);
+			draw_roundrect(turnX, quarterY, fullX, eighthY + (allyRadius * 2 * turnSize), false);
+			
+			for (var i = 0; i < turnSize; i++)
+			{
+				var turnY = eighthY + (allyRadius * 2 * i);
+				
+				draw_set_color(c_gray);
+				draw_circle(turnX, turnY, allyRadius, false);
+				
+				var turn = ds_list_find_value(global.Turns, i);
+				
+				draw_sprite_ext(turn.character.sprite_index, turn.character.image_index, turnX, turnY, 
+								turn.character.characterStats.uiScale, turn.character.characterStats.uiScale, 
+								image_angle, c_white, 1);
+			}
+		}
 	}
 }
 

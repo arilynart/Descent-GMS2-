@@ -95,6 +95,7 @@ BaseCharacter = function()
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
 		baseMaxMove : 5,
+		tempo : 0
 		
 	}
 	return struct;

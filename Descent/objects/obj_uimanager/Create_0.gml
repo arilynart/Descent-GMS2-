@@ -14,6 +14,9 @@ halfY = fullY / 2;
 quarterX = halfX / 2;
 quarterY = halfY / 2;
 
+eighthX = quarterX / 2;
+eighthY = quarterY / 2;
+
 thirdX = fullX / 3;
 thirdY = fullY / 3;
 
