@@ -16,6 +16,7 @@
     {"id":{"name":"obj_Character","path":"objects/obj_Character/obj_Character.yy",},"order":0,},
     {"id":{"name":"UiFunctions","path":"scripts/UiFunctions/UiFunctions.yy",},"order":3,},
     {"id":{"name":"spr_Debug0","path":"sprites/spr_Debug0/spr_Debug0.yy",},"order":0,},
+    {"id":{"name":"StartCombat","path":"scripts/StartCombat/StartCombat.yy",},"order":8,},
     {"id":{"name":"spr_Pack1","path":"sprites/spr_Pack1/spr_Pack1.yy",},"order":1,},
     {"id":{"name":"spr_Consume","path":"sprites/spr_Consume/spr_Consume.yy",},"order":0,},
     {"id":{"name":"spr_Potions","path":"sprites/spr_Potions/spr_Potions.yy",},"order":2,},

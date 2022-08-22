@@ -189,3 +189,4 @@ function AutoPickup(character, item)
 		}
 	}
 }
+

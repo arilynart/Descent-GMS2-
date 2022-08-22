@@ -57,6 +57,13 @@ else if (global.selectedCharacter == id)
 	
 	show_debug_message("Current Square: " + string(currentSquare.coordinate.x) + ", " + string(currentSquare.coordinate.y));
 	
+	if (currentSquare.encounterTrigger >= 0)
+	{
+		//start the encounter
+		if (ds_list_find_value(currentSquare.map.blueprint.encounters, currentSquare.encounterTrigger).alive)
+			StartCombat(currentSquare.encounterTrigger);
+	}
+	
 	velocityX = (moveRight * moveSpeed);
 	velocityY = (moveDown * moveSpeed);
 
@@ -199,9 +206,15 @@ else if (global.selectedCharacter == id)
 		velocityY = 0;
 	}
 	
-	
-	
-	
 	show_debug_message("coordinates: (" + string(x) + ", " + string (y) + ") | velocityY: " + string(velocityY));
-	
+
+	if (velocityX != 0)
+	{
+		x += velocityX;
+	}
+
+	if (velocityY != 0)
+	{
+		y += velocityY;
+	}
 }
