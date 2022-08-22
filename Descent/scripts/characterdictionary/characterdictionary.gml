@@ -94,7 +94,7 @@ BaseCharacter = function()
 		uiScale : 0.25,
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
-		baseMaxMove : 6,
+		baseMaxMove : 5,
 		
 	}
 	return struct;
