@@ -11,8 +11,9 @@ if (dehighlightArray != 0)
 	{
 		
 		var squareToHighlight = ds_list_find_value(dehighlightArray, i);
-
-		squareToHighlight.image_blend = c_white;
+		
+		if (squareToHighlight.interaction != 0) squareToHighlight.image_blend = c_blue;
+		else squareToHighlight.image_blend = c_white;
 
 	}
 	

@@ -44,7 +44,7 @@ PlayerAdjacent = function(square, requirePlayer)
 				break;
 		}
 			
-		if (checkSquare.character != 0)
+		if (checkSquare != 0 && checkSquare.character != 0)
 		{
 			checkSquare.Deactivate();
 			if (requirePlayer == true)

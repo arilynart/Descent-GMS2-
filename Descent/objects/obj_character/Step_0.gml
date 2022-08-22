@@ -45,14 +45,96 @@ if (global.InCombat)
 		}
 	}
 }
-else if (global.selectedCharacter == id)
+else if (global.selectedCharacter == id && !global.SquareLock)
 {
 	var otherSquare = instance_position(x, y, obj_Square);
 	if (currentSquare != otherSquare)
 	{
 		currentSquare.character = 0;
+		currentSquare.Deactivate();
 		currentSquare = otherSquare;
 		otherSquare.character = id;
+	}
+	//check for nearby interactables
+	if (otherSquare.interaction != 0)
+	{
+		otherSquare.image_alpha = 1;
+		otherSquare.activated = true;
+		otherSquare.image_blend = otherSquare.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare);
+	}
+	//downright
+	if (otherSquare.downRight != 0 && otherSquare.downRight.interaction != 0)
+	{
+		otherSquare.downRight.image_alpha = 1;
+		otherSquare.downRight.activated = true;
+		otherSquare.downRight.image_blend = otherSquare.downRight.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.downRight);
+	}
+	//down
+	if (otherSquare.down != 0 && otherSquare.down.interaction != 0)
+	{
+		otherSquare.down.image_alpha = 1;
+		otherSquare.down.activated = true;
+		otherSquare.down.image_blend = otherSquare.down.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.down);
+	}
+	//downleft
+	if (otherSquare.downLeft != 0 && otherSquare.downLeft.interaction != 0)
+	{
+		otherSquare.downLeft.image_alpha = 1;
+		otherSquare.downLeft.activated = true;
+		otherSquare.downLeft.image_blend = otherSquare.downLeft.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.downLeft);
+	}
+	//left
+	if (otherSquare.left != 0 && otherSquare.left.interaction != 0)
+	{
+		otherSquare.left.image_alpha = 1;
+		otherSquare.left.activated = true;
+		otherSquare.left.image_blend = otherSquare.left.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.left);
+	}
+	//upleft
+	if (otherSquare.upLeft != 0 && otherSquare.upLeft.interaction != 0)
+	{
+		otherSquare.upLeft.image_alpha = 1;
+		otherSquare.upLeft.activated = true;
+		otherSquare.upLeft.image_blend = otherSquare.upLeft.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.upLeft);
+	}
+	//up
+	if (otherSquare.up != 0 && otherSquare.up.interaction != 0)
+	{
+		otherSquare.up.image_alpha = 1;
+		otherSquare.up.activated = true;
+		otherSquare.up.image_blend = otherSquare.up.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.up);
+	}
+	//upright
+	if (otherSquare.upRight != 0 && otherSquare.upRight.interaction != 0)
+	{
+		otherSquare.upRight.image_alpha = 1;
+		otherSquare.upRight.activated = true;
+		otherSquare.upRight.image_blend = otherSquare.upRight.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.upRight);
+	}
+	//right
+	if (otherSquare.right != 0 && otherSquare.right.interaction != 0)
+	{
+		otherSquare.right.image_alpha = 1;
+		otherSquare.right.activated = true;
+		otherSquare.right.image_blend = otherSquare.right.interactionColor;
+		
+		ds_list_add(otherSquare.activatedSquares, otherSquare.right);
 	}
 	
 	show_debug_message("Current Square: " + string(currentSquare.coordinate.x) + ", " + string(currentSquare.coordinate.y));
