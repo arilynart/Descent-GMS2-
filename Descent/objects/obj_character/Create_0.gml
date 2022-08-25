@@ -15,3 +15,7 @@ moveDown = 0;
 
 velocityX = 0;
 velocityY = 0;
+
+aiMind = 0;
+aiGoal = -1;
+aiThreat = 0;

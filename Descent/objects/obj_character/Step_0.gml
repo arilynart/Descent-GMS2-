@@ -10,7 +10,7 @@ if (global.InCombat)
 		{
 			moveTarget = ds_queue_dequeue(moveQueue);
 			move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
-			show_debug_message("No target. Dequeueing next target: " + string(moveTarget));
+			//show_debug_message("No target. Dequeueing next target: " + string(moveTarget));
 		}
 		else if (moveTarget != 0)
 		{
@@ -19,7 +19,7 @@ if (global.InCombat)
 			{
 				move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
 			
-				show_debug_message("arrived at target. Restting variables.");
+				//show_debug_message("arrived at target. Restting variables.");
 				currentSquare.character = 0;
 				moveTarget.character = id;
 				currentSquare = moveTarget;
@@ -31,7 +31,7 @@ if (global.InCombat)
 			else if (x != moveTarget.x || y != moveTarget.y)
 			{
 				move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
-				show_debug_message("Not yet arrived at target. Moving.");
+				//show_debug_message("Not yet arrived at target. Moving.");
 
 			}
 		
@@ -40,8 +40,18 @@ if (global.InCombat)
 		else if (ds_queue_empty(moveQueue))
 		{
 			speed = 0;
-			show_debug_message("Queue empty. Ending movement.");
+			//show_debug_message("Queue empty. Ending movement.");
 			moving = false;
+			
+			if (ds_list_size(global.EffectList) > 0)
+			{
+				EndEffect();
+			}
+			
+			if (maxMove > 0 && ds_list_find_value(global.Turns, 0).character == id)
+			{
+				currentSquare.Select();
+			}
 		}
 	}
 }
@@ -137,7 +147,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		ds_list_add(otherSquare.activatedSquares, otherSquare.right);
 	}
 	
-	show_debug_message("Current Square: " + string(currentSquare.coordinate.x) + ", " + string(currentSquare.coordinate.y));
+	//show_debug_message("Current Square: " + string(currentSquare.coordinate.x) + ", " + string(currentSquare.coordinate.y));
 	
 	if (currentSquare.encounterTrigger >= 0)
 	{
@@ -288,7 +298,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		velocityY = 0;
 	}
 	
-	show_debug_message("coordinates: (" + string(x) + ", " + string (y) + ") | velocityY: " + string(velocityY));
+	//show_debug_message("coordinates: (" + string(x) + ", " + string (y) + ") | velocityY: " + string(velocityY));
 
 	if (velocityX != 0)
 	{

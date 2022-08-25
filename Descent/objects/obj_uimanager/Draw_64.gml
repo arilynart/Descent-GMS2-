@@ -28,6 +28,7 @@ if (displayDialogue && dialogueLength > 0)
 		draw_set_color(c_white);
 	
 		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
 		
 		//draw name
 		draw_set_font(fnt_Cambria24);
@@ -243,6 +244,7 @@ else
 								
 								
 									draw_set_halign(fa_right);
+									draw_set_valign(fa_top);
 									draw_set_font(fnt_Cambria24);
 								
 									draw_text_outline(contentButton.right, contentButton.top, string(fetchedItem.quantity), c_black, 1);
@@ -291,7 +293,8 @@ else
 													- (quarterY / 2) - (allyRadius / 2), 
 													itemScale, itemScale, image_angle, c_white, 1);
 												
-									draw_set_halign(fa_center)
+									draw_set_halign(fa_center);
+									draw_set_valign(fa_top);
 									draw_set_font(fnt_Cambria24);
 									draw_text(infoPanelX, infoPanelY - (quarterY / 4), fetchedItem.name);
 									draw_set_font(fnt_Cambria16);
@@ -477,6 +480,7 @@ else
 											draw_set_color(c_black);
 											draw_set_font(fnt_Cambria24O);
 											draw_set_halign(fa_center);
+											draw_set_valign(fa_top);
 										
 											draw_text(fullX - thirdX, halfY - 12, string(splitValue));
 										
@@ -504,7 +508,7 @@ else
 			var turnX = fullX - allyRadius;
 
 			draw_set_color(c_black);
-			draw_roundrect(turnX, quarterY, fullX, eighthY + (allyRadius * 2 * turnSize), false);
+			draw_roundrect(turnX, eighthY, fullX, eighthY + (allyRadius * 2 * (turnSize - 1)), false);
 			
 			for (var i = 0; i < turnSize; i++)
 			{
@@ -519,9 +523,45 @@ else
 								turn.character.characterStats.uiScale, turn.character.characterStats.uiScale, 
 								image_angle, c_white, 1);
 			}
+			
+			if (ds_list_find_value(global.Turns, 0).character.characterStats.team == CharacterTeams.Ally)
+			{
+				//end turn button
+				endTurnButton =
+				{
+					left : 0,
+					top : fullY - quarterY,
+					right : quarterY,
+					bottom : fullY
+				}
+				
+				
+				var endTurnX = 0;
+				var endTurnY = fullY;
+				
+				if (mouseX >= endTurnButton.left && mouseX <= endTurnButton.right
+				 && mouseY >= endTurnButton.top && mouseY <= endTurnButton.bottom)
+				{
+					draw_set_color(c_dkgray);
+				}
+				else draw_set_color(c_black);
+				
+				draw_circle(endTurnX, endTurnY, quarterY, false);
+				
+				draw_set_color(c_white);
+				draw_set_halign(fa_center);
+				draw_set_valign(fa_middle);
+				draw_set_font(fnt_Cambria24);
+				draw_text_transformed(eighthY - font_get_size(draw_get_font()), 
+									  fullY - eighthY + font_get_size(draw_get_font()), "End Turn", 
+									  1, 1, -45);
+									  
+
+			}
+			else
+			{
+				endTurnButton = 0;
+			}
 		}
 	}
 }
-
-
-

@@ -5,7 +5,7 @@ if (global.UiManager.displayDialogue) LockCamera(1);
 var cameraX = camera_get_view_x(camera) + (camera_get_view_width(camera) / 2);
 var cameraY = camera_get_view_y(camera) + (camera_get_view_height(camera) / 2);
 
-show_debug_message("Camera Lock: " + string(alarm_get(0)));
+//show_debug_message("Camera Lock: " + string(alarm_get(0)));
 
 if (global.InCombat && alarm_get(0) <= 0)
 {

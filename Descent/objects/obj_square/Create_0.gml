@@ -160,8 +160,8 @@ function ParseSquare(square, parseDistance, source)
 {
 	//show_debug_message("Parsing Square: " + string(square));
 	if (square != 0 && square.character == 0
-	&& ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
-	|| parseDistance < square.distance))
+	 && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
+	 || parseDistance < square.distance))
 	{
 		//show_debug_message("Square is valid: " + string(square));
 		
@@ -170,10 +170,83 @@ function ParseSquare(square, parseDistance, source)
 		ds_queue_enqueue(parseQueue, square);
 		ds_list_add(parsedCoordinates, square.coordinate);
 	}
-	else
+	else if (square != 0 && square.character != 0
+		  && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
+		  || parseDistance < square.distance))
 	{
 		//show_debug_message("Square is invalid.");
 		
+		square.image_alpha = 1;
+		square.activated = true;
+		
+		if (square.interaction != 0)
+		{
+			square.image_blend = interactionColor;
+			
+		}
+		else
+		{
+			square.image_blend = c_lime;
+		}
+		
+		square.distance = parseDistance;
+		square.closestToTarget = source;
+		ds_list_add(activatedSquares, square);
+		ds_list_add(parsedCoordinates, square.coordinate);
 	}
 }
 #endregion
+
+function Select()
+{
+	show_debug_message("Select Square: " + string(coordinate.x) + ", " + string(coordinate.y));
+	if (activated && global.SelectSquareExecute != 0)
+	{
+		if (interaction == 0)
+		{
+			global.SelectSquareExecute(self);
+		}
+		return;
+	}
+
+	if (character != 0) 
+	{
+		global.cameraTarget.followingCharacter = character;
+
+		//selected character. highlight grid for movement.
+		if (activated == false && character.moving == false && character.aiMind == 0
+		 && global.InCombat && character == ds_list_find_value(global.Turns, 0).character)
+		{
+			if (map.movingCharacter != 0)
+			{
+				map.movingCharacter.currentSquare.Deactivate();
+				map.movingCharacter = 0;
+			}
+			
+			global.selectedCharacter = character;
+			global.selectedSquare = self;
+			map.movingCharacter = character;
+			Activate(self, character.maxMove);
+		}
+	}
+	else if (activated && interaction != 0)
+	{
+		interaction.Execute(interaction);
+	}
+	else if (activated && map.movingCharacter != 0 && character == 0 && interaction == 0)
+	{
+		//if a character is already selected and we're waiting to move, move.
+		show_debug_message("Moving " + string(map.movingCharacter) + " to " + string(coordinate));
+		
+		var moveEffect = global.BaseEffect();
+		moveEffect.character = map.movingCharacter;
+		moveEffect.target = self;
+		moveEffect.Start = method(global, global.MoveEffect);
+		
+		AddEffect(moveEffect);
+		
+		map.movingCharacter = 0;
+		
+		AutoEndTurn();
+	}
+}

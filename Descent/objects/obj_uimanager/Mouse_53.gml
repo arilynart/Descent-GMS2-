@@ -5,6 +5,21 @@ if (global.SquareLock) return;
 if (displayDialogue) AdvanceDialogue();
 else
 {
+	if (endTurnButton != 0)
+	{
+		var button = endTurnButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			var endTurn = global.BaseEffect();
+			endTurn.Start = method(global, global.EndTurnEffect);
+		
+			AddEffect(endTurn);
+		}
+	}
+	
 	for (var i = 0; (i < 6 && i < array_length(global.Allies)); i++)
 	{
 		var button = uiCharacterButtons[i];
