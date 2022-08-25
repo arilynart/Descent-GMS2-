@@ -1,4 +1,4 @@
-/// @description Spawn nodes for editing walls.
+	/// @description Spawn nodes for editing walls.
 
 map = instance_find(obj_Map, 0);
 
@@ -84,8 +84,26 @@ forsakenSoul0.spawnY = 24;
 var forsakenSoul1 = global.FindCharacter(CharacterClass.Monster, 0);
 forsakenSoul1.spawnX = 11;
 forsakenSoul1.spawnY = 25;
+var forsakenSoul2 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul2.spawnX = 8;
+forsakenSoul2.spawnY = 24;
+var forsakenSoul3 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul3.spawnX = 8;
+forsakenSoul3.spawnY = 25;
+var forsakenSoul4 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul4.spawnX = 14;
+forsakenSoul4.spawnY = 25;
+var forsakenSoul5 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul5.spawnX = 14;
+forsakenSoul5.spawnY = 24;
+var forsakenSoul6 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul6.spawnX = 14;
+forsakenSoul6.spawnY = 22;
+var forsakenSoul7 = global.FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul7.spawnX = 14;
+forsakenSoul7.spawnY = 21;
 
-ds_list_add(characters, forsakenSoul0, forsakenSoul1);
+ds_list_add(characters, forsakenSoul0, forsakenSoul1, /*forsakenSoul2, forsakenSoul3, forsakenSoul4, forsakenSoul5, forsakenSoul6, forsakenSoul7*/);
 
 #endregion
 

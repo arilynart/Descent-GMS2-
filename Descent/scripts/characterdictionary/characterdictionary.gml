@@ -20,6 +20,7 @@ FindCharacter = function(class, index)
 			character.team = CharacterTeams.Ally;
 			character.class = class;
 			character.sprite = spr_Player;
+			character.tempo = 3;
 			array_push(character.packSlots, 1, 1, 1, 2);
 
 			var starterPack1 = {};
@@ -51,9 +52,11 @@ FindCharacter = function(class, index)
 				case 0:
 					var character = global.BaseCharacter();
 					character.name = "Forsaken Soul";
+					character.aiMindIndex = 0;
 					character.team = CharacterTeams.Enemy;
 					character.class = class;
 					character.sprite = spr_ForsakenBanshee;
+					character.tempo = 2;
 					array_push(character.packSlots, 1);
 
 					var starterPack1 = {};
@@ -88,15 +91,15 @@ BaseCharacter = function()
 		spawnX : 0,
 		spawnY : 0,
 		name : "",
+		aiMindIndex : -1,
 		team : CharacterTeams.Neutral,
 		class : CharacterClass.Monster,
 		sprite : spr_Cancel,
 		uiScale : 0.25,
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
-		baseMaxMove : 5,
+		baseMaxMove : 6,
 		tempo : 0
-		
 	}
 	return struct;
 }

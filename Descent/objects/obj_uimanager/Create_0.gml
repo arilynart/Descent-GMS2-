@@ -49,6 +49,8 @@ splitValue = 0;
 confirmSplit = 0;
 cancelSplit = 0;
 
+endTurnButton = 0;
+
 tempItemPack =
 {
 	contents : array_create(1)	
