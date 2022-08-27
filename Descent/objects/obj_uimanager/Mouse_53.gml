@@ -44,6 +44,9 @@ else
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
 			//end turn
+			
+			prepLoad = false;
+			
 			var endTurn = global.BaseEffect();
 			endTurn.Start = method(global, global.EndTurnEffect);
 		
@@ -68,6 +71,19 @@ else
 			dash.character.currentAp--;
 		
 			AddEffect(dash);
+			
+			return;
+		}
+	}
+	if (loadButton != 0)
+	{
+		var button = loadButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			prepLoad = !prepLoad;
 			
 			return;
 		}
@@ -99,6 +115,7 @@ else
 				split = 0;
 			}
 			character.currentSquare.Select();
+			return;
 		}
 	}
 
@@ -129,6 +146,7 @@ else
 					split = 0;
 					
 				}
+				return;
 			}
 		}
 		if (packDraw >= 0)
@@ -169,7 +187,7 @@ else
 						}
 					}
 					//enable drawing for item stuff
-				
+					return;
 				}
 			}
 		
@@ -187,10 +205,11 @@ else
 					
 					
 						ds_list_find_value(global.FindItem(item.type, item.index, item.quantity).methods, i).Execute(character, pack, item);
-					
-						//itemDraw = -1;
+
 						split = 0;
+						return;
 					}
+					
 				}
 			
 				if (split != 0)
@@ -214,17 +233,20 @@ else
 						split.Execute(character, tempItemPack, splitItem);
 					
 						split = 0;
+						return;
 					}
 					else if (mouseX >= cancelSplit.left && mouseX <=  cancelSplit.right
 							 && mouseY >= cancelSplit.top && mouseY <= cancelSplit.bottom)
 					{
 						show_debug_message("Cancel Click");
 						split = 0;
+						return;
 					}
 					else if (mouseX >= splitArea.left && mouseX <= splitArea.right
 						&& mouseY >= splitArea.top && mouseY <= splitArea.bottom)
 					{
 						dragSplit = true;
+						return;
 					}
 				}
 			
@@ -233,9 +255,15 @@ else
 			else
 			{
 				itemDraw = -1;
-			
 			}
 		}
 	}
+
+	var square = instance_position(mouse_x, mouse_y, obj_Square);
 	
+	if ((global.UiLock && global.SquareLock == false) || (square != noone && square.map.blueprint.displaying) || global.UiManager.displayDialogue) return;
+	
+	//show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
+
+	if (square != noone) square.Select();
 }

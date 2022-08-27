@@ -20,9 +20,22 @@ FindCharacter = function(class, index)
 			character.team = CharacterTeams.Ally;
 			character.class = class;
 			character.sprite = spr_Player;
+			character.force = 3;
 			character.endurance = 8;
 			character.vitality = 4;
 			character.tempo = 3;
+			
+			var weapon = 
+			{
+				type : ItemTypes.Weapon,
+				index : 0,
+				quantity : 3,
+				maxQuantity : 1,
+				pack : 0,
+				slot : 0
+			}
+			
+			character.equippedWeapon = weapon;
 			
 			array_push(character.packSlots, 1, 1, 1, 2);
 
@@ -80,7 +93,7 @@ FindCharacter = function(class, index)
 					character.aiMindIndex = 0;
 					character.team = CharacterTeams.Enemy;
 					character.class = class;
-					character.sprite = spr_ForsakenBanshee;
+					character.sprite = spr_CharacterMonster0;
 					character.tempo = 2;
 					array_push(character.packSlots, 1);
 
@@ -123,6 +136,7 @@ BaseCharacter = function()
 		uiScale : 0.25,
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
+		equippedWeapon : 0,
 		baseMaxMove : 6,
 		unlockedCards : array_create(0),
 		nodeDeck : array_create(0),
@@ -132,7 +146,7 @@ BaseCharacter = function()
 		vitality : 1,
 		endurance : 1,
 		tempo : 0,
-		generation : 0
+		generation : 0,
 	}
 	return struct;
 }

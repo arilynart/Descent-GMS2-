@@ -62,6 +62,9 @@ cancelSplit = 0;
 endTurnButton = 0;
 igniteButton = 0;
 dashButton = 0;
+loadButton = 0;
+prepLoad = false;
+loadPacks = 1;
 
 handDraw = true;
 handDrawButton = 0;

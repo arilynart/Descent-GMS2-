@@ -69,8 +69,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Icons",
-    "path": "folders/Sprites/Icons.yy",
+    "name": "Ap",
+    "path": "folders/Sprites/Icons/Ap.yy",
   },
   "resourceVersion": "1.0",
   "name": "spr_Sprint",

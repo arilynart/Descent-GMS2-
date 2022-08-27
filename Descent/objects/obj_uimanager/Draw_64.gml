@@ -1,6 +1,5 @@
 /// @description Draw UI elements.
 
-global.UiLock = false;
 //set mouse gui
 mouseX = device_mouse_x_to_gui(0);
 mouseY = device_mouse_y_to_gui(0);
@@ -304,14 +303,13 @@ else
 				var packSprite = currentPack.sprite;
 				var packScale = (allyRadius) / sprite_get_width(packSprite);
 			
-				draw_sprite_ext(packSprite, 0, packPosX - (allyRadius / 2), 
-								packPosY - (allyRadius / 2), packScale, packScale, image_angle, 
+				draw_sprite_ext(packSprite, 0, packPosX, 
+								packPosY, packScale, packScale, image_angle, 
 								c_white, 1);
 			
 				//display pack contents
 				if (packDraw == j)
 				{
-					global.UiLock = true;
 					var contentPosY = quarterY / 2;
 				
 					uiItemButtons = array_create(0);
@@ -354,8 +352,8 @@ else
 								var itemSprite = fetchedItem.sprite;
 								var itemScale = (allyRadius) / sprite_get_width(itemSprite);
 			
-								draw_sprite_ext(itemSprite, 0, itemPosX - (allyRadius / 2), 
-												itemPosY - (allyRadius / 2), itemScale, itemScale, 
+								draw_sprite_ext(itemSprite, 0, itemPosX, 
+												itemPosY, itemScale, itemScale, 
 												image_angle, c_white, 1);
 									
 								if (fetchedItem.maxQuantity > 1)
@@ -408,8 +406,8 @@ else
 									//item image, name, and description
 									draw_circle(infoPanelX, infoPanelY - (quarterY / 2), 
 												allyRadius, false);
-									draw_sprite_ext(itemSprite, 0, infoPanelX - (allyRadius / 2), infoPanelY 
-													- (quarterY / 2) - (allyRadius / 2), 
+									draw_sprite_ext(itemSprite, 0, infoPanelX, infoPanelY 
+													- (quarterY / 2), 
 													itemScale, itemScale, image_angle, c_white, 1);
 												
 									draw_set_halign(fa_center);
@@ -417,7 +415,8 @@ else
 									draw_set_font(fnt_Cambria24);
 									draw_text(infoPanelX, infoPanelY - (quarterY / 4), fetchedItem.name);
 									draw_set_font(fnt_Cambria16);
-									draw_text(infoPanelX, infoPanelY, fetchedItem.description);
+									var wrappedDesc = global.TextWrap(fetchedItem.description, ceil((halfY / 3) * 1.9));
+									draw_text(infoPanelX, infoPanelY, wrappedDesc.text);
 								
 									if (fetchedItem.maxQuantity > 1) draw_text(infoPanelX, infoPanelY - (division / 2), 
 																		string(fetchedItem.quantity) + " / " 
@@ -682,10 +681,82 @@ else
 				var sprintWidth = sprite_get_width(spr_Sprint);
 				var sprintScale = thirtySecondY / sprintWidth;
 				draw_sprite_ext(spr_Sprint, 0, sprintX, sprintY, sprintScale, sprintScale, 0, c_white, 1);
+				
+				if (global.selectedCharacter.characterStats.equippedWeapon != 0)
+				{
+					var loadX = sixteenthY + thirtySecondY;
+					var loadY = apY + sixteenthY;
+					loadButton =
+					{
+						left : loadX - thirtySecondY,
+						top : loadY - thirtySecondY,
+						right : loadX + thirtySecondY,
+						bottom : loadY + thirtySecondY,
+					}
+
+					if (mouseX >= loadButton.left && mouseX <= loadButton.right
+					 && mouseY >= loadButton.top && mouseY <= loadButton.bottom)
+					{
+						var sprite = spr_Reload;
+						draw_set_color(c_dkgray);
+					}
+					else
+					{
+						var sprite = global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).sprite;
+						draw_set_color(c_black);
+					}
+					draw_circle(loadX, loadY, thirtySecondY, false);
+					
+					var loadWidth = sprite_get_width(sprite);
+					var loadScale = thirtySecondY / loadWidth;
+					draw_sprite_ext(sprite, 0, loadX, loadY, loadScale, loadScale, 0, c_white, 1);
+					
+					if (prepLoad)
+					{
+						draw_set_color(c_black);
+						draw_circle(halfX, halfY, quarterY, false)
+						
+						draw_set_halign(fa_center);
+						draw_set_valign(fa_middle);
+						draw_set_font(fnt_Cambria16)
+						draw_set_color(c_white);
+						draw_text(halfX, halfY - eighthY, "Choose up to " + string(global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).lusiumPerAp) + " to load.");
+						
+						for (var i = 0; i < 4; i++)
+						{
+							var item = global.FindItem(ItemTypes.Lusium, i, 0);
+							var foundQuantity = 0;
+							var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
+							var lusiumY = halfY + sixteenthY;
+							draw_set_color(c_gray);
+							draw_circle(lusiumX, lusiumY, allyRadius, false);
+							var lusiumScale = allyRadius / sprite_get_width(item.sprite);
+							draw_sprite_ext(item.sprite, 0, lusiumX, lusiumY, lusiumScale, lusiumScale, 0, c_white, 1);
+							for (var j = 0; j < array_length(global.selectedCharacter.characterStats.equippedPacks); j++)
+							{
+								var pack = global.selectedCharacter.characterStats.equippedPacks[j];
+								for (var k = 0; k < array_length(pack.contents); k++)
+								{
+									var checkItem = pack.contents[k];
+									if (checkItem != 0 && checkItem.type == ItemTypes.Lusium && checkItem.index == i)
+									{
+										foundQuantity += checkItem.quantity;
+									}
+								}
+							}
+							
+							draw_text_outline(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(foundQuantity), c_black, 1);
+							draw_set_color(c_white);
+							draw_text(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(foundQuantity));
+						}
+					}
+				}
 			}
 			else
 			{
 				dashButton = 0;
+				loadButton = 0;
+				prepLoad = false;
 			}
 			
 			if (ds_list_find_value(global.Turns, 0).character.characterStats.team == CharacterTeams.Ally)

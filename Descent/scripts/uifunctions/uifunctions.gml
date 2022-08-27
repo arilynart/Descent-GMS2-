@@ -9,8 +9,7 @@ function DisplayDialogue(character, dialogue, leftClicked)
 	
 	manager.dialogueCharacter = character;
 	manager.dialogueArray = dialogue;
-	if (leftClicked) manager.dialogueCount = -1;
-	else manager.dialogueCount = 0;
+	manager.dialogueCount = 0;
 	manager.displayDialogue = true;
 }
 
