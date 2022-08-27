@@ -17,11 +17,31 @@ EndTurnEffect = function(effect)
 	turn.character.maxMove = turn.character.characterStats.baseMaxMove;
 	turn.character.currentSquare.Deactivate();	
 	
+	if (turn.character.ignited)
+	{
+		//discard hand, draw new 5
+		var discardHandEffect = global.BaseEffect();
+		discardHandEffect.Start = method(global, global.DiscardWholeHandEffect);
+		discardHandEffect.character = turn.character;
+	
+		AddEffect(discardHandEffect);
+	
+		repeat(5)
+		{
+			var draw = global.BaseEffect();
+			draw.Start = method(global, global.DrawCardEffect);
+			draw.character = turn.character;
+		
+			AddEffect(draw);
+		}
+	}
+	
 	ds_list_delete(global.Turns, 0);
 	ds_list_add(global.Turns, turn);
-	
+
 	var startTurnEffect = global.BaseEffect();
 	startTurnEffect.Start = method(global, global.StartTurnEffect);
+	startTurnEffect.character = ds_list_find_value(global.Turns, 0).character;
 	
 	AddEffect(startTurnEffect);
 	

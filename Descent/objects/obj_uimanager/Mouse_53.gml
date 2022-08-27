@@ -5,6 +5,37 @@ if (global.SquareLock) return;
 if (displayDialogue) AdvanceDialogue();
 else
 {
+	if (igniteButton != 0)
+	{
+		var button = igniteButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			var ignite = global.BaseEffect();
+			ignite.Start = method(global, global.IgniteEffect);
+			ignite.character = global.selectedCharacter
+		
+			AddEffect(ignite);
+			
+			return;
+		}
+	}
+	else if (handDrawButton != 0)
+	{
+		var button = handDrawButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			handDraw = !handDraw;
+			
+			return;
+		}
+	}
+	
 	if (endTurnButton != 0)
 	{
 		var button = endTurnButton;
@@ -17,6 +48,8 @@ else
 			endTurn.Start = method(global, global.EndTurnEffect);
 		
 			AddEffect(endTurn);
+			
+			return;
 		}
 	}
 	
@@ -28,8 +61,10 @@ else
 		if (mouseX >= button.left && mouseX <= button.right
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
+			var character = global.Allies[i]
+			
 			//enable drawing for character stuff
-			if (inventoryDraw == i)
+			if (global.selectedCharacter == character && inventoryDraw == i)
 			{
 				inventoryDraw = -1;
 				packDraw = -1;
@@ -43,6 +78,7 @@ else
 				itemDraw = -1;
 				split = 0;
 			}
+			character.currentSquare.Select();
 		}
 	}
 
@@ -71,6 +107,7 @@ else
 					packDraw = i;
 					itemDraw = -1;
 					split = 0;
+					
 				}
 			}
 		}

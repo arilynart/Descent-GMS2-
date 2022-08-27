@@ -44,6 +44,28 @@ FindCharacter = function(class, index)
 			}
 
 			array_push(character.equippedPacks, starterPack1, starterPack2);
+			
+			var startingNode0 =
+			{
+				class : Classes.BONDING,
+				type : CardTypes.Node,
+				element : Elements.D,
+				rarity : CardRarities.Common,
+				index : 0
+			}
+			var startingNode1 =
+			{
+				class : Classes.BONDING,
+				type : CardTypes.Node,
+				element : Elements.E,
+				rarity : CardRarities.Common,
+				index : 0
+			}
+			
+			array_push(character.unlockedCards, startingNode0, startingNode1);
+			
+			repeat(15) array_push(character.nodeDeck, startingNode0, startingNode1);
+			
 			return character;
 			break;
 		case CharacterClass.Monster:
@@ -99,7 +121,10 @@ BaseCharacter = function()
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
 		baseMaxMove : 6,
-		tempo : 0
+		tempo : 0,
+		unlockedCards : array_create(0),
+		nodeDeck : array_create(0),
+		extraDeck : array_create(0)
 	}
 	return struct;
 }

@@ -112,6 +112,7 @@ function StartCombat(index)
 	
 		var startTurnEffect = global.BaseEffect();
 		startTurnEffect.Start = method(global, global.StartTurnEffect);
+		startTurnEffect.character = ds_list_find_value(global.Turns, 0).character;
 	
 		AddEffect(startTurnEffect);
 	}

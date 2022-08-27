@@ -211,8 +211,10 @@ function Select()
 
 	if (character != 0) 
 	{
+		if (global.selectedCharacter != 0) global.selectedCharacter.currentSquare.Deactivate();
+		
 		global.cameraTarget.followingCharacter = character;
-
+		global.selectedCharacter = character;
 		//selected character. highlight grid for movement.
 		if (activated == false && character.moving == false && character.aiMind == 0
 		 && global.InCombat && character == ds_list_find_value(global.Turns, 0).character)
@@ -223,7 +225,6 @@ function Select()
 				map.movingCharacter = 0;
 			}
 			
-			global.selectedCharacter = character;
 			global.selectedSquare = self;
 			map.movingCharacter = character;
 			Activate(self, character.maxMove);
