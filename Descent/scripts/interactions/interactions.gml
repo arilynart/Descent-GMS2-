@@ -1,10 +1,10 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-function PickupDialogue(interaction)
+function PickupDialogue(square, interaction)
 {
 	var item = interaction.item;
-	var adjacent = global.PlayerAdjacent(other, false);
+	var adjacent = global.PlayerAdjacent(square, false);
 	show_debug_message("Adjacent? " + string(adjacent));
 	var quant = "";
 	if (adjacent != 0)
@@ -14,7 +14,7 @@ function PickupDialogue(interaction)
 		array_push(dialogueArray, "You pick up " + global.FindItem(item.type, item.index, item.quantity).name + quant + ".");
 		AutoPickup(adjacent, item);
 		DisplayDialogue(global.nameless, dialogueArray, true);
-		other.interaction = 0;
+		square.interaction = 0;
 	}
 	else
 	{

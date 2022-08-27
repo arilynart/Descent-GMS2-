@@ -198,7 +198,7 @@ function ParseSquare(square, parseDistance, source)
 }
 #endregion
 
-function Select()
+Select = function()
 {
 	show_debug_message("Select Square: " + string(coordinate.x) + ", " + string(coordinate.y));
 	if (activated && global.SelectSquareExecute != 0)
@@ -233,7 +233,7 @@ function Select()
 	}
 	else if (activated && interaction != 0)
 	{
-		interaction.Execute(interaction);
+		interaction.Execute(self, interaction);
 	}
 	else if (activated && map.movingCharacter != 0 && character == 0 && interaction == 0)
 	{
