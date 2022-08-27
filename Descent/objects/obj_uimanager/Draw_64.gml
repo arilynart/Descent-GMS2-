@@ -53,6 +53,126 @@ if (displayDialogue && dialogueLength > 0)
 }
 else
 {
+		//make the circles into diamonds instead.
+	draw_set_circle_precision(4);
+	
+	//draw card stuff
+	if (global.selectedCharacter != 0 && array_length(global.selectedCharacter.characterStats.nodeDeck) > 0)
+	{
+		var igniteX = fullX - sixteenthY;
+		var igniteY = fullY - sixteenthY;
+		if (!global.selectedCharacter.ignited && global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
+		{
+			//end turn button
+			handDrawButton = 0;
+			igniteButton =
+			{
+				left : igniteX - sixteenthY,
+				top : igniteY - sixteenthY,
+				right : igniteX + sixteenthY,
+				bottom : igniteY + sixteenthY
+			}
+				
+			if (mouseX >= igniteButton.left && mouseX <= igniteButton.right
+				&& mouseY >= igniteButton.top && mouseY <= igniteButton.bottom)
+			{
+				draw_set_color(c_dkgray);
+			}
+			else draw_set_color(c_black);
+				
+			draw_circle(igniteX, igniteY, sixteenthY, false);
+				
+			draw_set_color(c_white);
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_font(fnt_Cambria24);
+			draw_text(igniteX, igniteY, "Ignite");
+									
+		}
+		else
+		{
+			igniteButton = 0;
+			handDrawButton =
+			{
+				left : igniteX - sixteenthY,
+				top : igniteY - sixteenthY,
+				right : igniteX + sixteenthY,
+				bottom : igniteY + sixteenthY
+			}
+			var deckCount = ds_list_size(global.selectedCharacter.nodes);
+			
+			var deckRatio = deckCount / 30;
+			
+			draw_set_color(c_black);
+			draw_circle(igniteX, igniteY, sixteenthY, false);
+			if (mouseX >= handDrawButton.left && mouseX <= handDrawButton.right
+				&& mouseY >= handDrawButton.top && mouseY <= handDrawButton.bottom)
+			{
+				draw_set_color(c_ltgray);
+			}
+			else draw_set_color(deckLightColor);
+			draw_circle(igniteX, igniteY, sixteenthY * deckRatio, false);
+			
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_font(fnt_Bold);
+			var deckString = string(deckCount);
+			draw_text_outline(igniteX, igniteY, deckString, c_black, 1);
+			draw_set_color(c_white);
+			draw_text(igniteX, igniteY, deckString);
+			
+			//cards in hand
+			handButtons = array_create(0);
+			if (handDraw)
+			{
+				var handSize = ds_list_size(global.selectedCharacter.hand);
+				for (var i = 0; i < handSize; i++)
+				{
+					var card = ds_list_find_value(global.selectedCharacter.hand, i);
+				
+					//draw slots
+					var handX = fullX - eighthY - eighthY - (i * sixteenthY);
+					var handY = fullY - sixteenthY;
+					if (i % 2 == 1)
+					{
+						handY = fullY - eighthY - sixteenthY;
+					}
+					
+					var handButton =
+					{
+						left : handX - sixteenthY,
+						top : handY - sixteenthY,
+						right : handX + sixteenthY,
+						bottom : handY + sixteenthY
+					}
+					
+					array_push(handButtons, handButton)
+				
+					if (mouseX >= handButton.left && mouseX <= handButton.right
+						&& mouseY >= handButton.top && mouseY <= handButton.bottom)
+					{
+						DrawCard(fullX - quarterX, eighthY, card);
+						draw_set_color(c_dkgray);
+					}
+					else draw_set_color(c_black);
+					draw_circle(handX, handY, sixteenthY, false);
+				
+					if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
+					{
+						var sprite = card.art;
+					}
+					else
+					{
+						var sprite = spr_Cancel;
+					}
+				
+					var spriteScale =  eighthY / sprite_get_width(sprite);
+					draw_sprite_ext(sprite, 0, handX, handY, spriteScale, spriteScale, image_angle, c_white, 1);
+				}
+			}
+		}
+	}
+	else igniteButton = 0;
 	//draw character selection HUD
 	
 	if (global.ItemToMove != 0)
@@ -62,8 +182,7 @@ else
 		DrawPrompt("Moving " + global.FindItem(global.ItemToMove.type, global.ItemToMove.index, global.ItemToMove.quantity).name + quantityInsert + ".  Right click to cancel.");
 	}
 
-	//make the circles into diamonds instead.
-	draw_set_circle_precision(4);
+
 
 	var outlineRadius = 8;
 

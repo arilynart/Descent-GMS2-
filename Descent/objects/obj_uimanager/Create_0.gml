@@ -1,9 +1,16 @@
 /// @description Initialize
 
+fnt_Bold = font_add("sitka-small.ttf", 24, true, false, 32, 128);
 
 global.UiManager = self;
 global.UiLock = false;
 global.SquareLock = false;
+
+#region colors
+
+deckLightColor = #348CEB;
+
+#endregion
 
 fullX = display_get_gui_width();
 fullY = display_get_gui_height();
@@ -17,8 +24,11 @@ quarterY = halfY / 2;
 eighthX = quarterX / 2;
 eighthY = quarterY / 2;
 
-thirdX = fullX / 3;
-thirdY = fullY / 3;
+sixteenthX = eighthX / 2;
+sixteenthY = eighthY / 2;
+
+thirdX = ceil(fullX / 3);
+thirdY = ceil(fullY / 3);
 
 dialogueCount = 0;
 dialogueArray = array_create(0);
@@ -50,6 +60,11 @@ confirmSplit = 0;
 cancelSplit = 0;
 
 endTurnButton = 0;
+igniteButton = 0;
+
+handDraw = true;
+handDrawButton = 0;
+handButtons = array_create(0);
 
 tempItemPack =
 {

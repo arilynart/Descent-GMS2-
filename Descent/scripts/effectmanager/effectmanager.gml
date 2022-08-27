@@ -22,14 +22,6 @@ function PlayEffect()
 		var firstEffect = ds_list_find_value(global.EffectList, 0);
 		firstEffect.Start(firstEffect);
 	}
-	else
-	{
-		var turn = ds_list_find_value(global.Turns, 0);
-		if (turn.character.aiMind != 0)
-		{
-			AiUpdateGoal(turn.character);
-		}
-	}
 }
 
 function AddEffect(effect)
@@ -44,9 +36,14 @@ function AddEffect(effect)
 function EndEffect()
 {
 	var firstEffect = ds_list_find_value(global.EffectList, 0);
-	ds_list_delete(global.EffectList, 0);
 	firstEffect.End(firstEffect);
+	if (firstEffect.character != 0 && firstEffect.character.aiMind != 0)
+	{
+		AiUpdateGoal(firstEffect.character);
+	}
+	ds_list_delete(global.EffectList, 0);
 	PlayEffect();
+
 }
 
 function EmptyStartEffect(effect)
