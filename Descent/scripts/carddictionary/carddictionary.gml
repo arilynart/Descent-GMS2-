@@ -67,7 +67,7 @@ FindCard = function(class, type, element, rarity, index)
 									{
 										case 0:
 											var card = global.BaseCard(type);
-											card.art = spr_ArtBondingNodeDC0;
+											card.art = spr_ArtBondingNodeDC000;
 											card.class = class;
 											card.type = type;
 											card.element = element;
@@ -101,7 +101,7 @@ FindCard = function(class, type, element, rarity, index)
 										case 0:
 											var card = global.BaseCard(type);
 											card.frame = spr_NodeBgSE;
-											card.art = spr_ArtBondingNodeEC0;
+											card.art = spr_ArtBondingNodeEC000;
 											card.class = class;
 											card.type = type;
 											card.element = element;
