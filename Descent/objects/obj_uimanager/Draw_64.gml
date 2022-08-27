@@ -597,7 +597,7 @@ else
 											splitValue = clamp(ceil(fetchedItem.quantity * splitRatio), 1, fetchedItem.quantity);
 										
 											draw_set_color(c_black);
-											draw_set_font(fnt_Cambria24O);
+											draw_set_font(fnt_Cambria24);
 											draw_set_halign(fa_center);
 											draw_set_valign(fa_top);
 										
@@ -643,6 +643,51 @@ else
 								image_angle, c_white, 1);
 			}
 			
+			//draw AP
+			var apScale = thirtySecondY / sprite_get_width(spr_Ap);
+			var apY = halfY + sixteenthY;
+			draw_sprite_ext(spr_Ap, 0, thirtySecondY, apY, apScale, apScale, 0, c_white, 1);
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_font(fnt_Cambria24)
+			draw_set_color(c_white);
+			draw_text(sixteenthY, apY, string(global.selectedCharacter.currentAp));
+			
+			if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
+			 && global.selectedCharacter == ds_list_find_value(global.Turns, 0).character 
+			 && global.selectedCharacter.currentAp > 0)
+			{
+				//draw AP spenders
+				
+				var sprintX = thirtySecondY;
+				var sprintY = apY + sixteenthY;
+				dashButton =
+				{
+					left : sprintX - thirtySecondY,
+					top : sprintY - thirtySecondY,
+					right : sprintX + thirtySecondY,
+					bottom : sprintY + thirtySecondY,
+				}
+				if (mouseX >= dashButton.left && mouseX <= dashButton.right
+				 && mouseY >= dashButton.top && mouseY <= dashButton.bottom)
+				{
+					draw_set_color(c_dkgray);
+				}
+				else
+				{
+					draw_set_color(c_black);
+				}
+				draw_circle(sprintX, sprintY, thirtySecondY, false);
+				
+				var sprintWidth = sprite_get_width(spr_Sprint);
+				var sprintScale = thirtySecondY / sprintWidth;
+				draw_sprite_ext(spr_Sprint, 0, sprintX, sprintY, sprintScale, sprintScale, 0, c_white, 1);
+			}
+			else
+			{
+				dashButton = 0;
+			}
+			
 			if (ds_list_find_value(global.Turns, 0).character.characterStats.team == CharacterTeams.Ally)
 			{
 				//end turn button
@@ -681,6 +726,8 @@ else
 			{
 				endTurnButton = 0;
 			}
+			
+			
 		}
 	}
 }

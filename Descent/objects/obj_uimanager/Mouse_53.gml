@@ -53,6 +53,26 @@ else
 		}
 	}
 	
+	if (dashButton != 0)
+	{
+		var button = dashButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			var dash = global.BaseEffect();
+			dash.Start = method(global, global.DashEffect);
+			dash.character = global.selectedCharacter;
+			
+			dash.character.currentAp--;
+		
+			AddEffect(dash);
+			
+			return;
+		}
+	}
+	
 	for (var i = 0; (i < 6 && i < array_length(global.Allies)); i++)
 	{
 		var button = uiCharacterButtons[i];

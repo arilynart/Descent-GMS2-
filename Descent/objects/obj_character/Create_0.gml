@@ -1,7 +1,5 @@
 /// @description variables.
 
-characterStats = global.BaseCharacter();
-
 moveSpeed = 18;
 moveQueue = ds_queue_create();
 moving = false;
@@ -30,3 +28,24 @@ play = ds_list_create();
 aiMind = 0;
 aiGoal = -1;
 aiThreat = 0;
+
+hpGrowthValue = 0.35;
+spGrowthValue = 0.65;
+
+//combat variables
+maxHp = function()
+{
+	var calculatedHp = characterStats.vitality + ceil((characterStats.vitality * hpGrowthValue) * characterStats.level);
+	return calculatedHp;
+}
+
+maxSp = function()
+{
+	var calculatedSp = characterStats.endurance + ceil((characterStats.endurance * spGrowthValue) * characterStats.level);
+	return calculatedSp;
+}
+maxAp = 2;
+
+currentHp = maxHp();
+currentSp = maxSp();
+currentAp = maxAp;

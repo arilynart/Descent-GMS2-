@@ -1,6 +1,7 @@
 /// @description Generate the grid
 
 
+randomize();
 //load blueprint
 blueprint = 0;
 blueprint = instance_find(obj_blu_MistyVeil, 0);
@@ -316,11 +317,13 @@ spawnedCharacters = ds_list_create();
 
 //player
 var playerSpawnSquare = squares[blueprint.playerSpawnX, blueprint.playerSpawnY];
-player = instance_create_layer(playerSpawnSquare.x, playerSpawnSquare.y, "Characters", obj_Character);
+player = instance_create_layer(playerSpawnSquare.x, playerSpawnSquare.y, "Characters", obj_Character, 
+{
+	characterStats : global.FindCharacter(CharacterClass.Player, 0)
+});
 player.currentSquare = playerSpawnSquare;
 playerSpawnSquare.character = player;
 global.Player = player;
-player.characterStats = global.FindCharacter(CharacterClass.Player, 0);
 player.sprite_index = player.characterStats.sprite;
 global.selectedCharacter = player;
 
@@ -336,10 +339,12 @@ for (var i = 0; i < characterSize; i++)
 {
 	var cha = ds_list_find_value(blueprint.characters, i);
 	var square = squares[cha.spawnX, cha.spawnY];
-	var newCharacter = instance_create_layer(square.x, square.y, "Characters", obj_Character);
+	var newCharacter = instance_create_layer(square.x, square.y, "Characters", obj_Character, 
+	{
+		characterStats : cha
+	});
 	square.character = newCharacter;
 	newCharacter.currentSquare = square;
-	newCharacter.characterStats = cha;
 	newCharacter.sprite_index = cha.sprite;
 	
 	ds_list_add(spawnedCharacters, newCharacter);

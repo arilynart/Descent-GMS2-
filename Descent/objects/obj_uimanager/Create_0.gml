@@ -21,11 +21,11 @@ halfY = fullY / 2;
 quarterX = halfX / 2;
 quarterY = halfY / 2;
 
-eighthX = quarterX / 2;
 eighthY = quarterY / 2;
 
-sixteenthX = eighthX / 2;
 sixteenthY = eighthY / 2;
+
+thirtySecondY = sixteenthY / 2;
 
 thirdX = ceil(fullX / 3);
 thirdY = ceil(fullY / 3);
@@ -61,6 +61,7 @@ cancelSplit = 0;
 
 endTurnButton = 0;
 igniteButton = 0;
+dashButton = 0;
 
 handDraw = true;
 handDrawButton = 0;

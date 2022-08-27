@@ -20,7 +20,10 @@ FindCharacter = function(class, index)
 			character.team = CharacterTeams.Ally;
 			character.class = class;
 			character.sprite = spr_Player;
+			character.endurance = 8;
+			character.vitality = 4;
 			character.tempo = 3;
+			
 			array_push(character.packSlots, 1, 1, 1, 2);
 
 			var starterPack1 = {};
@@ -121,10 +124,15 @@ BaseCharacter = function()
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),
 		baseMaxMove : 6,
-		tempo : 0,
 		unlockedCards : array_create(0),
 		nodeDeck : array_create(0),
-		extraDeck : array_create(0)
+		extraDeck : array_create(0),
+		level : 1,
+		force : 1,
+		vitality : 1,
+		endurance : 1,
+		tempo : 0,
+		generation : 0
 	}
 	return struct;
 }

@@ -153,6 +153,7 @@ function Deactivate()
 		sq.distance = -1;
 		sq.activated = false;
 		sq.closestToTarget = 0;
+		if (sq.character == map.movingCharacter) map.movingCharacter = 0;
 	}
 }
 
