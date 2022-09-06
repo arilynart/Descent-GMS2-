@@ -44,7 +44,7 @@ function StartCombat(index)
 			
 			//roll initiative
 			var baseInitiative = character.characterStats.tempo * 10;
-			var roll = irandom(9);
+			var roll = irandom(15);
 			var initiativeRoll = baseInitiative + roll;
 			
 			var existingTurnSize = ds_list_size(global.Turns);

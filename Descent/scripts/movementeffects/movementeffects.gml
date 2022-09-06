@@ -4,3 +4,12 @@ MoveEffect = function(effect)
 {
 	MoveCharacter(effect.character, effect.target);
 }
+
+DashEffect = function(effect)
+{
+	//effect.character.currentSquare.Deactivate();
+	effect.character.maxMove += effect.character.characterStats.baseMaxMove;
+	if (global.selectedCharacter == effect.character) effect.character.currentSquare.Select();
+	
+	EndEffect();
+}

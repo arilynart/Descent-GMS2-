@@ -7,7 +7,7 @@ enum ItemTypes
 	Armor,
 	Pack,
 	Consumable,
-	Lumium
+	Lusium
 }
 
 ItemToMove = 0;
@@ -19,13 +19,37 @@ FindItem = function(type, index, quantity)
 		case ItemTypes.Weapon:
 			switch(index)
 			{
+				case 0:
+					var maxQuantity = 3;
+					quantity = clamp(quantity, 1, maxQuantity);
+					var item = global.BaseWeapon();
+					item.name = "Lapis Rod";
+					item.description = "A simple; traditional rod made of lapis stone from Protector's" 
+									 + " Pass. The material's conducivity to mana makes even this basic " 
+								 	 + "medium's potency strong.";
+					item.sprite = spr_Weapon0;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = ds_list_create();
+					item.lusiumPerAp = 2;
+					item.maximumLusium = 9;
+					item.forceRatio = 0.8;
+					
+					ds_list_add(item.methods, Trash, Move, EquipWeapon);
+					
+					return item;
+				break;
 				default:
 					show_error(string(type) + " Item index invalid."  
 							 + " | " + string(index), true);
 					return undefined;
-					break;
+				break;
 			}
-			break;
+		break;
 		case ItemTypes.Armor:
 			switch(index)
 			{
@@ -33,9 +57,9 @@ FindItem = function(type, index, quantity)
 					show_error(string(type) + " Item index invalid."  
 							 + " | " + string(index), true);
 					return undefined;
-					break;
+				break;
 			}
-			break;
+		break;
 		case ItemTypes.Pack:
 			switch(index)
 			{
@@ -43,9 +67,9 @@ FindItem = function(type, index, quantity)
 					show_error(string(type) + " Item index invalid."  
 							 + " | " + string(index), true);
 					return undefined;
-					break;
+				break;
 			}
-			break;
+		break;
 		case ItemTypes.Consumable:
 			switch(index)
 			{
@@ -54,19 +78,17 @@ FindItem = function(type, index, quantity)
 					var maxQuantity = 3;
 					quantity = clamp(quantity, 1, maxQuantity);
 
-					var item =
-					{
-						name : "Medicine",
-						description : "A vial of common herbalist medicine for\ntreating wounds.",
-						sprite : spr_Potions,
-						maxQuantity : maxQuantity,
-						quantity : quantity,
-						index : index,
-						type : type,
-						pack : 0,
-						slot : -1,
-						methods : ds_list_create()
-					}
+					var item = global.BaseItem();
+					item.name = "Medicine";
+					item.description = "A vial of common herbalist medicine for\ntreating wounds.";
+					item.sprite = spr_Potions;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = ds_list_create();
 					
 					var Consume = 
 					{
@@ -76,33 +98,143 @@ FindItem = function(type, index, quantity)
 						Execute : method(global, ConsumeMedicine),
 						split : false
 					}
-					ds_list_add(item.methods, Trash, Move, Place, Consume);
+					ds_list_add(item.methods, Trash, Move, Consume);
 					
 					return item;
-					break;
+				break;
 				default:
 					show_error(string(type) + " Item index invalid."  
 							 + " | " + string(index), true);
 					return undefined;
-					break;
+				break;
 			}
-			break;
-		case ItemTypes.Lumium:
+		break;
+		case ItemTypes.Lusium:
 			switch(index)
 			{
+				case 0:
+					var maxQuantity = 30;
+					quantity = clamp(quantity, 1, maxQuantity);
+
+					var item = global.BaseItem();
+					item.name = "Lusium I";
+					item.description = "The most basic form of Lusium. Can only handle 1 node at a time. Cheap and easy to get, but the worst effectiveness for astromancy. ";
+					item.sprite = spr_Lusium0;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = ds_list_create();
+					
+					ds_list_add(item.methods, Trash, Move);
+					
+					return item;
+				break;
+				case 1:
+					var maxQuantity = 30;
+					quantity = clamp(quantity, 1, maxQuantity);
+
+					var item = global.BaseItem();
+					item.name = "Lusium II";
+					item.description = "This lusium has been slightly refined. Can only handle 2 nodes at a time, but still decent effectiveness for astromancy. ";
+					item.sprite = spr_Lusium1;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = ds_list_create();
+					
+					ds_list_add(item.methods, Trash, Move);
+					
+					return item;
+				break;
+				case 2:
+					var maxQuantity = 30;
+					quantity = clamp(quantity, 1, maxQuantity);
+
+					var item = global.BaseItem();
+					item.name = "Lusium III";
+					item.description = "This lusium has had most impurities removed by an artisan. Can handle up to 3 nodes at a time. ";
+					item.sprite = spr_Lusium2;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = ds_list_create();
+					
+					ds_list_add(item.methods, Trash, Move);
+					
+					return item;
+				break;
+				case 3:
+					var maxQuantity = 30;
+					quantity = clamp(quantity, 1, maxQuantity);
+
+					var item = global.BaseItem();
+					item.name = "Lusium IV";
+					item.description = "This lusium has been perfectly refined by a master artisan. Although not necessary in most situations, this powerful metal can hold up to 4 nodes at a time. ";
+					item.sprite = spr_Lusium3;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = ds_list_create();
+					
+					ds_list_add(item.methods, Trash, Move);
+					
+					return item;
+				break;
 				default:
 					show_error(string(type) + " Item index invalid."  
 							 + " | " + string(index), true);
 					return undefined;
-					break;
+				break;
 			}
-			break;
+		break;
 		default:
 			show_error("Invalid item type.", true);
 			return undefined;
-			break;
+		break;
 		
 	}
+}
+
+BaseItem = function()
+{
+	var item =
+	{
+		name : "",
+		description : "",
+		sprite : spr_Potions,
+		maxQuantity : 1,
+		quantity : 1,
+		index : 0,
+		type : ItemTypes.Consumable,
+		pack : 0,
+		slot : -1,
+		methods : ds_list_create()
+	}
+	return item;
+}
+
+BaseWeapon = function()
+{
+	var item = global.BaseItem();
+	item.lusiumPerAp = 2;
+	item.maximumLusium = 9;
+	item.forceRatio = 0.5;
+					
+	ds_list_add(item.methods, global.Trash, global.Move, global.EquipWeapon);
+					
+	return item;
 }
 
 #region Methods
@@ -325,6 +457,15 @@ ConsumeMedicine = function(character, pack, item)
 #endregion
 
 #region Structs
+
+EquipWeapon =
+{
+	name : "Equip",
+	description : "Equip the weapon.",
+	sprite : spr_Discard,
+	Execute : method(global, ItemDiscard),
+	split : false
+}
 
 Trash = 
 {

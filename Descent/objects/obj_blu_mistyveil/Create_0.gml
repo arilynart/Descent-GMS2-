@@ -9,7 +9,7 @@ interactables = ds_list_create();
 characters = ds_list_create();
 encounters = ds_list_create();
 
-displaying = true;
+displaying = false;
 
 mapWidth = 16;
 mapHeight = 26
@@ -50,8 +50,26 @@ var item0 =
 	pack : 0,
 	slot : 0
 }
+var item1 = 
+{
+	type : ItemTypes.Lusium,
+	index : 0,
+	quantity : 25,
+	maxQuantity : global.FindItem(ItemTypes.Lusium, 0, 1).maxQuantity,
+	pack : 0,
+	slot : 0
+}
+var item2 = 
+{
+	type : ItemTypes.Lusium,
+	index : 1,
+	quantity : 25,
+	maxQuantity : global.FindItem(ItemTypes.Lusium, 0, 1).maxQuantity,
+	pack : 0,
+	slot : 0
+}
 
-firstTestInteractable = 
+var firstTestInteractable = 
 {
 	x: 4,
 	y: 21,
@@ -59,7 +77,7 @@ firstTestInteractable =
 	item: item0,
 	sprite: global.FindItem(item0.type, item0.index, item0.quantity).sprite
 }
-secondTestInteractable = 
+var secondTestInteractable = 
 {
 	x: 4,
 	y: 22,
@@ -68,8 +86,25 @@ secondTestInteractable =
 	sprite: global.FindItem(item0.type, item0.index, item0.quantity).sprite
 }
 
+var thirdTestInteractable = 
+{
+	x: 3,
+	y: 21,
+	Execute: method(id, PickupDialogue),
+	item: item1,
+	sprite: global.FindItem(item1.type, item1.index, 0).sprite
+}
+var fourthTestInteractable = 
+{
+	x: 3,
+	y: 22,
+	Execute: method(id, PickupDialogue),
+	item: item2,
+	sprite: global.FindItem(item2.type, item2.index, 0).sprite
+}
 
-ds_list_add(interactables, firstTestInteractable, secondTestInteractable);
+
+ds_list_add(interactables, firstTestInteractable, secondTestInteractable, thirdTestInteractable, fourthTestInteractable);
 
 #endregion
 

@@ -44,12 +44,150 @@ else
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
 			//end turn
+			
+			prepLoad = false;
+			
 			var endTurn = global.BaseEffect();
 			endTurn.Start = method(global, global.EndTurnEffect);
 		
 			AddEffect(endTurn);
 			
 			return;
+		}
+	}
+	
+	if (dashButton != 0)
+	{
+		var button = dashButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			var dash = global.BaseEffect();
+			dash.Start = method(global, global.DashEffect);
+			dash.character = global.selectedCharacter;
+			
+			dash.character.currentAp--;
+		
+			AddEffect(dash);
+			
+			return;
+		}
+	}
+	if (loadButton != 0)
+	{
+		var button = loadButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			prepLoad = !prepLoad;
+			
+			return;
+		}
+		var lusiumLength = array_length(lusiumButtons);
+		if (lusiumLength > 0)
+		{
+			for (var i = 0; i < lusiumLength; i++)
+			{
+				var button = lusiumButtons[i];
+	
+				//if we're clicking on i's button
+				if (mouseX >= button.left && mouseX <= button.right
+				 && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					if (global.selectedCharacter.loadedQuantity() < global.FindItem(ItemTypes.Weapon, global.selectedCharacter.characterStats.equippedWeapon.index, 0).lusiumPerAp)
+					{
+						show_debug_message("Loading lusium: " + string(i + 1));
+					
+						var fetchItem = 0;
+						for (var k = 0; k < array_length(global.selectedCharacter.characterStats.equippedPacks); k++)
+						{
+							var pack = global.selectedCharacter.characterStats.equippedPacks[k];
+							if (pack != 0 && pack.tier <= tierToLoadFrom)
+							{
+								for (var l = 0; l < array_length(pack.contents); l++)
+								{
+									var item = pack.contents[l];
+									if (item != 0 && item.type == ItemTypes.Lusium && item.index == i)
+									{
+										fetchItem = item;
+										item.quantity--;
+										if (item.quantity <= 0) global.ItemDiscard(global.selectedCharacter, item.pack, item);
+									}
+								}
+							}
+						}
+					
+						if (fetchItem != 0)
+						{
+							//move first instance of lusium inside packs
+							var loadedItem = 0;
+							for (var j = 0; j < array_length(global.selectedCharacter.itemsToLoad); j++)
+							{
+								var item = global.selectedCharacter.itemsToLoad[j];
+								if (item != 0 && item.type == ItemTypes.Lusium && item.index == i)
+								{
+									item.quantity++;
+							
+									loadedItem = item;
+								}
+							}
+
+					
+					
+							if (loadedItem == 0)
+							{
+								//new item
+								var newItem = global.ItemCopy(fetchItem);
+								newItem.quantity = 1;
+								array_push(global.selectedCharacter.itemsToLoad, newItem);
+							}
+						}
+					}
+					
+
+					return;
+					
+				}
+			}
+			
+			if (cancelLoadButton != 0 && global.selectedCharacter.loadedQuantity() > 0)
+			{
+				var button = cancelLoadButton;
+		
+				if (mouseX >= button.left && mouseX <= button.right
+				 && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					global.selectedCharacter.ResetLoaded();
+			
+					return;
+				}
+			}
+			
+			if (confirmLoadButton != 0 && global.selectedCharacter.loadedQuantity() > 0)
+			{
+				var button = confirmLoadButton;
+		
+				if (mouseX >= button.left && mouseX <= button.right
+				 && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					var load = global.BaseEffect();
+					load.Start = method(global, global.LoadWeaponEffect);
+					load.character = global.selectedCharacter;
+					
+					global.selectedCharacter.currentAp--;
+					
+					prepLoad = false;
+		
+					AddEffect(load);
+				
+					return;
+				}
+				
+			}
 		}
 	}
 	
@@ -79,6 +217,7 @@ else
 				split = 0;
 			}
 			character.currentSquare.Select();
+			return;
 		}
 	}
 
@@ -109,6 +248,7 @@ else
 					split = 0;
 					
 				}
+				return;
 			}
 		}
 		if (packDraw >= 0)
@@ -149,7 +289,7 @@ else
 						}
 					}
 					//enable drawing for item stuff
-				
+					return;
 				}
 			}
 		
@@ -167,10 +307,11 @@ else
 					
 					
 						ds_list_find_value(global.FindItem(item.type, item.index, item.quantity).methods, i).Execute(character, pack, item);
-					
-						//itemDraw = -1;
+
 						split = 0;
+						return;
 					}
+					
 				}
 			
 				if (split != 0)
@@ -194,17 +335,20 @@ else
 						split.Execute(character, tempItemPack, splitItem);
 					
 						split = 0;
+						return;
 					}
 					else if (mouseX >= cancelSplit.left && mouseX <=  cancelSplit.right
 							 && mouseY >= cancelSplit.top && mouseY <= cancelSplit.bottom)
 					{
 						show_debug_message("Cancel Click");
 						split = 0;
+						return;
 					}
 					else if (mouseX >= splitArea.left && mouseX <= splitArea.right
 						&& mouseY >= splitArea.top && mouseY <= splitArea.bottom)
 					{
 						dragSplit = true;
+						return;
 					}
 				}
 			
@@ -213,9 +357,15 @@ else
 			else
 			{
 				itemDraw = -1;
-			
 			}
 		}
 	}
+
+	var square = instance_position(mouse_x, mouse_y, obj_Square);
 	
+	if ((global.UiLock && global.SquareLock == false) || (square != noone && square.map.blueprint.displaying) || global.UiManager.displayDialogue) return;
+	
+	//show_debug_message("Square Clicked: " + string(id) + " Coordinate: " + string(coordinate));
+
+	if (square != noone) square.Select();
 }

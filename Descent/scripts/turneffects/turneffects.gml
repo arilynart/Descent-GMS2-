@@ -15,7 +15,9 @@ EndTurnEffect = function(effect)
 {
 	var turn = ds_list_find_value(global.Turns, 0);
 	turn.character.maxMove = turn.character.characterStats.baseMaxMove;
-	turn.character.currentSquare.Deactivate();	
+	turn.character.currentAp = turn.character.maxAp;
+	turn.character.currentSquare.Deactivate();
+	turn.character.ResetLoaded();
 	
 	if (turn.character.ignited)
 	{
@@ -52,9 +54,10 @@ function AutoEndTurn()
 {
 	var turnCharacter = ds_list_find_value(global.Turns, 0).character;
 	var outOfMovement = (turnCharacter.maxMove < 1);
+	var outOfAp = (turnCharacter.currentAp < 1);
 	
 	//if we're out of stuff to do
-	if (outOfMovement)
+	if (outOfMovement && outOfAp)
 	{
 		//end the turn
 		var endTurn = global.BaseEffect();
