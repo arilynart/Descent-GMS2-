@@ -898,32 +898,44 @@ else
 						for (var i = 0; i < handSize; i++)
 						{
 							var card = ds_list_find_value(global.selectedCharacter.hand, i);
-				
+							
 							//draw slots
-							var handX = fullX - eighthY - eighthY - (i * sixteenthY);
-							var handY = fullY - sixteenthY;
-							if (i % 2 == 1)
+							if (dragCard != i)
 							{
-								handY = fullY - eighthY - sixteenthY;
-							}
+								var handX = fullX - eighthY - eighthY - (i * sixteenthY);
+								var handY = fullY - sixteenthY;
+								if (i % 2 == 1)
+								{
+									handY = fullY - eighthY - sixteenthY;
+								}
+								
+								var handButton =
+								{
+									left : handX - sixteenthY,
+									top : handY - sixteenthY,
+									right : handX + sixteenthY,
+									bottom : handY + sixteenthY
+								}
 					
-							var handButton =
-							{
-								left : handX - sixteenthY,
-								top : handY - sixteenthY,
-								right : handX + sixteenthY,
-								bottom : handY + sixteenthY
-							}
-					
-							array_push(handButtons, handButton)
+								array_push(handButtons, handButton)
 				
-							if (mouseX >= handButton.left && mouseX <= handButton.right
-								&& mouseY >= handButton.top && mouseY <= handButton.bottom)
-							{
-								DrawCard(fullX - quarterX, eighthY, card);
-								draw_set_color(c_dkgray);
+								if (mouseX >= handButton.left && mouseX <= handButton.right
+								 && mouseY >= handButton.top && mouseY <= handButton.bottom)
+								{
+									DrawCard(fullX - quarterX, eighthY, card);
+									draw_set_color(c_dkgray);
+								}
+								else draw_set_color(c_black);
 							}
-							else draw_set_color(c_black);
+							else
+							{
+								var handX = mouseX;
+								var handY = mouseY;
+								DrawCard(fullX - quarterX, eighthY, card);
+								draw_set_color(c_black);
+							}
+					
+							
 							draw_circle(handX, handY, sixteenthY, false);
 				
 							if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally)

@@ -34,6 +34,19 @@ else
 			
 			return;
 		}
+		
+		for (var i = 0; i < array_length(handButtons); i++)
+		{
+			var button = handButtons[i];
+		
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				dragCard = i;
+			
+				return;
+			}
+		}
 	}
 	
 	if (endTurnButton != 0)

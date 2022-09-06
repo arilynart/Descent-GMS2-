@@ -69,6 +69,7 @@ tierToLoadFrom = 1;
 confirmLoadButton = 0;
 resetLoadButton = 0;
 
+dragCard = -1;
 handDraw = true;
 handDrawButton = 0;
 handButtons = array_create(0);
