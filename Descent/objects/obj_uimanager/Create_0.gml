@@ -64,7 +64,10 @@ igniteButton = 0;
 dashButton = 0;
 loadButton = 0;
 prepLoad = false;
-loadPacks = 1;
+lusiumButtons = array_create(0);
+tierToLoadFrom = 1;
+confirmLoadButton = 0;
+resetLoadButton = 0;
 
 handDraw = true;
 handDrawButton = 0;

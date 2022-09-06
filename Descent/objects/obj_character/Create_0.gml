@@ -24,15 +24,34 @@ hand = ds_list_create();
 discard = ds_list_create();
 play = ds_list_create();
 
-//ai variables
-aiMind = 0;
-aiGoal = -1;
-aiThreat = 0;
+//lusium
+loadedLusium = ds_list_create();
+itemsToLoad = array_create(0);
 
+loadedQuantity = function()
+{
+	var q = 0;
+	for (var i = 0; i < array_length(itemsToLoad); i++)
+	{
+		var item = itemsToLoad[i];
+		q += item.quantity;
+	}
+	return q;
+}
+
+function ResetLoaded()
+{
+	for (var i = 0; i < array_length(itemsToLoad); i++)
+	{
+		AutoPickup(self, itemsToLoad[i]);
+	}
+	itemsToLoad = array_create(0);
+}
+
+//combat variables
 hpGrowthValue = 0.35;
 spGrowthValue = 0.65;
 
-//combat variables
 maxHp = function()
 {
 	var calculatedHp = characterStats.vitality + ceil((characterStats.vitality * hpGrowthValue) * characterStats.level);
@@ -49,3 +68,9 @@ maxAp = 2;
 currentHp = maxHp();
 currentSp = maxSp();
 currentAp = maxAp;
+
+//ai variables
+aiMind = 0;
+aiGoal = -1;
+aiThreat = 0;
+

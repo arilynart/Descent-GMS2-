@@ -9,7 +9,7 @@ interactables = ds_list_create();
 characters = ds_list_create();
 encounters = ds_list_create();
 
-displaying = true;
+displaying = false;
 
 mapWidth = 16;
 mapHeight = 26
@@ -59,6 +59,15 @@ var item1 =
 	pack : 0,
 	slot : 0
 }
+var item2 = 
+{
+	type : ItemTypes.Lusium,
+	index : 1,
+	quantity : 25,
+	maxQuantity : global.FindItem(ItemTypes.Lusium, 0, 1).maxQuantity,
+	pack : 0,
+	slot : 0
+}
 
 var firstTestInteractable = 
 {
@@ -85,9 +94,17 @@ var thirdTestInteractable =
 	item: item1,
 	sprite: global.FindItem(item1.type, item1.index, 0).sprite
 }
+var fourthTestInteractable = 
+{
+	x: 3,
+	y: 22,
+	Execute: method(id, PickupDialogue),
+	item: item2,
+	sprite: global.FindItem(item2.type, item2.index, 0).sprite
+}
 
 
-ds_list_add(interactables, firstTestInteractable, secondTestInteractable, thirdTestInteractable);
+ds_list_add(interactables, firstTestInteractable, secondTestInteractable, thirdTestInteractable, fourthTestInteractable);
 
 #endregion
 

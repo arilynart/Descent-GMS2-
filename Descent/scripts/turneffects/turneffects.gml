@@ -17,6 +17,7 @@ EndTurnEffect = function(effect)
 	turn.character.maxMove = turn.character.characterStats.baseMaxMove;
 	turn.character.currentAp = turn.character.maxAp;
 	turn.character.currentSquare.Deactivate();
+	turn.character.ResetLoaded();
 	
 	if (turn.character.ignited)
 	{
