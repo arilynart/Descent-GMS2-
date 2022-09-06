@@ -11,3 +11,5 @@ coordinate =
 }
 
 global.grid = false;
+
+if (!map.blueprint.displaying) visible = false;

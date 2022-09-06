@@ -87,6 +87,108 @@ else
 			
 			return;
 		}
+		var lusiumLength = array_length(lusiumButtons);
+		if (lusiumLength > 0)
+		{
+			for (var i = 0; i < lusiumLength; i++)
+			{
+				var button = lusiumButtons[i];
+	
+				//if we're clicking on i's button
+				if (mouseX >= button.left && mouseX <= button.right
+				 && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					if (global.selectedCharacter.loadedQuantity() < global.FindItem(ItemTypes.Weapon, global.selectedCharacter.characterStats.equippedWeapon.index, 0).lusiumPerAp)
+					{
+						show_debug_message("Loading lusium: " + string(i + 1));
+					
+						var fetchItem = 0;
+						for (var k = 0; k < array_length(global.selectedCharacter.characterStats.equippedPacks); k++)
+						{
+							var pack = global.selectedCharacter.characterStats.equippedPacks[k];
+							if (pack != 0 && pack.tier <= tierToLoadFrom)
+							{
+								for (var l = 0; l < array_length(pack.contents); l++)
+								{
+									var item = pack.contents[l];
+									if (item != 0 && item.type == ItemTypes.Lusium && item.index == i)
+									{
+										fetchItem = item;
+										item.quantity--;
+										if (item.quantity <= 0) global.ItemDiscard(global.selectedCharacter, item.pack, item);
+									}
+								}
+							}
+						}
+					
+						if (fetchItem != 0)
+						{
+							//move first instance of lusium inside packs
+							var loadedItem = 0;
+							for (var j = 0; j < array_length(global.selectedCharacter.itemsToLoad); j++)
+							{
+								var item = global.selectedCharacter.itemsToLoad[j];
+								if (item != 0 && item.type == ItemTypes.Lusium && item.index == i)
+								{
+									item.quantity++;
+							
+									loadedItem = item;
+								}
+							}
+
+					
+					
+							if (loadedItem == 0)
+							{
+								//new item
+								var newItem = global.ItemCopy(fetchItem);
+								newItem.quantity = 1;
+								array_push(global.selectedCharacter.itemsToLoad, newItem);
+							}
+						}
+					}
+					
+
+					return;
+					
+				}
+			}
+			
+			if (cancelLoadButton != 0 && global.selectedCharacter.loadedQuantity() > 0)
+			{
+				var button = cancelLoadButton;
+		
+				if (mouseX >= button.left && mouseX <= button.right
+				 && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					global.selectedCharacter.ResetLoaded();
+			
+					return;
+				}
+			}
+			
+			if (confirmLoadButton != 0 && global.selectedCharacter.loadedQuantity() > 0)
+			{
+				var button = confirmLoadButton;
+		
+				if (mouseX >= button.left && mouseX <= button.right
+				 && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					var load = global.BaseEffect();
+					load.Start = method(global, global.LoadWeaponEffect);
+					load.character = global.selectedCharacter;
+					
+					global.selectedCharacter.currentAp--;
+					
+					prepLoad = false;
+		
+					AddEffect(load);
+				
+					return;
+				}
+				
+			}
+		}
 	}
 	
 	for (var i = 0; (i < 6 && i < array_length(global.Allies)); i++)
