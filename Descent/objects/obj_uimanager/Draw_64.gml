@@ -827,6 +827,27 @@ else
 					draw_set_color(c_white);
 					draw_text(loadedQX, loadedQY, string(q));
 				}
+				
+				//pools
+				var sortedPools = global.SortPools(global.selectedCharacter);
+				var poolLength = array_length(sortedPools);
+				if (poolLength > 0)
+				{
+					for (var i = 0; i < poolLength; i++)
+					{
+						var poolX = fullX - allyRadius * 3;
+						var poolY = halfY + (ceil(allyRadius * 1.25) * i);
+						var pool = sortedPools[i];
+						var poolScale = allyRadius / sprite_get_width(pool.sprite);
+						draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
+						draw_set_halign(fa_middle);
+						draw_set_valign(fa_center);
+						var poolString = string(pool.amount);
+						draw_text_outline(poolX, poolY, poolString, c_black, 1);
+						draw_set_color(c_white);
+						draw_text(poolX, poolY, poolString);
+					}
+				}
 		
 				var igniteX = fullX - sixteenthY;
 				var igniteY = fullY - sixteenthY;
@@ -870,8 +891,8 @@ else
 					}
 					var deckCount = ds_list_size(global.selectedCharacter.nodes);
 			
+					
 					var deckRatio = deckCount / 30;
-			
 					draw_set_color(c_black);
 					draw_circle(igniteX, igniteY, sixteenthY, false);
 					if (mouseX >= handDrawButton.left && mouseX <= handDrawButton.right
@@ -879,13 +900,19 @@ else
 					{
 						draw_set_color(c_ltgray);
 					}
-					else draw_set_color(deckLightColor);
+					else if (dragCard < 0) draw_set_color(deckLightColor);
+					else
+					{
+						var deckRatio = 7 / 8;
+						draw_set_color(c_purple);
+					}
 					draw_circle(igniteX, igniteY, sixteenthY * deckRatio, false);
 			
 					draw_set_halign(fa_center);
 					draw_set_valign(fa_middle);
 					draw_set_font(fnt_Bold);
-					var deckString = string(deckCount);
+					if (dragCard < 0) var deckString = string(deckCount);
+					else var deckString = "Supply";
 					draw_text_outline(igniteX, igniteY, deckString, c_black, 1);
 					draw_set_color(c_white);
 					draw_text(igniteX, igniteY, deckString);

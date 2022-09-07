@@ -29,18 +29,20 @@ else
 		if (mouseX >= button.left && mouseX <= button.right
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
-			//end turn
 			handDraw = !handDraw;
 			
 			return;
 		}
 		
+		
 		for (var i = 0; i < array_length(handButtons); i++)
 		{
+			var lockSearch = ds_list_find_index(lockedHandCards, i);
 			var button = handButtons[i];
 		
 			if (mouseX >= button.left && mouseX <= button.right
-			 && mouseY >= button.top && mouseY <= button.bottom)
+			 && mouseY >= button.top && mouseY <= button.bottom
+			 && lockSearch < 0)
 			{
 				dragCard = i;
 			

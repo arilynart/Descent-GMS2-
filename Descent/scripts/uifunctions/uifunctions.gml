@@ -406,3 +406,74 @@ SortSupplyArray = function(card)
 	
 	return supplyArray;
 }
+
+global.SortPools = function(character)
+{
+	var array = array_create(0);
+	
+	if (character.wPool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_W,
+			amount : character.wPool
+		}
+		array_push(array, struct);
+	}
+	if (character.fPool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_F,
+			amount : character.fPool
+		}
+		array_push(array, struct);
+	}
+	if (character.mPool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_M,
+			amount : character.mPool
+		}
+		array_push(array, struct);
+	}
+	if (character.sPool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_S,
+			amount : character.sPool
+		}
+		array_push(array, struct);
+	}
+	if (character.ePool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_E,
+			amount : character.ePool
+		}
+		array_push(array, struct);
+	}
+	if (character.dPool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_D,
+			amount : character.dPool
+		}
+		array_push(array, struct);
+	}
+	if (character.vPool > 0)
+	{
+		var struct =
+		{
+			sprite : spr_V,
+			amount : character.vPool
+		}
+		array_push(array, struct);
+	}
+	
+	return array;
+}

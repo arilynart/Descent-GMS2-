@@ -24,6 +24,21 @@ hand = ds_list_create();
 discard = ds_list_create();
 play = ds_list_create();
 
+
+
+function EmptyMana()
+{
+	wPool = 0;
+	fPool = 0;
+	mPool = 0;
+	sPool = 0;
+	ePool = 0;
+	dPool = 0;
+	vPool = 0;
+}
+
+EmptyMana();
+
 //lusium
 loadedLusium = ds_list_create();
 itemsToLoad = array_create(0);

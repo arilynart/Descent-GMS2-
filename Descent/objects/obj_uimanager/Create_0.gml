@@ -73,6 +73,7 @@ dragCard = -1;
 handDraw = true;
 handDrawButton = 0;
 handButtons = array_create(0);
+lockedHandCards = ds_list_create();
 
 tempItemPack =
 {
@@ -119,6 +120,28 @@ function DrawPrompt(text)
 		draw_set_font(fnt_Cambria24);
 		draw_text(halfX, topY + yDiff / 8, text);
 	}
+}
+
+function SupplyFromCard(index, character, element, amount)
+{
+	ds_list_add(lockedHandCards, index);
+	
+	var discard = global.BaseEffect();
+	discard.Start = method(global, global.DiscardFromHandEffect);
+	discard.character = character;
+	discard.index = index;
+	
+	AddEffect(discard);
+	
+	var supply = global.BaseEffect();
+	supply.Start = method(global, global.SupplyManaEffect);
+	supply.character = global.selectedCharacter;
+	supply.element = element;
+	supply.amount = amount;
+	
+	AddEffect(supply);
+	
+	
 }
 
 //TestDialogue();
