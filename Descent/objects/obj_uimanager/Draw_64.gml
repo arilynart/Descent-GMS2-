@@ -1,4 +1,5 @@
 /// @description Draw UI elements.
+depth = 110000;
 
 //set mouse gui
 mouseX = device_mouse_x_to_gui(0);
@@ -783,12 +784,29 @@ else
 			//draw card stuff
 			if (global.selectedCharacter != 0 && array_length(global.selectedCharacter.characterStats.nodeDeck) > 0)
 			{
+				loadedButtons = array_create(0);
 				for (var i = 0; i < 4; i++)
 				{
 					var loadedX = fullX - allyRadius
 					var loadedY = halfY - (allyRadius * 3) + (i * (allyRadius * 2));
 					
-					draw_set_color(c_gray);
+					var newButton =
+					{
+						left : loadedX - allyRadius,
+						top : loadedY - allyRadius,
+						right : loadedX + allyRadius,
+						bottom : loadedY + allyRadius
+					}
+					
+					if (dragCard >= 0 
+					 && mouseX > newButton.left && mouseX < newButton.right
+					 && mouseY > newButton.top && mouseY < newButton.bottom)
+					{
+						 draw_set_color(c_ltgray)
+					}
+					else draw_set_color(c_gray);
+					
+					array_push(loadedButtons, newButton);
 					
 					draw_circle(loadedX, loadedY, allyRadius, false);
 					
@@ -921,27 +939,83 @@ else
 					handButtons = array_create(0);
 					if (handDraw)
 					{
+						var burntSize = ds_list_size(global.selectedCharacter.burntLusium);
+						var burntY = fullY - (allyRadius * 2) - eighthY - sixteenthY;
+						var burntX = fullX - quarterY;
+						for (var i = 0; i < burntSize; i++)
+						{
+							var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i);
+							
+							if (i > 0) burntX -= eighthY;
+							
+							
+							for (var j = 0; j < lusium.capacity; j++)
+							{
+								burntX -= (allyRadius * 2 * j);
+								
+								var newButton =
+								{
+									left : burntX - allyRadius,
+									top : burntY - allyRadius,
+									right : burntX + allyRadius,
+									bottom : burntY + allyRadius
+								}
+					
+								ds_list_add(lusium.slotButtons, newButton);
+								draw_set_color(c_black);
+								draw_circle(burntX, burntY, allyRadius, false);
+								if (mouseX >= newButton.left && mouseX <= newButton.right
+								 && mouseY >= newButton.top && mouseY <= newButton.bottom)
+								{
+									
+									draw_set_color(c_gray);
+								}
+								else draw_set_color(c_dkgray);
+								draw_line_width(burntX, burntY - allyRadius, burntX + allyRadius, burntY, outlineRadius);
+								draw_line_width(burntX, burntY + allyRadius, burntX + allyRadius, burntY, outlineRadius);
+								draw_line_width(burntX, burntY - allyRadius, burntX - allyRadius, burntY, outlineRadius);
+								draw_line_width(burntX, burntY + allyRadius, burntX - allyRadius, burntY, outlineRadius);
+								draw_circle(burntX, burntY - allyRadius, outlineRadius, false);
+								draw_circle(burntX, burntY + allyRadius, outlineRadius, false);
+								draw_circle(burntX - allyRadius, burntY, outlineRadius, false);
+								draw_circle(burntX + allyRadius, burntY, outlineRadius, false);
+								
+								if (j < ds_list_size(lusium.heldCards))
+								{
+									var card = ds_list_find_value(lusium.heldCards, j);
+									var spriteScale =  eighthY / sprite_get_width(card.art);
+									draw_sprite_ext(card.art, 0, burntX, burntY, spriteScale, spriteScale, 0, c_white, 1);
+									if (mouseX >= newButton.left && mouseX <= newButton.right
+									 && mouseY >= newButton.top && mouseY <= newButton.bottom)
+									{
+										DrawCard(fullX - quarterX, eighthY, card);
+									}
+								}
+							}
+						}
+						
 						var handSize = ds_list_size(global.selectedCharacter.hand);
 						for (var i = 0; i < handSize; i++)
 						{
 							var card = ds_list_find_value(global.selectedCharacter.hand, i);
-							
+							var handX = fullX - quarterY - (i * allyRadius);
+							var handY = fullY - sixteenthY;
+							if (i % 2 == 1)
+							{
+								handY = fullY - (allyRadius * 2) - sixteenthY;
+							}
 							//draw slots
 							if (dragCard != i)
 							{
-								var handX = fullX - eighthY - eighthY - (i * sixteenthY);
-								var handY = fullY - sixteenthY;
-								if (i % 2 == 1)
-								{
-									handY = fullY - eighthY - sixteenthY;
-								}
+								var artX = handX;
+								var artY = handY;
 								
 								var handButton =
 								{
-									left : handX - sixteenthY,
-									top : handY - sixteenthY,
-									right : handX + sixteenthY,
-									bottom : handY + sixteenthY
+									left : handX - allyRadius,
+									top : handY - allyRadius,
+									right : handX + allyRadius,
+									bottom : handY + allyRadius
 								}
 					
 								array_push(handButtons, handButton)
@@ -956,14 +1030,25 @@ else
 							}
 							else
 							{
-								var handX = mouseX;
-								var handY = mouseY;
+								var artX = mouseX;
+								var artY = mouseY;
 								DrawCard(fullX - quarterX, eighthY, card);
 								draw_set_color(c_black);
 							}
-					
 							
-							draw_circle(handX, handY, sixteenthY, false);
+							draw_circle(handX, handY, allyRadius, false);
+							
+							if (global.CheckAvailableMana(global.selectedCharacter, card)) draw_set_color(deckLightColor);	
+							else draw_set_color(c_dkgray);
+							
+							draw_line_width(handX, handY - allyRadius, handX + allyRadius, handY, outlineRadius);
+							draw_line_width(handX, handY + allyRadius, handX + allyRadius, handY, outlineRadius);
+							draw_line_width(handX, handY - allyRadius, handX - allyRadius, handY, outlineRadius);
+							draw_line_width(handX, handY + allyRadius, handX - allyRadius, handY, outlineRadius);
+							draw_circle(handX, handY - allyRadius, outlineRadius, false);
+							draw_circle(handX, handY + allyRadius, outlineRadius, false);
+							draw_circle(handX - allyRadius, handY, outlineRadius, false);
+							draw_circle(handX + allyRadius, handY, outlineRadius, false);
 				
 							if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
 							{
@@ -975,8 +1060,10 @@ else
 							}
 				
 							var spriteScale =  eighthY / sprite_get_width(sprite);
-							draw_sprite_ext(sprite, 0, handX, handY, spriteScale, spriteScale, image_angle, c_white, 1);
+							draw_sprite_ext(sprite, 0, artX, artY, spriteScale, spriteScale, 0, c_white, 1);
 						}
+						
+						
 					}
 				}
 			}

@@ -18,7 +18,7 @@ EndTurnEffect = function(effect)
 	turn.character.currentAp = turn.character.maxAp;
 	turn.character.currentSquare.Deactivate();
 	turn.character.ResetLoaded();
-	turn.character.EmptyMana();
+
 	ds_list_clear(global.UiManager.lockedHandCards);
 	
 	if (turn.character.ignited)
@@ -57,7 +57,7 @@ function AutoEndTurn()
 	var turnCharacter = ds_list_find_value(global.Turns, 0).character;
 	var outOfMovement = (turnCharacter.maxMove < 1);
 	var outOfAp = (turnCharacter.currentAp < 1);
-	var outOfCards = (ds_list_size(turnCharacter.hand) == 0);
+	var outOfCards = (turnCharacter.ignited && ds_list_size(turnCharacter.hand) == 0);
 	
 	//if we're out of stuff to do
 	if (outOfMovement && outOfAp && outOfCards)  

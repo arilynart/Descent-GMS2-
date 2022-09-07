@@ -29,6 +29,32 @@ IgniteEffect = function(effect)
 	EndEffect();
 }
 
+BurnLusiumEffect = function(effect)
+{
+	var newLusium =
+	{
+		capacity : effect.lusiumIndex + 1,
+		heldCards : ds_list_create(),
+		slotButtons : ds_list_create()
+	}
+	
+	ds_list_add(effect.character.burntLusium, newLusium);
+	
+	EndEffect();
+}
+
+PlayNodeEffect = function(effect)
+{
+	var card = ds_list_find_value(effect.character.hand, effect.index);
+
+	var lusium = ds_list_find_value(effect.character.burntLusium, effect.lusiumIndex);
+	ds_list_add(lusium.heldCards, card);
+	
+	ds_list_delete(effect.character.hand, effect.index);
+				
+	EndEffect();
+}
+
 DrawCardEffect = function(effect)
 {
 	
@@ -83,6 +109,19 @@ SupplyManaEffect = function(effect)
 			effect.character.vPool += effect.amount;
 		break;
 	}
+	
+	EndEffect();
+}
+
+SpendManaEffect = function(effect)
+{
+	effect.character.wPool = clamp(effect.character.wPool - effect.spendPool.wPool, 0, effect.character.wPool);
+	effect.character.fPool = clamp(effect.character.fPool - effect.spendPool.fPool, 0, effect.character.fPool);
+	effect.character.mPool = clamp(effect.character.mPool - effect.spendPool.mPool, 0, effect.character.mPool);
+	effect.character.sPool = clamp(effect.character.sPool - effect.spendPool.sPool, 0, effect.character.sPool);
+	effect.character.ePool = clamp(effect.character.ePool - effect.spendPool.ePool, 0, effect.character.ePool);
+	effect.character.dPool = clamp(effect.character.dPool - effect.spendPool.dPool, 0, effect.character.dPool);
+	effect.character.vPool = clamp(effect.character.vPool - effect.spendPool.vPool, 0, effect.character.vPool);
 	
 	EndEffect();
 }

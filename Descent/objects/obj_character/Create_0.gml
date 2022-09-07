@@ -22,9 +22,6 @@ extras = ds_list_create();
 removed = ds_list_create();
 hand = ds_list_create();
 discard = ds_list_create();
-play = ds_list_create();
-
-
 
 function EmptyMana()
 {
@@ -40,6 +37,7 @@ function EmptyMana()
 EmptyMana();
 
 //lusium
+burntLusium = ds_list_create();
 loadedLusium = ds_list_create();
 itemsToLoad = array_create(0);
 

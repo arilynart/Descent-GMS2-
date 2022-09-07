@@ -407,7 +407,7 @@ SortSupplyArray = function(card)
 	return supplyArray;
 }
 
-global.SortPools = function(character)
+SortPools = function(character)
 {
 	var array = array_create(0);
 	

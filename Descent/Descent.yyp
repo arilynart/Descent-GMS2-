@@ -95,6 +95,7 @@
     {"id":{"name":"MoveCharacter","path":"scripts/MoveCharacter/MoveCharacter.yy",},"order":0,},
     {"id":{"name":"spr_RuneBgW","path":"sprites/spr_RuneBgW/spr_RuneBgW.yy",},"order":5,},
     {"id":{"name":"spr_RuneBgFM","path":"sprites/spr_RuneBgFM/spr_RuneBgFM.yy",},"order":17,},
+    {"id":{"name":"ManaFunctions","path":"scripts/ManaFunctions/ManaFunctions.yy",},"order":11,},
     {"id":{"name":"CardDictionary","path":"scripts/CardDictionary/CardDictionary.yy",},"order":10,},
     {"id":{"name":"tile_UthyliannWallTop","path":"tilesets/tile_UthyliannWallTop/tile_UthyliannWallTop.yy",},"order":4,},
     {"id":{"name":"spr_RuneBgF","path":"sprites/spr_RuneBgF/spr_RuneBgF.yy",},"order":14,},
