@@ -29,6 +29,32 @@ IgniteEffect = function(effect)
 	EndEffect();
 }
 
+BurnLusiumEffect = function(effect)
+{
+	var newLusium =
+	{
+		capacity : effect.lusiumIndex + 1,
+		heldCards : ds_list_create(),
+		slotButtons : ds_list_create()
+	}
+	
+	ds_list_add(effect.character.burntLusium, newLusium);
+	
+	EndEffect();
+}
+
+PlayNodeEffect = function(effect)
+{
+	var card = ds_list_find_value(effect.character.hand, effect.index);
+
+	var lusium = ds_list_find_value(effect.character.burntLusium, effect.lusiumIndex);
+	ds_list_add(lusium.heldCards, card);
+	
+	ds_list_delete(effect.character.hand, effect.index);
+				
+	EndEffect();
+}
+
 DrawCardEffect = function(effect)
 {
 	
@@ -57,6 +83,49 @@ DrawCardEffect = function(effect)
 	EndEffect();
 }
 
+SupplyManaEffect = function(effect)
+{
+	switch (effect.element)
+	{
+		case Elements.W:
+			effect.character.wPool += effect.amount;
+		break;
+		case Elements.F:
+			effect.character.fPool += effect.amount;
+		break;
+		case Elements.M:
+			effect.character.mPool += effect.amount;
+		break;
+		case Elements.S:
+			effect.character.sPool += effect.amount;
+		break;
+		case Elements.E:
+			effect.character.ePool += effect.amount;
+		break;
+		case Elements.D:
+			effect.character.dPool += effect.amount;
+		break;
+		case Elements.V:
+			effect.character.vPool += effect.amount;
+		break;
+	}
+	
+	EndEffect();
+}
+
+SpendManaEffect = function(effect)
+{
+	effect.character.wPool = clamp(effect.character.wPool - effect.spendPool.wPool, 0, effect.character.wPool);
+	effect.character.fPool = clamp(effect.character.fPool - effect.spendPool.fPool, 0, effect.character.fPool);
+	effect.character.mPool = clamp(effect.character.mPool - effect.spendPool.mPool, 0, effect.character.mPool);
+	effect.character.sPool = clamp(effect.character.sPool - effect.spendPool.sPool, 0, effect.character.sPool);
+	effect.character.ePool = clamp(effect.character.ePool - effect.spendPool.ePool, 0, effect.character.ePool);
+	effect.character.dPool = clamp(effect.character.dPool - effect.spendPool.dPool, 0, effect.character.dPool);
+	effect.character.vPool = clamp(effect.character.vPool - effect.spendPool.vPool, 0, effect.character.vPool);
+	
+	EndEffect();
+}
+
 DiscardWholeHandEffect = function(effect)
 {
 	while (ds_list_size(effect.character.hand) > 0)
@@ -65,6 +134,42 @@ DiscardWholeHandEffect = function(effect)
 		
 		ds_list_add(effect.character.discard, card);
 		ds_list_delete(effect.character.hand, 0);
+	}
+	
+	EndEffect();
+}
+
+SupplyWholeHandEffect = function(effect)
+{
+	while (ds_list_size(effect.character.hand) > 0)
+	{
+		var card = ds_list_find_value(effect.character.hand, 0);
+		
+		effect.character.wPool += card.wSupply;
+		effect.character.fPool += card.fSupply;
+		effect.character.mPool += card.mSupply;
+		effect.character.sPool += card.sSupply;
+		effect.character.ePool += card.eSupply;
+		effect.character.dPool += card.dSupply;
+		effect.character.vPool += card.vSupply;
+		
+		ds_list_add(effect.character.discard, card);
+		ds_list_delete(effect.character.hand, 0);
+	}
+	
+	EndEffect();
+}
+
+DiscardFromHandEffect = function(effect)
+{
+	var card = ds_list_find_value(effect.character.hand, effect.index);
+	ds_list_add(effect.character.discard, card);
+	ds_list_delete(effect.character.hand, effect.index);
+	
+	var lock = ds_list_find_index(global.UiManager.lockedHandCards, effect.index);
+	if (lock >= 0)
+	{
+		ds_list_delete(global.UiManager.lockedHandCards, lock);
 	}
 	
 	EndEffect();

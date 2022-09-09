@@ -1,5 +1,7 @@
 /// @description move if told to.
 
+depth = -y;
+
 if (global.InCombat)
 {
 	velocityX = 0;

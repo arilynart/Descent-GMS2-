@@ -46,7 +46,8 @@ enum Elements
 	MD,
 	SE,
 	SD,
-	ED
+	ED,
+	V
 }
 
 FindCard = function(class, type, element, rarity, index)

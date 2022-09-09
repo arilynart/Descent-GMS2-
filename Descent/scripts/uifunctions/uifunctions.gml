@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-function DisplayDialogue(character, dialogue, leftClicked)
+function DisplayDialogue(character, dialogue)
 {
 	show_debug_message("Displaying Dialogue from " + string(character.characterStats.name) + ". Array: " 
 					   + string(dialogue));
@@ -29,7 +29,7 @@ function DrawCard(x, y, card)
 	
 	//var quarterY = y + cardHeight / 4;
 	
-	var eighthX = ceil(x + cardWidth / 8);
+	//var eighthX = ceil(x + cardWidth / 8);
 	var eighthY = ceil(y + cardHeight / 8);
 	
 	var sixteenthX = ceil(x + cardWidth / 16);
@@ -236,6 +236,164 @@ function DrawCard(x, y, card)
 	draw_text(x + cardWidth - fontSize * 2, y + cardHeight - fontSize * 2, string(card.index))
 }
 
+function TestDialogue()
+{
+	var testArray = array_create(0);
+	
+	var line1 = "Hello. This is a test. It looks like the dialogue is working correctly.";
+	var line2 = "You've advanced the dialogue. This is my second line.";
+	
+	array_push(testArray, line1, line2);
+	
+	DisplayDialogue(global.Player, testArray);
+}
+
+function DrawPrompt(text)
+{
+	if (text != "")
+	{
+		var topY = fullY - quarterY / 2;
+		var bottomY = fullY - (quarterY / 4)
+		draw_set_color(c_black);
+		draw_roundrect(quarterX, topY, fullX - quarterX, bottomY, false);
+
+		draw_set_color(c_white);
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_top);
+		draw_set_font(fnt_Cambria24);
+		var wrap = global.TextWrap(text, halfX);
+	
+		var wrapCopy = string_copy(wrap.text, 0, string_length(wrap.text));
+		var wrapSplits = array_create(0);
+		var splitBy = "||";
+			
+		for (var slot = 0; string_length(wrapCopy) > 0; slot++)
+		{
+			if (string_pos(splitBy, wrapCopy) > 0)
+			{
+				if (string_pos("\n", wrapCopy) > 0)
+				{
+					var splitString = string_copy(wrapCopy, 1, string_pos("\n", wrapCopy) - 1);
+					array_push(wrapSplits, splitString)
+					wrapCopy = string_delete(wrapCopy, 1, string_pos("\n", wrapCopy));
+				}
+				else
+				{
+					array_push(wrapSplits, wrapCopy);
+					wrapCopy = "";
+				}
+					
+			}
+			else
+			{
+				array_push(wrapSplits, wrapCopy);
+				wrapCopy = "";
+			}
+		}
+			
+			
+		//var topY = yDiff;
+		var imageIndex = 0;
+		for (var section = 0; section < array_length(wrapSplits); section++)
+		{
+			var firstCopy =  wrapSplits[section];
+			var descriptionCopy =  wrapSplits[section];
+				
+			var slot = 0;
+			var splits = array_create(0);
+	
+			var currentX = halfX;
+			var currentY = topY;
+			
+			for (slot = 0; string_length(descriptionCopy) > 0; slot++)
+			{
+				if (string_pos(splitBy, descriptionCopy) > 0)
+				{
+					var splitString = string_copy(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) - 1);
+					array_push(splits, splitString)
+					descriptionCopy = string_delete(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) + 1);
+				}
+				else
+				{
+					array_push(splits, descriptionCopy);
+					descriptionCopy = "";
+				}
+			}
+		
+			var descModifier = 1;
+		
+			for (var j = 0; j < array_length(splits); j++)
+			{
+				if (j % 2 == 1)
+				{
+					//draw image at current spot
+					currentX += string_width(splits[j - 1]);
+					//currentY += string_height(splits[i - 1]);
+			
+					var sprite = wrap.sprites[imageIndex];
+					var spriteWidth  = sprite_get_width(sprite);
+					var imgScale = (font_get_size(draw_get_font()) + descModifier) / spriteWidth;
+					var scaledWidth = sprite_get_width(sprite) * imgScale;
+			
+					draw_sprite_ext(sprite, 0, currentX + ceil(scaledWidth / 1.5), currentY + descModifier + ceil(scaledWidth / 1.5), imgScale, imgScale, 0, c_white, 1);
+			
+					currentX += font_get_size(draw_get_font()) + descModifier;
+					imageIndex++;
+				}
+				else
+				{
+					//draw string
+					draw_text(currentX, currentY, splits[j]);
+				}
+			}
+			topY += string_height(firstCopy);
+		}
+	}
+}
+
+function SupplyFromCard(index, character, element, amount)
+{
+	ds_list_add(lockedHandCards, index);
+	
+	var discard = global.BaseEffect();
+	discard.Start = method(global, global.DiscardFromHandEffect);
+	discard.character = character;
+	discard.index = index;
+	
+	AddEffect(discard);
+	
+	var supply = global.BaseEffect();
+	supply.Start = method(global, global.SupplyManaEffect);
+	supply.character = global.selectedCharacter;
+	supply.element = element;
+	supply.amount = amount;
+	
+	AddEffect(supply);
+	
+	
+}
+
+function PlayHandCard(character, spendPool, handIndex, lusiumIndex)
+{
+	//var card = ds_list_find_value(character.hand, handIndex);
+	
+	//play the card on a new piece of lusium, spend mana
+	var spendMana = global.BaseEffect();
+	spendMana.Start = method(global, global.SpendManaEffect);
+	spendMana.character = global.selectedCharacter;
+	spendMana.spendPool = spendPool;
+						
+	AddEffect(spendMana);
+						
+	var playNode = global.BaseEffect();
+	playNode.Start = method(global, global.PlayNodeEffect);
+	playNode.character = character;
+	playNode.index = handIndex;
+	playNode.lusiumIndex = lusiumIndex;
+	
+	AddEffect(playNode);
+}
+
 TextWrap = function(inputString, maxWidth)
 {
 	var sprites = array_create(0);
@@ -405,4 +563,160 @@ SortSupplyArray = function(card)
 	}
 	
 	return supplyArray;
+}
+
+SortPools = function(character)
+{
+	var array = array_create(0);
+	
+	if (character.wPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.W,
+			sprite : spr_W,
+			amount : character.wPool - global.UiManager.selectSpendPool.wPool
+		}
+		array_push(array, struct);
+	}
+	if (character.fPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.F,
+			sprite : spr_F,
+			amount : character.fPool - global.UiManager.selectSpendPool.fPool
+		}
+		array_push(array, struct);
+	}
+	if (character.mPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.M,
+			sprite : spr_M,
+			amount : character.mPool - global.UiManager.selectSpendPool.mPool
+		}
+		array_push(array, struct);
+	}
+	if (character.sPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.S,
+			sprite : spr_S,
+			amount : character.sPool - global.UiManager.selectSpendPool.sPool
+		}
+		array_push(array, struct);
+	}
+	if (character.ePool > 0)
+	{
+		var struct =
+		{
+			element : Elements.E,
+			sprite : spr_E,
+			amount : character.ePool - global.UiManager.selectSpendPool.ePool
+		}
+		array_push(array, struct);
+	}
+	if (character.dPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.D,
+			sprite : spr_D,
+			amount : character.dPool - global.UiManager.selectSpendPool.dPool
+		}
+		array_push(array, struct);
+	}
+	if (character.vPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.V,
+			sprite : spr_V,
+			amount : character.vPool
+		}
+		array_push(array, struct);
+	}
+	
+	return array;
+}
+
+SortSpendPools = function()
+{
+	var array = array_create(0);
+	
+	if (global.UiManager.selectSpendPool.wPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.W,
+			sprite : spr_W,
+			amount : global.UiManager.selectSpendPool.wPool
+		}
+		array_push(array, struct);
+	}
+	if (global.UiManager.selectSpendPool.fPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.F,
+			sprite : spr_F,
+			amount : global.UiManager.selectSpendPool.fPool
+		}
+		array_push(array, struct);
+	}
+	if (global.UiManager.selectSpendPool.mPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.M,
+			sprite : spr_M,
+			amount : global.UiManager.selectSpendPool.mPool
+		}
+		array_push(array, struct);
+	}
+	if (global.UiManager.selectSpendPool.sPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.S,
+			sprite : spr_S,
+			amount : global.UiManager.selectSpendPool.sPool
+		}
+		array_push(array, struct);
+	}
+	if (global.UiManager.selectSpendPool.ePool > 0)
+	{
+		var struct =
+		{
+			element : Elements.E,
+			sprite : spr_E,
+			amount : global.UiManager.selectSpendPool.ePool
+		}
+		array_push(array, struct);
+	}
+	if (global.UiManager.selectSpendPool.dPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.D,
+			sprite : spr_D,
+			amount : global.UiManager.selectSpendPool.dPool
+		}
+		array_push(array, struct);
+	}
+	if (global.UiManager.selectSpendPool.vPool > 0)
+	{
+		var struct =
+		{
+			element : Elements.V,
+			sprite : spr_V,
+			amount : global.UiManager.selectSpendPool.vPool
+		}
+		array_push(array, struct);
+	}
+	
+	return array;
 }

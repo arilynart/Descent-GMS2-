@@ -11,6 +11,7 @@ moveDown = 0;
 followingCharacter = 0;
 
 camera = view_camera[0];
+camera_set_view_pos(camera, room_width, room_height);
 
 enum ZoomScale 
 {

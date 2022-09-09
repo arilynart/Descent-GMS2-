@@ -67,11 +67,39 @@ prepLoad = false;
 lusiumButtons = array_create(0);
 tierToLoadFrom = 1;
 confirmLoadButton = 0;
-resetLoadButton = 0;
+cancelLoadButton = 0;
 
+loadedButtons = array_create(0);
+dragCard = -1;
 handDraw = true;
 handDrawButton = 0;
 handButtons = array_create(0);
+lockedHandCards = ds_list_create();
+
+spendMana = false;
+manaButtons = ds_list_create();
+revertManaButtons = ds_list_create();
+confirmManaButton = 0;
+cancelManaButton = 0;
+heldCard = -1;
+heldLusium = -1;
+requiredV = 0;
+addedAmounts = { }
+selectSpendPool = { }
+
+function ResetSpendPool(pool)
+{
+	pool.wPool = 0;
+	pool.fPool = 0;
+	pool.mPool = 0;
+	pool.sPool = 0;
+	pool.ePool = 0;
+	pool.dPool = 0;
+	pool.vPool = 0;
+}
+
+ResetSpendPool(selectSpendPool);
+ResetSpendPool(addedAmounts);
 
 tempItemPack =
 {
@@ -91,35 +119,69 @@ global.nameless =
 
 #region Methods
 
-function TestDialogue()
+function SetupForManaSpend(cardIndex, card, lusiumIndex)
 {
-	var testArray = array_create(0);
-	
-	var line1 = "Hello. This is a test. It looks like the dialogue is working correctly.";
-	var line2 = "You've advanced the dialogue. This is my second line.";
-	
-	array_push(testArray, line1, line2);
-	
-	DisplayDialogue(global.Player, testArray, true);
+	spendMana = true;
+	heldCard = cardIndex;
+	heldLusium = lusiumIndex;
+	requiredV += card.vCost;
+	selectSpendPool.wPool += card.wCost;
+	selectSpendPool.fPool += card.fCost;
+	selectSpendPool.mPool += card.mCost;
+	selectSpendPool.sPool += card.sCost;
+	selectSpendPool.ePool += card.eCost;
+	selectSpendPool.dPool += card.dCost;
 }
 
-function DrawPrompt(text)
+function FinishManaSpend()
 {
-	if (text != "")
+	var lusiumIndex = -1;
+	if (heldLusium == 0 || heldLusium == 1 || heldLusium == 2 || heldLusium == 3)
 	{
-		var topY = fullY - quarterY / 2;
-		var bottomY = fullY - (quarterY / 4)
-		draw_set_color(c_black);
-		draw_roundrect(quarterX, topY, fullX - quarterX, bottomY, false);
+		for (var j = 0; j < ds_list_size(global.selectedCharacter.loadedLusium); j++)
+		{
+			var item = ds_list_find_value(global.selectedCharacter.loadedLusium, j);
+			var item = ds_list_find_value(global.selectedCharacter.loadedLusium, j);
+			if (item != 0 && item.type == ItemTypes.Lusium && item.index == heldLusium && item.quantity > 0)
+			{
+				item.quantity--;
+				if (item.quantity <= 0) ds_list_delete(global.selectedCharacter.loadedLusium, j);
+				
+				lusiumIndex = ds_list_size(global.selectedCharacter.burntLusium);
+				var burn = global.BaseEffect();
+				burn.Start = method(global, global.BurnLusiumEffect);
+				burn.character = global.selectedCharacter;
+				burn.lusiumIndex = heldLusium;
 		
-		var yDiff = bottomY - topY;
-		draw_set_color(c_white);
-		draw_set_halign(fa_center);
-		draw_set_font(fnt_Cambria24);
-		draw_text(halfX, topY + yDiff / 8, text);
+				AddEffect(burn);
+				
+				break;
+			}
+		}
+		
+		
+		if (lusiumIndex == -1) CancelManaSpend();
 	}
+	else lusiumIndex = ds_list_find_index(global.selectedCharacter.burntLusium, heldLusium);
+
+	PlayHandCard(global.selectedCharacter, selectSpendPool, heldCard, lusiumIndex);
+	
+	spendMana = false;
+	heldCard = -1;
+	heldLusium = -1;
+	requiredV = 0;
+	ResetSpendPool(selectSpendPool);
+	ResetSpendPool(addedAmounts);
 }
 
-//TestDialogue();
+function CancelManaSpend()
+{
+	spendMana = false;
+	heldCard = -1;
+	heldLusium = -1;
+	requiredV = 0;
+	ResetSpendPool(selectSpendPool);
+	ResetSpendPool(addedAmounts);
+}
 
 #endregion

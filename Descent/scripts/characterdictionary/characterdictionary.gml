@@ -44,7 +44,7 @@ FindCharacter = function(class, index)
 			{
 				sprite = spr_Pack1;
 				tier = 1;
-				width = 1;
+				width = 2;
 				height = 2;
 				contents = array_create(width * height);
 			}

@@ -1,4 +1,5 @@
 /// @description Draw UI elements.
+//depth = 110000;
 
 //set mouse gui
 mouseX = device_mouse_x_to_gui(0);
@@ -42,8 +43,8 @@ if (displayDialogue && dialogueLength > 0)
 		//draw text
 		draw_set_font(fnt_Cambria16);
 		draw_text(topLeftX + textPad, 
-					topLeftY + textPad + namePad + lineWidth + linePad,
-					dialogueArray[dialogueCount]);
+				  topLeftY + textPad + namePad + lineWidth + linePad,
+				  dialogueArray[dialogueCount]);
 	}
 	else
 	{
@@ -783,12 +784,29 @@ else
 			//draw card stuff
 			if (global.selectedCharacter != 0 && array_length(global.selectedCharacter.characterStats.nodeDeck) > 0)
 			{
+				loadedButtons = array_create(0);
 				for (var i = 0; i < 4; i++)
 				{
 					var loadedX = fullX - allyRadius
 					var loadedY = halfY - (allyRadius * 3) + (i * (allyRadius * 2));
 					
-					draw_set_color(c_gray);
+					var newButton =
+					{
+						left : loadedX - allyRadius,
+						top : loadedY - allyRadius,
+						right : loadedX + allyRadius,
+						bottom : loadedY + allyRadius
+					}
+					
+					if (dragCard >= 0 
+					 && mouseX > newButton.left && mouseX < newButton.right
+					 && mouseY > newButton.top && mouseY < newButton.bottom)
+					{
+						 draw_set_color(c_ltgray)
+					}
+					else draw_set_color(c_gray);
+					
+					array_push(loadedButtons, newButton);
 					
 					draw_circle(loadedX, loadedY, allyRadius, false);
 					
@@ -827,7 +845,149 @@ else
 					draw_set_color(c_white);
 					draw_text(loadedQX, loadedQY, string(q));
 				}
-		
+				
+				//pools
+				var sortedPools = global.SortPools(global.selectedCharacter);
+				var poolLength = array_length(sortedPools);
+				ds_list_clear(manaButtons);
+				ds_list_clear(revertManaButtons);
+				confirmManaButton = 0;
+				cancelManaButton = 0;
+				if (poolLength > 0)
+				{
+					for (var i = 0; i < poolLength; i++)
+					{
+						var poolX = fullX - allyRadius * 3;
+						var poolY = halfY + ((allyRadius * 2) * i);
+						var pool = sortedPools[i];
+						
+						if (spendMana)
+						{
+							var promptString = "Pay";
+							var card = ds_list_find_value(global.selectedCharacter.hand, heldCard);
+							
+							repeat(card.vCost)
+							{
+								promptString += "||spr_V||";
+							}
+							
+							DrawPrompt(promptString);
+							
+							var button =
+							{
+								left : poolX - allyRadius,
+								top : poolY - allyRadius,
+								right : poolX + allyRadius,
+								bottom : poolY + allyRadius,
+								element : pool.element
+							}
+							ds_list_add(manaButtons, button);
+							if (mouseX >= button.left && mouseX <= button.right
+							 && mouseY >= button.top && mouseY <= button.bottom)
+							{
+								draw_set_color(c_dkgray);
+								draw_circle(poolX, poolY, allyRadius, false);
+							}
+						}
+						
+						var poolScale = allyRadius / sprite_get_width(pool.sprite);
+						draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
+						draw_set_halign(fa_middle);
+						draw_set_valign(fa_center);
+						var poolString = string(pool.amount);
+						draw_text_outline(poolX, poolY, poolString, c_black, 1);
+						draw_set_color(c_white);
+						draw_text(poolX, poolY, poolString);
+						
+					}
+				}
+				if (spendMana)
+				{
+					//spendPools
+					var sortedPools = global.SortSpendPools();
+					var poolLength = array_length(sortedPools);
+					if (poolLength > 0)
+					{
+						for (var i = 0; i < poolLength; i++)
+						{
+							var poolX = fullX - allyRadius * 5;
+							var poolY = halfY + ((allyRadius * 2) * i);
+							var pool = sortedPools[i];
+							
+							var button =
+							{
+								left : poolX - allyRadius,
+								top : poolY - allyRadius,
+								right : poolX + allyRadius,
+								bottom : poolY + allyRadius,
+								element : pool.element
+							}
+							ds_list_add(revertManaButtons, button)
+							if (mouseX >= button.left && mouseX <= button.right
+								&& mouseY >= button.top && mouseY <= button.bottom)
+							{
+								draw_set_color(c_dkgray);
+								draw_circle(poolX, poolY, allyRadius, false);
+							}
+							
+							var poolScale = allyRadius / sprite_get_width(pool.sprite);
+							draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
+							draw_set_halign(fa_middle);
+							draw_set_valign(fa_center);
+							var poolString = string(pool.amount);
+							draw_text_outline(poolX, poolY, poolString, c_black, 1);
+							draw_set_color(c_white);
+							draw_text(poolX, poolY, poolString);
+						
+						}
+					}
+					
+					var confirmPoolX = fullX - allyRadius * 7;
+					var confirmPoolY = halfY;
+					if (global.CheckSpendPoolForRequirements(ds_list_find_value(global.selectedCharacter.hand, heldCard)))
+					{
+						confirmManaButton =
+						{
+							left : confirmPoolX - allyRadius,
+							top : confirmPoolY - allyRadius,
+							right : confirmPoolX + allyRadius,
+							bottom : confirmPoolY + allyRadius
+						}
+						
+						if (mouseX >= confirmManaButton.left && mouseX <= confirmManaButton.right
+						 && mouseY >= confirmManaButton.top && mouseY <= confirmManaButton.bottom)
+						{
+							draw_set_color(c_ltgray);
+						}
+						else draw_set_color(c_lime);
+					}
+					else draw_set_color(c_green);
+					draw_circle(confirmPoolX, confirmPoolY, allyRadius, false)
+					var confirmPoolScale = allyRadius / sprite_get_width(spr_Confirm);
+					draw_sprite_ext(spr_Confirm, 0, confirmPoolX - (allyRadius / 2), confirmPoolY - (allyRadius / 2), confirmPoolScale, confirmPoolScale, 0, c_black, 1);
+					
+					var cancelPoolX = fullX - allyRadius * 7;
+					var cancelPoolY = halfY + allyRadius * 2;
+					cancelManaButton =
+					{
+						left : cancelPoolX - allyRadius,
+						top : cancelPoolY - allyRadius,
+						right : cancelPoolX + allyRadius,
+						bottom : cancelPoolY + allyRadius
+					}
+						
+					if (mouseX >= cancelManaButton.left && mouseX <= cancelManaButton.right
+						&& mouseY >= cancelManaButton.top && mouseY <= cancelManaButton.bottom)
+					{
+						draw_set_color(c_ltgray);
+					}
+					else draw_set_color(c_red);
+					draw_circle(cancelPoolX, cancelPoolY, allyRadius, false);
+					var cancelPoolScale = allyRadius / sprite_get_width(spr_Cancel);
+					draw_sprite_ext(spr_Cancel, 0, cancelPoolX - (allyRadius / 2), cancelPoolY - (allyRadius / 2), cancelPoolScale, cancelPoolScale, 0, c_black, 1);
+					
+				}
+
 				var igniteX = fullX - sixteenthY;
 				var igniteY = fullY - sixteenthY;
 				if (!global.selectedCharacter.ignited && global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
@@ -870,8 +1030,8 @@ else
 					}
 					var deckCount = ds_list_size(global.selectedCharacter.nodes);
 			
+					
 					var deckRatio = deckCount / 30;
-			
 					draw_set_color(c_black);
 					draw_circle(igniteX, igniteY, sixteenthY, false);
 					if (mouseX >= handDrawButton.left && mouseX <= handDrawButton.right
@@ -879,13 +1039,19 @@ else
 					{
 						draw_set_color(c_ltgray);
 					}
-					else draw_set_color(deckLightColor);
+					else if (dragCard < 0) draw_set_color(deckLightColor);
+					else
+					{
+						var deckRatio = 7 / 8;
+						draw_set_color(c_purple);
+					}
 					draw_circle(igniteX, igniteY, sixteenthY * deckRatio, false);
 			
 					draw_set_halign(fa_center);
 					draw_set_valign(fa_middle);
 					draw_set_font(fnt_Bold);
-					var deckString = string(deckCount);
+					if (dragCard < 0) var deckString = string(deckCount);
+					else var deckString = "Supply";
 					draw_text_outline(igniteX, igniteY, deckString, c_black, 1);
 					draw_set_color(c_white);
 					draw_text(igniteX, igniteY, deckString);
@@ -894,37 +1060,116 @@ else
 					handButtons = array_create(0);
 					if (handDraw)
 					{
+						var burntSize = ds_list_size(global.selectedCharacter.burntLusium);
+						var burntY = fullY - (allyRadius * 2) - eighthY - sixteenthY;
+						var burntX = fullX - quarterY;
+						for (var i = 0; i < burntSize; i++)
+						{
+							var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i);
+							
+							if (i > 0) burntX -= eighthY;
+							
+							
+							for (var j = 0; j < lusium.capacity; j++)
+							{
+								burntX -= (allyRadius * 2 * j);
+								
+								var newButton =
+								{
+									left : burntX - allyRadius,
+									top : burntY - allyRadius,
+									right : burntX + allyRadius,
+									bottom : burntY + allyRadius
+								}
+					
+								ds_list_add(lusium.slotButtons, newButton);
+								draw_set_color(c_black);
+								draw_circle(burntX, burntY, allyRadius, false);
+								if (mouseX >= newButton.left && mouseX <= newButton.right
+								 && mouseY >= newButton.top && mouseY <= newButton.bottom)
+								{
+									
+									draw_set_color(c_gray);
+								}
+								else draw_set_color(c_dkgray);
+								draw_line_width(burntX, burntY - allyRadius, burntX + allyRadius, burntY, outlineRadius);
+								draw_line_width(burntX, burntY + allyRadius, burntX + allyRadius, burntY, outlineRadius);
+								draw_line_width(burntX, burntY - allyRadius, burntX - allyRadius, burntY, outlineRadius);
+								draw_line_width(burntX, burntY + allyRadius, burntX - allyRadius, burntY, outlineRadius);
+								draw_circle(burntX, burntY - allyRadius, outlineRadius, false);
+								draw_circle(burntX, burntY + allyRadius, outlineRadius, false);
+								draw_circle(burntX - allyRadius, burntY, outlineRadius, false);
+								draw_circle(burntX + allyRadius, burntY, outlineRadius, false);
+								
+								if (j < ds_list_size(lusium.heldCards))
+								{
+									var card = ds_list_find_value(lusium.heldCards, j);
+									var spriteScale =  eighthY / sprite_get_width(card.art);
+									draw_sprite_ext(card.art, 0, burntX, burntY, spriteScale, spriteScale, 0, c_white, 1);
+									if (mouseX >= newButton.left && mouseX <= newButton.right
+									 && mouseY >= newButton.top && mouseY <= newButton.bottom)
+									{
+										DrawCard(fullX - quarterX, eighthY, card);
+									}
+								}
+							}
+						}
+						
 						var handSize = ds_list_size(global.selectedCharacter.hand);
 						for (var i = 0; i < handSize; i++)
 						{
 							var card = ds_list_find_value(global.selectedCharacter.hand, i);
-				
-							//draw slots
-							var handX = fullX - eighthY - eighthY - (i * sixteenthY);
+							var handX = fullX - quarterY - (i * allyRadius);
 							var handY = fullY - sixteenthY;
 							if (i % 2 == 1)
 							{
-								handY = fullY - eighthY - sixteenthY;
+								handY = fullY - (allyRadius * 2) - sixteenthY;
 							}
-					
-							var handButton =
+							//draw slots
+							if (dragCard != i)
 							{
-								left : handX - sixteenthY,
-								top : handY - sixteenthY,
-								right : handX + sixteenthY,
-								bottom : handY + sixteenthY
-							}
+								var artX = handX;
+								var artY = handY;
+								
+								var handButton =
+								{
+									left : handX - allyRadius,
+									top : handY - allyRadius,
+									right : handX + allyRadius,
+									bottom : handY + allyRadius
+								}
 					
-							array_push(handButtons, handButton)
+								array_push(handButtons, handButton)
 				
-							if (mouseX >= handButton.left && mouseX <= handButton.right
-								&& mouseY >= handButton.top && mouseY <= handButton.bottom)
-							{
-								DrawCard(fullX - quarterX, eighthY, card);
-								draw_set_color(c_dkgray);
+								if (mouseX >= handButton.left && mouseX <= handButton.right
+								 && mouseY >= handButton.top && mouseY <= handButton.bottom)
+								{
+									DrawCard(fullX - quarterX, eighthY, card);
+									draw_set_color(c_dkgray);
+								}
+								else draw_set_color(c_black);
 							}
-							else draw_set_color(c_black);
-							draw_circle(handX, handY, sixteenthY, false);
+							else
+							{
+								var artX = mouseX;
+								var artY = mouseY;
+								DrawCard(fullX - quarterX, eighthY, card);
+								draw_set_color(c_black);
+							}
+							
+							draw_circle(handX, handY, allyRadius, false);
+							
+							if (global.CheckAvailableMana(global.selectedCharacter, card)) draw_set_color(deckLightColor);	
+							else draw_set_color(c_dkgray);
+							
+							draw_line_width(handX, handY - allyRadius, handX + allyRadius, handY, outlineRadius);
+							draw_line_width(handX, handY + allyRadius, handX + allyRadius, handY, outlineRadius);
+							draw_line_width(handX, handY - allyRadius, handX - allyRadius, handY, outlineRadius);
+							draw_line_width(handX, handY + allyRadius, handX - allyRadius, handY, outlineRadius);
+							draw_circle(handX, handY - allyRadius, outlineRadius, false);
+							draw_circle(handX, handY + allyRadius, outlineRadius, false);
+							draw_circle(handX - allyRadius, handY, outlineRadius, false);
+							draw_circle(handX + allyRadius, handY, outlineRadius, false);
 				
 							if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
 							{
@@ -936,8 +1181,9 @@ else
 							}
 				
 							var spriteScale =  eighthY / sprite_get_width(sprite);
-							draw_sprite_ext(sprite, 0, handX, handY, spriteScale, spriteScale, image_angle, c_white, 1);
+							draw_sprite_ext(sprite, 0, artX, artY, spriteScale, spriteScale, 0, c_white, 1);
 						}
+						
 					}
 				}
 			}
