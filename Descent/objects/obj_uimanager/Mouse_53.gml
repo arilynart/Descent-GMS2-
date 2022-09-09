@@ -5,7 +5,168 @@ if (global.SquareLock) return;
 if (displayDialogue) AdvanceDialogue();
 else
 {
-	if (igniteButton != 0)
+	if (spendMana)
+	{
+		for (var i = 0; i < ds_list_size(manaButtons); i++)
+		{
+			var button = ds_list_find_value(manaButtons, i);
+			
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				if (addedAmounts.wPool + addedAmounts.fPool + addedAmounts.mPool + addedAmounts.sPool + 
+				    addedAmounts.ePool + addedAmounts.dPool + addedAmounts.vPool < requiredV)
+				{
+					switch (button.element)
+					{
+						case Elements.W:
+							if (global.selectedCharacter.wPool - selectSpendPool.wPool > 0)
+							{
+								selectSpendPool.wPool++;
+								addedAmounts.wPool++;
+							}
+						break;
+						case Elements.F:
+							if (global.selectedCharacter.fPool - selectSpendPool.fPool > 0)
+							{
+								selectSpendPool.fPool++;
+								addedAmounts.fPool++;
+							}
+						break;
+						case Elements.M:
+							if (global.selectedCharacter.mPool - selectSpendPool.mPool > 0)
+							{
+								selectSpendPool.mPool++;
+								addedAmounts.mPool++;
+							}
+						break;
+						case Elements.S:
+							if (global.selectedCharacter.sPool - selectSpendPool.sPool > 0)
+							{
+								selectSpendPool.sPool++;
+								addedAmounts.sPool++;
+							}
+						break;
+						case Elements.E:
+							if (global.selectedCharacter.ePool - selectSpendPool.ePool > 0)
+							{
+								selectSpendPool.ePool++;
+								addedAmounts.ePool++;
+							}
+						break;
+						case Elements.D:
+							if (global.selectedCharacter.dPool - selectSpendPool.dPool > 0)
+							{
+								selectSpendPool.dPool++;
+								addedAmounts.dPool++;
+							}
+						break;
+						case Elements.V:
+							if (global.selectedCharacter.vPool - selectSpendPool.vPool > 0)
+							{
+								selectSpendPool.vPool++;
+								addedAmounts.vPool++;
+							}
+						break;
+					}
+					
+				}
+				return;
+			}
+		}
+		for (var i = 0; i < ds_list_size(revertManaButtons); i++)
+		{
+			var button = ds_list_find_value(revertManaButtons, i);
+			
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+
+				switch (button.element)
+				{
+					case Elements.W:
+						if (addedAmounts.wPool > 0)
+						{
+							selectSpendPool.wPool--;
+							addedAmounts.wPool--;
+						}
+					break;
+					case Elements.F:
+						if (addedAmounts.fPool > 0)
+						{
+							selectSpendPool.fPool--;
+							addedAmounts.fPool--;
+						}
+					break;
+					case Elements.M:
+						if (addedAmounts.mPool > 0)
+						{
+							selectSpendPool.mPool--;
+							addedAmounts.mPool--;
+						}
+					break;
+					case Elements.S:
+						if (addedAmounts.sPool > 0)
+						{
+							selectSpendPool.sPool--;
+							addedAmounts.sPool--;
+						}
+					break;
+					case Elements.E:
+						if (addedAmounts.ePool > 0)
+						{
+							selectSpendPool.ePool--;
+							addedAmounts.ePool--;
+						}
+					break;
+					case Elements.D:
+						if (addedAmounts.dPool > 0)
+						{
+							selectSpendPool.dPool--;
+							addedAmounts.dPool--;
+						}
+					break;
+					case Elements.V:
+						if (addedAmounts.vPool > 0)
+						{
+							selectSpendPool.vPool--;
+							addedAmounts.vPool--;
+						}
+					break;
+					
+				}
+				return;
+			}
+		}
+		
+		if (confirmManaButton != 0)
+		{
+			var button = confirmManaButton;
+			
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				FinishManaSpend();
+				
+				return;
+			}
+		}
+		if (cancelManaButton != 0)
+		{
+			var button = cancelManaButton;
+			
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				CancelManaSpend();
+				
+				return;
+			}
+		}
+		
+		return;
+	}
+	else if (igniteButton != 0)
 	{
 		var button = igniteButton;
 		

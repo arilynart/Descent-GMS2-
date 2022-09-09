@@ -76,7 +76,7 @@ FindCard = function(class, type, element, rarity, index)
 											card.title = "TRUST NODE";
 											card.dCost = 1;
 											card.vCost = 1;
-											card.dSupply = 1;
+											card.dSupply = 2;
 											card.typeText = "BONDING NODE - DIVINITY"
 											card.text = "While a bonded monster is within 3||spr_Square|| , this card becomes a COVENANT NODE. ";
 									
@@ -110,7 +110,7 @@ FindCard = function(class, type, element, rarity, index)
 											card.title = "FERVOR NODE";
 											card.eCost = 1;
 											card.vCost = 1;
-											card.eSupply = 1;
+											card.eSupply = 2;
 											card.typeText = "BONDING NODE - ESSENCE"
 											card.text = "When you play this card, you can supply ||spr_E|| to a bonded monster within 3||spr_Square|| . ";
 									

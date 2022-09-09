@@ -25,7 +25,7 @@ EndTurnEffect = function(effect)
 	{
 		//discard hand, draw new 5
 		var discardHandEffect = global.BaseEffect();
-		discardHandEffect.Start = method(global, global.DiscardWholeHandEffect);
+		discardHandEffect.Start = method(global, global.SupplyWholeHandEffect);
 		discardHandEffect.character = turn.character;
 	
 		AddEffect(discardHandEffect);

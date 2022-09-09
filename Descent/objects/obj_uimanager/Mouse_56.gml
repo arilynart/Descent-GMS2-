@@ -1,5 +1,4 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description release drag
 
 dragSplit = false;
 
@@ -45,6 +44,7 @@ if (dragCard >= 0)
 	}
 	else
 	{
+		var droppedCard = false;
 		for (var i = 0; i < array_length(loadedButtons); i++)
 		{
 			var button = loadedButtons[i];
@@ -61,24 +61,22 @@ if (dragCard >= 0)
 						var item = ds_list_find_value(global.selectedCharacter.loadedLusium, j);
 						if (item != 0 && item.type == ItemTypes.Lusium && item.index == i && item.quantity > 0)
 						{
-							item.quantity--;
-							if (item.quantity <= 0) ds_list_delete(global.selectedCharacter.loadedLusium, j);
-							
-							var newLusiumIndex = ds_list_size(global.selectedCharacter.burntLusium);
-							var burn = global.BaseEffect();
-							burn.Start = method(global, global.BurnLusiumEffect);
-							burn.character = global.selectedCharacter;
-							burn.lusiumIndex = i;
-					
-							AddEffect(burn);
-					
+							droppedCard = true;
 							//if there's more than one way to spend mana
 							if (global.CheckForExtraManaTypes(global.selectedCharacter, card))
 							{
 								// let the player choose how to spend it
+								SetupForManaSpend(dragCard, card, i);
 							}
 							else
 							{
+								var newLusiumIndex = ds_list_size(global.selectedCharacter.burntLusium);
+								var burn = global.BaseEffect();
+								burn.Start = method(global, global.BurnLusiumEffect);
+								burn.character = global.selectedCharacter;
+								burn.lusiumIndex = i;
+					
+								AddEffect(burn);
 								var spendPool = global.AutoSpendMana(global.selectedCharacter, card);
 								PlayHandCard(global.selectedCharacter, spendPool, dragCard, newLusiumIndex);
 							}
@@ -89,30 +87,34 @@ if (dragCard >= 0)
 			}
 		}
 		
-		for (var i = 0; i < ds_list_size(global.selectedCharacter.burntLusium); i++)
+		if (!droppedCard)
 		{
-			var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i)
-			var slotSize = ds_list_size(lusium.slotButtons)
-			for (var j = 0; j < slotSize; j++)
+			for (var i = 0; i < ds_list_size(global.selectedCharacter.burntLusium); i++)
 			{
-				var button = ds_list_find_value(lusium.slotButtons, j);
-		
-				if (mouseX >= button.left && mouseX <= button.right
-				 && mouseY >= button.top && mouseY <= button.bottom)
+				var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i)
+				var slotSize = ds_list_size(lusium.slotButtons)
+				for (var j = 0; j < slotSize; j++)
 				{
-					if (ds_list_size(lusium.heldCards) < slotSize && global.CheckAvailableMana(global.selectedCharacter, card))
+					var button = ds_list_find_value(lusium.slotButtons, j);
+		
+					if (mouseX >= button.left && mouseX <= button.right
+					 && mouseY >= button.top && mouseY <= button.bottom)
 					{
-						if (global.CheckForExtraManaTypes(global.selectedCharacter, card))
+						if (ds_list_size(lusium.heldCards) < slotSize && global.CheckAvailableMana(global.selectedCharacter, card))
 						{
-							// let the player choose how to spend it
+							if (global.CheckForExtraManaTypes(global.selectedCharacter, card))
+							{
+								// let the player choose how to spend it
+								SetupForManaSpend(dragCard, card, lusium);
+							}
+							else
+							{
+								var spendPool = global.AutoSpendMana(global.selectedCharacter, card);
+								PlayHandCard(global.selectedCharacter, spendPool, dragCard, i);
+							}
 						}
-						else
-						{
-							var spendPool = global.AutoSpendMana(global.selectedCharacter, card);
-							PlayHandCard(global.selectedCharacter, spendPool, dragCard, i);
-						}
+						break;
 					}
-					break;
 				}
 			}
 		}

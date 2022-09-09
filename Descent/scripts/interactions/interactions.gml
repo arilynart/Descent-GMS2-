@@ -13,13 +13,13 @@ function PickupDialogue(square, interaction)
 		if (item.quantity > 1) quant = " x" + string(item.quantity);
 		array_push(dialogueArray, "You pick up " + global.FindItem(item.type, item.index, item.quantity).name + quant + ".");
 		AutoPickup(adjacent, item);
-		DisplayDialogue(global.nameless, dialogueArray, true);
+		DisplayDialogue(global.nameless, dialogueArray);
 		square.interaction = 0;
 	}
 	else
 	{
 		var dialogueArray = array_create(0);
 		array_push(dialogueArray, "Out of range.");
-		DisplayDialogue(global.nameless, dialogueArray, true);
+		DisplayDialogue(global.nameless, dialogueArray);
 	}
 }

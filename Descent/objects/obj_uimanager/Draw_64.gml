@@ -1,5 +1,5 @@
 /// @description Draw UI elements.
-depth = 110000;
+//depth = 110000;
 
 //set mouse gui
 mouseX = device_mouse_x_to_gui(0);
@@ -43,8 +43,8 @@ if (displayDialogue && dialogueLength > 0)
 		//draw text
 		draw_set_font(fnt_Cambria16);
 		draw_text(topLeftX + textPad, 
-					topLeftY + textPad + namePad + lineWidth + linePad,
-					dialogueArray[dialogueCount]);
+				  topLeftY + textPad + namePad + lineWidth + linePad,
+				  dialogueArray[dialogueCount]);
 	}
 	else
 	{
@@ -849,13 +849,47 @@ else
 				//pools
 				var sortedPools = global.SortPools(global.selectedCharacter);
 				var poolLength = array_length(sortedPools);
+				ds_list_clear(manaButtons);
+				ds_list_clear(revertManaButtons);
+				confirmManaButton = 0;
+				cancelManaButton = 0;
 				if (poolLength > 0)
 				{
 					for (var i = 0; i < poolLength; i++)
 					{
 						var poolX = fullX - allyRadius * 3;
-						var poolY = halfY + (ceil(allyRadius * 1.25) * i);
+						var poolY = halfY + ((allyRadius * 2) * i);
 						var pool = sortedPools[i];
+						
+						if (spendMana)
+						{
+							var promptString = "Pay";
+							var card = ds_list_find_value(global.selectedCharacter.hand, heldCard);
+							
+							repeat(card.vCost)
+							{
+								promptString += "||spr_V||";
+							}
+							
+							DrawPrompt(promptString);
+							
+							var button =
+							{
+								left : poolX - allyRadius,
+								top : poolY - allyRadius,
+								right : poolX + allyRadius,
+								bottom : poolY + allyRadius,
+								element : pool.element
+							}
+							ds_list_add(manaButtons, button);
+							if (mouseX >= button.left && mouseX <= button.right
+							 && mouseY >= button.top && mouseY <= button.bottom)
+							{
+								draw_set_color(c_dkgray);
+								draw_circle(poolX, poolY, allyRadius, false);
+							}
+						}
+						
 						var poolScale = allyRadius / sprite_get_width(pool.sprite);
 						draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
 						draw_set_halign(fa_middle);
@@ -864,9 +898,96 @@ else
 						draw_text_outline(poolX, poolY, poolString, c_black, 1);
 						draw_set_color(c_white);
 						draw_text(poolX, poolY, poolString);
+						
 					}
 				}
-		
+				if (spendMana)
+				{
+					//spendPools
+					var sortedPools = global.SortSpendPools();
+					var poolLength = array_length(sortedPools);
+					if (poolLength > 0)
+					{
+						for (var i = 0; i < poolLength; i++)
+						{
+							var poolX = fullX - allyRadius * 5;
+							var poolY = halfY + ((allyRadius * 2) * i);
+							var pool = sortedPools[i];
+							
+							var button =
+							{
+								left : poolX - allyRadius,
+								top : poolY - allyRadius,
+								right : poolX + allyRadius,
+								bottom : poolY + allyRadius,
+								element : pool.element
+							}
+							ds_list_add(revertManaButtons, button)
+							if (mouseX >= button.left && mouseX <= button.right
+								&& mouseY >= button.top && mouseY <= button.bottom)
+							{
+								draw_set_color(c_dkgray);
+								draw_circle(poolX, poolY, allyRadius, false);
+							}
+							
+							var poolScale = allyRadius / sprite_get_width(pool.sprite);
+							draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
+							draw_set_halign(fa_middle);
+							draw_set_valign(fa_center);
+							var poolString = string(pool.amount);
+							draw_text_outline(poolX, poolY, poolString, c_black, 1);
+							draw_set_color(c_white);
+							draw_text(poolX, poolY, poolString);
+						
+						}
+					}
+					
+					var confirmPoolX = fullX - allyRadius * 7;
+					var confirmPoolY = halfY;
+					if (global.CheckSpendPoolForRequirements(ds_list_find_value(global.selectedCharacter.hand, heldCard)))
+					{
+						confirmManaButton =
+						{
+							left : confirmPoolX - allyRadius,
+							top : confirmPoolY - allyRadius,
+							right : confirmPoolX + allyRadius,
+							bottom : confirmPoolY + allyRadius
+						}
+						
+						if (mouseX >= confirmManaButton.left && mouseX <= confirmManaButton.right
+						 && mouseY >= confirmManaButton.top && mouseY <= confirmManaButton.bottom)
+						{
+							draw_set_color(c_ltgray);
+						}
+						else draw_set_color(c_lime);
+					}
+					else draw_set_color(c_green);
+					draw_circle(confirmPoolX, confirmPoolY, allyRadius, false)
+					var confirmPoolScale = allyRadius / sprite_get_width(spr_Confirm);
+					draw_sprite_ext(spr_Confirm, 0, confirmPoolX - (allyRadius / 2), confirmPoolY - (allyRadius / 2), confirmPoolScale, confirmPoolScale, 0, c_black, 1);
+					
+					var cancelPoolX = fullX - allyRadius * 7;
+					var cancelPoolY = halfY + allyRadius * 2;
+					cancelManaButton =
+					{
+						left : cancelPoolX - allyRadius,
+						top : cancelPoolY - allyRadius,
+						right : cancelPoolX + allyRadius,
+						bottom : cancelPoolY + allyRadius
+					}
+						
+					if (mouseX >= cancelManaButton.left && mouseX <= cancelManaButton.right
+						&& mouseY >= cancelManaButton.top && mouseY <= cancelManaButton.bottom)
+					{
+						draw_set_color(c_ltgray);
+					}
+					else draw_set_color(c_red);
+					draw_circle(cancelPoolX, cancelPoolY, allyRadius, false);
+					var cancelPoolScale = allyRadius / sprite_get_width(spr_Cancel);
+					draw_sprite_ext(spr_Cancel, 0, cancelPoolX - (allyRadius / 2), cancelPoolY - (allyRadius / 2), cancelPoolScale, cancelPoolScale, 0, c_black, 1);
+					
+				}
+
 				var igniteX = fullX - sixteenthY;
 				var igniteY = fullY - sixteenthY;
 				if (!global.selectedCharacter.ignited && global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
@@ -1062,7 +1183,6 @@ else
 							var spriteScale =  eighthY / sprite_get_width(sprite);
 							draw_sprite_ext(sprite, 0, artX, artY, spriteScale, spriteScale, 0, c_white, 1);
 						}
-						
 						
 					}
 				}

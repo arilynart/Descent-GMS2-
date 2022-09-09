@@ -420,3 +420,147 @@ AutoSpendMana = function(character, card)
 	
 	return spendPool;
 }
+
+CheckSpendPoolForRequirements = function(card)
+{
+	var pool = global.UiManager.selectSpendPool;
+	
+	var manaAvailable = false;
+	
+	if (card.type == CardTypes.Node)
+	{
+		var currentW = pool.wPool;
+		var currentF = pool.fPool;
+		var currentM = pool.mPool;
+		var currentS = pool.sPool;
+		var currentE = pool.ePool;
+		var currentD = pool.dPool;
+		var currentV = pool.vPool;
+	
+		var targetW = card.wCost;
+		var targetF = card.fCost;
+		var targetM = card.mCost;
+		var targetS = card.sCost;
+		var targetE = card.eCost;
+		var targetD = card.dCost;
+		var targetV = card.vCost;
+		
+		if (targetW > 0)
+		{
+			if (currentW > 0)
+			{
+				var foundW = clamp(currentW, 0, targetW);
+				
+				targetW -= foundW;
+				currentW -= foundW;
+			}
+		}
+		if (targetF > 0)
+		{
+			if (currentF > 0)
+			{
+				var foundF = clamp(currentF, 0, targetF);
+				
+				targetF -= foundF;
+				currentF -= foundF;
+			}
+		}
+		if (targetM > 0)
+		{
+			if (currentM > 0)
+			{
+				var foundM = clamp(currentM, 0, targetM);
+				
+				targetM -= foundM;
+				currentM -= foundM;
+			}
+		}
+		if (targetS > 0)
+		{
+			if (currentS > 0)
+			{
+				var foundS = clamp(currentS, 0, targetS);
+				
+				targetS -= foundS;
+				currentS -= foundS;
+			}
+		}
+		if (targetE > 0)
+		{
+			if (currentE > 0)
+			{
+				var foundE = clamp(currentE, 0, targetE);
+				
+				targetE -= foundE;
+				currentE -= foundE;
+			}
+		}
+		if (targetD > 0)
+		{
+			if (currentD > 0)
+			{
+				var foundD = clamp(currentD, 0, targetD);
+				
+				targetD -= foundD;
+				currentD -= foundD;
+			}
+		}
+		if (targetV > 0)
+		{
+			if (currentV > 0)
+			{
+				var foundV = clamp(currentV, 0, targetV);
+				
+				targetV -= foundV;
+				currentV -= foundV;
+				
+			}
+			if (targetV > 0 && currentW > 0)
+			{
+				var foundW = clamp(currentW, 0, targetV);
+				
+				targetV -= foundW;
+				currentW -= foundW;
+			}
+			if (targetV > 0 && currentF > 0)
+			{
+				var foundF = clamp(currentF, 0, targetV);
+				
+				targetV -= foundF;
+				currentF -= foundF;
+			}
+			if (targetV > 0 && currentM > 0)
+			{
+				var foundM = clamp(currentM, 0, targetV);
+				
+				targetV -= foundM;
+				currentM -= foundM;
+			}
+			if (targetV > 0 && currentS > 0)
+			{
+				var foundS = clamp(currentS, 0, targetV);
+				
+				targetV -= foundS;
+				currentS -= foundS;
+			}
+			if (targetV > 0 && currentE > 0)
+			{
+				var foundE = clamp(currentE, 0, targetV);
+				
+				targetV -= foundE;
+				currentE -= foundE;
+			}
+			if (targetV > 0 && currentD > 0)
+			{
+				var foundD = clamp(currentD, 0, targetV);
+				
+				targetV -= foundD;
+				currentD -= foundD;
+			}
+		}
+		
+		if (targetW == 0 && targetF == 0 && targetM == 0 && targetS == 0 && targetE == 0 && targetD == 0 && targetV == 0) manaAvailable = true;
+	}
+	//show_debug_message("Mana available: " + string(manaAvailable));
+	return manaAvailable;
+}
