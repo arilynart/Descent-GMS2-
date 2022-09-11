@@ -18,7 +18,7 @@ velocityY = 0;
 ignited = false;
 
 nodes = ds_list_create();
-extras = ds_list_create();
+extra = ds_list_create();
 removed = ds_list_create();
 hand = ds_list_create();
 discard = ds_list_create();

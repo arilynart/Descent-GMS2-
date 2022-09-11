@@ -195,6 +195,16 @@ else
 			return;
 		}
 		
+		var button = extraDrawButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			extraDraw = !extraDraw;
+			
+			return;
+		}
+		
 		
 		for (var i = 0; i < array_length(handButtons); i++)
 		{

@@ -868,7 +868,7 @@ else
 							
 							repeat(card.vCost)
 							{
-								promptString += "||spr_V||";
+								promptString += "|spr_V|";
 							}
 							
 							DrawPrompt(promptString);
@@ -990,10 +990,13 @@ else
 
 				var igniteX = fullX - sixteenthY;
 				var igniteY = fullY - sixteenthY;
+				igniteButton = 0;
+				handDrawButton = 0;
+				extraDrawButton = 0;
 				if (!global.selectedCharacter.ignited && global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
 				{
 					//end turn button
-					handDrawButton = 0;
+					
 					igniteButton =
 					{
 						left : igniteX - sixteenthY,
@@ -1020,7 +1023,7 @@ else
 				}
 				else
 				{
-					igniteButton = 0;
+					
 					handDrawButton =
 					{
 						left : igniteX - sixteenthY,
@@ -1037,15 +1040,15 @@ else
 					if (mouseX >= handDrawButton.left && mouseX <= handDrawButton.right
 						&& mouseY >= handDrawButton.top && mouseY <= handDrawButton.bottom)
 					{
-						draw_set_color(c_ltgray);
+						draw_set_color(c_gray);
 					}
 					else if (dragCard < 0) draw_set_color(deckLightColor);
 					else
 					{
-						var deckRatio = 7 / 8;
+						deckRatio = 7 / 8;
 						draw_set_color(c_purple);
 					}
-					draw_circle(igniteX, igniteY, sixteenthY * deckRatio, false);
+					draw_circle(igniteX, igniteY, ceil(sixteenthY * deckRatio), false);
 			
 					draw_set_halign(fa_center);
 					draw_set_valign(fa_middle);
@@ -1055,7 +1058,7 @@ else
 					draw_text_outline(igniteX, igniteY, deckString, c_black, 1);
 					draw_set_color(c_white);
 					draw_text(igniteX, igniteY, deckString);
-			
+
 					//cards in hand
 					handButtons = array_create(0);
 					if (handDraw)
@@ -1185,6 +1188,82 @@ else
 						}
 						
 					}
+					
+					//extra deck
+					if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
+					 && ds_list_size(global.selectedCharacter.extra) > 0)
+					{
+						var extraX = igniteX - sixteenthY;
+						var extraY = igniteY - eighthY;
+						extraDrawButton =
+						{
+							left : extraX - sixteenthY,
+							top : extraY - sixteenthY,
+							right : extraX + sixteenthY,
+							bottom : extraY + sixteenthY
+						}
+						draw_set_color(c_black);
+						draw_circle(extraX, extraY, sixteenthY, false);
+					
+						if (mouseX >= extraDrawButton.left && mouseX <= extraDrawButton.right
+							&& mouseY >= extraDrawButton.top && mouseY <= extraDrawButton.bottom)
+						{
+							draw_set_color(c_gray);
+						}
+						else draw_set_color(deckLightColor);
+						draw_circle(extraX, extraY, ceil(sixteenthY * (7 / 8)), false);
+					
+						var extraScale = sixteenthY / sprite_get_width(spr_Extra);
+						draw_sprite_ext(spr_Extra, 0, extraX, extraY, extraScale, extraScale, 0, c_black, 1);
+					
+						if (extraDraw)
+						{
+							var extraCount = ds_list_size(global.selectedCharacter.extra);
+							var extraDrawX = halfX;
+							var extraDrawY = halfY;
+						
+							for (var i = 0; i < extraCount; i++)
+							{
+								var card = ds_list_find_value(global.selectedCharacter.extra, i);
+								var handX = ceil(extraDrawX - ((extraCount / 2)* eighthY) + (eighthY * i));
+								var handY = extraDrawY
+								//draw slots
+								var artX = handX;
+								var artY = handY;
+								
+								var handButton =
+								{
+									left : handX - allyRadius,
+									top : handY - allyRadius,
+									right : handX + allyRadius,
+									bottom : handY + allyRadius
+								}
+					
+								//array_push(handButtons, handButton)
+								var usable = false;
+								
+								if (global.CheckForViableLusium(global.selectedCharacter, card)) usable = true;
+								draw_set_color(c_black);
+								if (mouseX >= handButton.left && mouseX <= handButton.right
+								 && mouseY >= handButton.top && mouseY <= handButton.bottom)
+								{
+									DrawCard(fullX - quarterX, eighthY, card);
+									if (usable) draw_set_color(c_dkgray);
+									else draw_set_color(c_black);
+								}
+								
+								
+								draw_circle(handX, handY, allyRadius, false);
+								
+								if (usable) var alpha = 1;
+								else var alpha = 0.5;
+				
+								var spriteScale =  eighthY / sprite_get_width(card.art);
+								draw_sprite_ext(card.art, 0, artX, artY, spriteScale, spriteScale, 0, c_white, alpha);
+							}
+						}
+					}
+					
 				}
 			}
 			else igniteButton = 0;

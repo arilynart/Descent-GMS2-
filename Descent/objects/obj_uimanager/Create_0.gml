@@ -1,6 +1,6 @@
 /// @description Initialize
 
-fnt_Bold = font_add("sitka-small.ttf", 24, true, false, 32, 128);
+fnt_Bold = font_add("sitka-small.ttf", 18, true, false, 32, 128);
 
 global.UiManager = self;
 global.UiLock = false;
@@ -73,6 +73,8 @@ loadedButtons = array_create(0);
 dragCard = -1;
 handDraw = true;
 handDrawButton = 0;
+extraDraw = false;
+extraDrawButton = 0;
 handButtons = array_create(0);
 lockedHandCards = ds_list_create();
 

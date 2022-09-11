@@ -60,39 +60,7 @@ FindCard = function(class, type, element, rarity, index)
 				case CardTypes.Node:
 					switch (element)
 					{
-						case Elements.D:
-							switch (rarity)
-							{
-								case CardRarities.Common:
-									switch (index)
-									{
-										case 0:
-											var card = global.BaseCard(type);
-											card.art = spr_ArtBondingNodeDC000;
-											card.class = class;
-											card.type = type;
-											card.element = element;
-											card.index = index;
-											card.title = "TRUST NODE";
-											card.dCost = 1;
-											card.vCost = 1;
-											card.dSupply = 2;
-											card.typeText = "BONDING NODE - DIVINITY"
-											card.text = "While a bonded monster is within 3||spr_Square|| , this card becomes a COVENANT NODE. ";
-									
-											return card;
-										break;
-										default:
-											return 0;
-										break;
-									}
-								break;
-								default:
-									return 0;
-								break;
-							}
-							
-						break;
+						
 						case Elements.E:
 							switch (rarity)
 							{
@@ -112,7 +80,122 @@ FindCard = function(class, type, element, rarity, index)
 											card.vCost = 1;
 											card.eSupply = 2;
 											card.typeText = "BONDING NODE - ESSENCE"
-											card.text = "When you play this card, you can supply ||spr_E|| to a bonded monster within 3||spr_Square|| . ";
+											card.text = "When you play this card, you can supply |spr_E| to a bonded monster within 3|spr_Square| . ";
+									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						case Elements.D:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.art = spr_ArtBondingNodeDC000;
+											card.class = class;
+											card.type = type;
+											card.element = element;
+											card.index = index;
+											card.title = "TRUST NODE";
+											card.dCost = 1;
+											card.vCost = 1;
+											card.dSupply = 2;
+											card.typeText = "BONDING NODE - DIVINITY"
+											card.text = "While a bonded monster is within 3 |spr_Square| , this card becomes a COVENANT NODE. ";
+									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						default:
+							return 0;
+						break;
+					}
+				break;
+				case CardTypes.Rune:
+				switch (element)
+					{
+						
+						case Elements.E:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.frame = spr_RuneBgE;
+											card.art = spr_ArtBondingRuneEC000;
+											card.class = class;
+											card.type = type;
+											card.element = element;
+											card.index = index;
+											card.title = "NURTURING RUNE";
+											card.costText = "ESSENCE BONDING NODE";
+											var cost1 = ds_list_create();
+											ds_list_add(cost1, "BONDING", "NODE")
+											ds_list_add(card.costList, cost1);
+											card.typeText = "BONDING RUNE - ESSENCE"
+											card.text = "Supply the total supply value of all node cards you use to evoke this rune to a bonded monster within 6 |spr_Square| . ";
+									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						case Elements.D:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.frame = spr_RuneBgD;
+											card.art = spr_ArtBondingNodeDC000;
+											card.class = class;
+											card.type = type;
+											card.element = element;
+											card.index = index;
+											card.title = "SYNERGY BOND";
+											card.costText = "2 BONDING NODES";
+											var cost1 = ds_list_create();
+											ds_list_add(cost1, "BONDING", "NODE")
+											ds_list_add(card.costList, cost1, cost1);
+											card.typeText = "BONDING RUNE - DIVINITY"
+											card.text = "Permanent.\n \nWhen a bonded monster within " 
+													  + "  6 |spr_Square| deals damage, you can discard this "
+													  + "card to allow that monster to make another attack " 
+													  + "this turn without spending |spr_Ap| . ";
 									
 											return card;
 										break;

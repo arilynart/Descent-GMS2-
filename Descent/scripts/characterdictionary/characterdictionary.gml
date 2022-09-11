@@ -77,8 +77,25 @@ FindCharacter = function(class, index)
 				rarity : CardRarities.Common,
 				index : 0
 			}
+			var startingRune0 =
+			{
+				class : Classes.BONDING,
+				type : CardTypes.Rune,
+				element : Elements.E,
+				rarity : CardRarities.Common,
+				index : 0
+			}
+			var startingRune1 =
+			{
+				class : Classes.BONDING,
+				type : CardTypes.Rune,
+				element : Elements.D,
+				rarity : CardRarities.Common,
+				index : 0
+			}
 			
-			array_push(character.unlockedCards, startingNode0, startingNode1);
+			array_push(character.unlockedCards, startingNode0, startingNode1, startingRune0);
+			array_push(character.extraDeck, startingRune0, startingRune1);
 			
 			repeat(15) array_push(character.nodeDeck, startingNode0, startingNode1);
 			

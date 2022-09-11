@@ -564,3 +564,90 @@ CheckSpendPoolForRequirements = function(card)
 	//show_debug_message("Mana available: " + string(manaAvailable));
 	return manaAvailable;
 }
+
+CheckForViableLusium = function(character, card)
+{
+	var parsedCosts = ds_list_create();
+	
+	if (card.type == CardTypes.Rune)
+	{
+		//search through all lusium
+		for (var i = 0; i < ds_list_size(character.burntLusium); i++)
+		{
+			var lusium = ds_list_find_value(character.burntLusium, i);
+			if (lusium != 0 && lusium.capacity >= ds_list_size(card.costList))
+			{
+				//make sure the lusium fulfills all costs
+				var parsedCosts = ds_list_create();
+				for (var j = 0; j < ds_list_size(card.costList); j++)
+				{
+					var cost = ds_list_find_value(card.costList, j);
+					
+					var validCards = ds_list_create();
+					//search through all cards on lusium piece
+					for (var k = 0; k < ds_list_size(lusium.heldCards); k++)
+					{
+						var checkCard = ds_list_find_value(lusium.heldCards, k);
+						
+						var cardViable = true;
+						
+						//check through all cards on that piece of lusium for the current cost.
+						for (var l = 0; l < ds_list_size(cost); l++)
+						{
+							var costString = ds_list_find_value(cost, l);
+							
+							var checkPos = string_pos(costString, checkCard.typeText);
+							//if any of the cost words cannot be found, the card is not viable
+							if (checkPos <= 0)
+							{
+								
+								checkPos = string_pos(costString, checkCard.title);
+								if (checkPos <= 0)
+								{
+									cardViable = false;
+									break;
+								}
+								
+							}
+						}
+						
+						//if the current card is viable
+						if (cardViable)
+						{
+							ds_list_add(validCards, checkCard);
+						}
+					}
+					
+					ds_list_add(parsedCosts, validCards);
+				}
+				
+				var singularCards = ds_list_create();
+				var validLusium = true;
+				//search through our parsed costs
+				for (var j = 0; j < ds_list_size(parsedCosts); j++)
+				{
+					//if we only have 1 viable card
+					var cardList = ds_list_find_value(parsedCosts, j);
+					if (ds_list_size(cardList) == 1)
+					{
+						var single = ds_list_find_value(cardList, 0);
+						//if singularCards already has this card
+						if (ds_list_find_index(singularCards, single) >= 0)
+						{
+							//cost is invalid. Need a different piece of lusium.
+							validLusium = false;
+							break;
+						}
+						//else, add the card to singularCards
+						else ds_list_add(singularCards, single)
+					}
+				}
+				if (validLusium) return true;
+			}
+
+		}
+		
+	}
+	
+	return false;
+}

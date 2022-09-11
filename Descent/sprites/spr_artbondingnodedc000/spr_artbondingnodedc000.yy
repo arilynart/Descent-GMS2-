@@ -91,7 +91,7 @@
     "resourceType": "GMNineSliceData",
   },
   "parent": {
-    "name": "Art",
-    "path": "folders/Sprites/Cards/Art.yy",
+    "name": "C",
+    "path": "folders/Sprites/Cards/Art/Bonding/Node/D/C.yy",
   },
 }
