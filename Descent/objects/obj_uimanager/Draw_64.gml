@@ -992,6 +992,9 @@
 					igniteButton = 0;
 					handDrawButton = 0;
 					extraDrawButton = 0;
+					extraButtons = array_create(0);
+					
+					handButtons = array_create(0);
 					if (!global.selectedCharacter.ignited && global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
 					{
 						//end turn button
@@ -1058,8 +1061,7 @@
 						draw_set_color(c_white);
 						draw_text(igniteX, igniteY, deckString);
 
-						//cards in hand
-						handButtons = array_create(0);
+						
 						if (handDraw)
 						{
 							var burntSize = ds_list_size(global.selectedCharacter.burntLusium);
@@ -1093,7 +1095,9 @@
 									
 										draw_set_color(c_gray);
 									}
+									else if (ds_list_size(highlightedLusium) > 0 && ds_list_find_index(highlightedLusium, i) >= 0) draw_set_color(c_aqua);
 									else draw_set_color(c_dkgray);
+									
 									draw_line_width(burntX, burntY - allyRadius, burntX + allyRadius, burntY, outlineRadius);
 									draw_line_width(burntX, burntY + allyRadius, burntX + allyRadius, burntY, outlineRadius);
 									draw_line_width(burntX, burntY - allyRadius, burntX - allyRadius, burntY, outlineRadius);
@@ -1214,7 +1218,7 @@
 					
 							var extraScale = sixteenthY / sprite_get_width(spr_Extra);
 							draw_sprite_ext(spr_Extra, 0, extraX, extraY, extraScale, extraScale, 0, c_black, 1);
-					
+							
 							if (extraDraw)
 							{
 								var extraCount = ds_list_size(global.selectedCharacter.extra);
@@ -1238,10 +1242,12 @@
 										bottom : handY + allyRadius
 									}
 					
-									//array_push(handButtons, handButton)
+									array_push(extraButtons, handButton);
 									var usable = false;
 								
-									if (global.CheckForViableLusium(global.selectedCharacter, card)) usable = true;
+									var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, card);
+									//show_debug_message("Lusium Check size: " + string(array_length(lusiumCheck)));
+									if (array_length(lusiumCheck) > 0) usable = true;
 									draw_set_color(c_black);
 									if (mouseX >= handButton.left && mouseX <= handButton.right
 									 && mouseY >= handButton.top && mouseY <= handButton.bottom)

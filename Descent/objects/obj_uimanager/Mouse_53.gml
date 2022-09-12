@@ -220,6 +220,29 @@ else
 				return;
 			}
 		}
+		
+		for (var i = 0; i < array_length(extraButtons); i++)
+		{
+			var button = extraButtons[i];
+		
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
+				var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
+				if (array_length(lusiumCheck) > 0)
+				{
+					ds_list_clear(highlightedLusium);
+					for (var j = 0; j < array_length(lusiumCheck); j++)
+					{
+						var lusium = lusiumCheck[j];
+						ds_list_add(highlightedLusium, lusium);
+					}
+				}
+				
+				return;
+			}
+		}
 	}
 	
 	if (endTurnButton != 0)
