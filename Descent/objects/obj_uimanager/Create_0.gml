@@ -12,6 +12,8 @@ deckLightColor = #348CEB;
 
 #endregion
 
+//display_reset(8, false);
+
 fullX = display_get_gui_width();
 fullY = display_get_gui_height();
 
@@ -41,7 +43,7 @@ uiPackButtons = 0;
 uiItemButtons = 0;
 uiMethodButtons = 0;
 
-allyRadius = quarterY / 6
+allyRadius = ceil(quarterY / 6);
 
 mouseX = 0;
 mouseY = 0;
@@ -107,8 +109,6 @@ tempItemPack =
 {
 	contents : array_create(1)	
 }
-
-window_set_fullscreen(true);
 
 var emptyStats =
 {

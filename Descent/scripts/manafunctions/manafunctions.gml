@@ -641,6 +641,7 @@ CheckForViableLusium = function(character, card)
 						//else, add the card to singularCards
 						else ds_list_add(singularCards, single)
 					}
+					else if (ds_list_size(cardList) == 0) validLusium = false;
 				}
 				if (validLusium) return true;
 			}

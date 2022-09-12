@@ -80,7 +80,7 @@ FindCard = function(class, type, element, rarity, index)
 											card.vCost = 1;
 											card.eSupply = 2;
 											card.typeText = "BONDING NODE - ESSENCE"
-											card.text = "When you play this card, you can supply |spr_E| to a bonded monster within 3|spr_Square| . ";
+											card.text = "When you play this card, you can supply |spr_E|  to a bonded monster within 3 |spr_Square| . ";
 									
 											return card;
 										break;
@@ -154,7 +154,7 @@ FindCard = function(class, type, element, rarity, index)
 											card.title = "NURTURING RUNE";
 											card.costText = "ESSENCE BONDING NODE";
 											var cost1 = ds_list_create();
-											ds_list_add(cost1, "BONDING", "NODE")
+											ds_list_add(cost1, "ESSENCE", "BONDING", "NODE");
 											ds_list_add(card.costList, cost1);
 											card.typeText = "BONDING RUNE - ESSENCE"
 											card.text = "Supply the total supply value of all node cards you use to evoke this rune to a bonded monster within 6 |spr_Square| . ";
@@ -181,7 +181,7 @@ FindCard = function(class, type, element, rarity, index)
 										case 0:
 											var card = global.BaseCard(type);
 											card.frame = spr_RuneBgD;
-											card.art = spr_ArtBondingNodeDC000;
+											card.art = spr_ArtBondingRuneDC000;
 											card.class = class;
 											card.type = type;
 											card.element = element;
@@ -193,7 +193,7 @@ FindCard = function(class, type, element, rarity, index)
 											ds_list_add(card.costList, cost1, cost1);
 											card.typeText = "BONDING RUNE - DIVINITY"
 											card.text = "Permanent.\n \nWhen a bonded monster within " 
-													  + "  6 |spr_Square| deals damage, you can discard this "
+													  + "  6 |spr_Square|  deals damage, you can discard this "
 													  + "card to allow that monster to make another attack " 
 													  + "this turn without spending |spr_Ap| . ";
 									

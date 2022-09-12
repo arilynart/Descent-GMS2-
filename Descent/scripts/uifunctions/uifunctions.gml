@@ -1,6 +1,8 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+
+
 function DisplayDialogue(character, dialogue)
 {
 	show_debug_message("Displaying Dialogue from " + string(character.characterStats.name) + ". Array: " 
@@ -73,6 +75,13 @@ function DrawCard(x, y, card)
 	}
 	var rarityScale = (cardWidth / 24) / sprite_get_width(raritySprite);
 	draw_sprite_ext(raritySprite, 0, halfX, sixteenthY, rarityScale, rarityScale, 0, c_white, 1);
+
+	//title
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_middle);
+	draw_set_font(global.UiManager.fnt_Bold);
+	draw_set_color(c_white);
+	draw_text(halfX, eighthY, card.title);
 	
 	//cost
 	if (card.type == CardTypes.Node)
@@ -94,28 +103,31 @@ function DrawCard(x, y, card)
 				
 			costX += costWidth + 1;
 		}
+	}
+	else
+	{
+		var costX = halfX;
+		var costY = eighthY + 18;
 		
-
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_middle);
+		draw_set_font(fnt_CardText);
+		draw_text(costX, costY, card.costText);
 	}
 	
-	//title
-	draw_set_halign(fa_center);
-	draw_set_valign(fa_middle);
-	draw_set_font(global.UiManager.fnt_Bold);
-	draw_set_color(c_white);
-	draw_text(halfX, eighthY, card.title);
+	var fontSize = font_get_size(draw_get_font());
 	
 	//type
 	draw_set_halign(fa_left);
 	draw_set_font(fnt_CardText);
-	draw_text(sixteenthX, halfY, card.typeText);
+	draw_text(sixteenthX, halfY + fontSize, card.typeText);
 	
-	draw_line(sixteenthX, halfY + 10, x + cardWidth - cardWidth / 16, halfY + 10)
+	draw_line(sixteenthX, halfY + 10 + fontSize, x + cardWidth - cardWidth / 16, halfY + 10 + fontSize)
 	
 	//text
 	draw_set_valign(fa_top);
 	
-	draw_wrapped_text(card.text, cardWidth - cardWidth / 8, sixteenthX, halfY + 15, 6);
+	draw_wrapped_text(card.text, cardWidth - cardWidth / 8, sixteenthX, halfY + 15 + fontSize, 6, 1.4);
 	
 	//supply
 	if (card.type == CardTypes.Node)
@@ -173,9 +185,9 @@ function DrawPrompt(text)
 
 		draw_set_color(c_white);
 		draw_set_halign(fa_center);
-		draw_set_valign(fa_top);
+		draw_set_valign(fa_middle);
 		draw_set_font(fnt_Cambria24);
-		draw_wrapped_text(text, halfX, halfX, topY, 1);
+		draw_wrapped_text(text, halfX, halfX, topY + (quarterY / 8), 4, 1);
 	}
 }
 
@@ -551,11 +563,11 @@ SortSpendPools = function()
 	return array;
 }
 
-function draw_wrapped_text(text, maxWidth, topX, topY, descModifier)
+function draw_wrapped_text(text, maxWidth, topX, topY, descModifier, descRatio)
 {
 	var wrap = global.TextWrap(text, maxWidth);
 	
-	var wrapCopy = string_copy(wrap.text, 0, string_length(wrap.text));
+	var wrapCopy = wrap.text;
 	var wrapSplits = array_create(0);
 	var splitBy = "|";
 			
@@ -599,7 +611,7 @@ function draw_wrapped_text(text, maxWidth, topX, topY, descModifier)
 			{
 				var splitString = string_copy(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) - 1);
 				array_push(splits, splitString)
-				descriptionCopy = string_delete(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) + 1);
+				descriptionCopy = string_delete(descriptionCopy, 1, string_pos(splitBy, descriptionCopy));
 			}
 			else
 			{
@@ -619,7 +631,6 @@ function draw_wrapped_text(text, maxWidth, topX, topY, descModifier)
 				var sprite = wrap.sprites[imageIndex];
 				var spriteWidth  = sprite_get_width(sprite);
 				var imgScale = (font_get_size(draw_get_font()) + descModifier) / spriteWidth;
-				var descRatio = 1.4;
 				
 				draw_sprite_ext(sprite, 0, currentX + ceil(descModifier * descRatio), currentY + ceil(descModifier * descRatio), imgScale, imgScale, 0, c_white, 1);
 			
