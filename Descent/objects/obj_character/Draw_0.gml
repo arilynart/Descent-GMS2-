@@ -2,9 +2,15 @@
 
 draw_self();
 
+if (currentArt >= 0)
+{
+	var artWidth = 432;
+	var artScale = artWidth / sprite_get_width(currentArt);
+	draw_sprite_ext(currentArt, 0, x, y, artScale, artScale, 0, c_white, alarm_get(0) / artMaxTime);
+}
+
 var startX = x - 144;
 var lineLength = 288;
-
 
 if (currentHp < maxHp())
 {

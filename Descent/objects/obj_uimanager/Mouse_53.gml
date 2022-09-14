@@ -166,103 +166,37 @@ else
 		
 		return;
 	}
-	else if (igniteButton != 0)
+	else if (spendLusium)
 	{
-		var button = igniteButton;
-		
-		if (mouseX >= button.left && mouseX <= button.right
-		 && mouseY >= button.top && mouseY <= button.bottom)
+		for (var i = 0; i < ds_list_size(global.selectedCharacter.burntLusium); i++)
 		{
-			//end turn
-			var ignite = global.BaseEffect();
-			ignite.Start = method(global, global.IgniteEffect);
-			ignite.character = global.selectedCharacter
-		
-			AddEffect(ignite);
-			
-			return;
-		}
-	}
-	else if (handDrawButton != 0)
-	{
-		var button = handDrawButton;
-		
-		if (mouseX >= button.left && mouseX <= button.right
-		 && mouseY >= button.top && mouseY <= button.bottom)
-		{
-			handDraw = !handDraw;
-			
-			return;
-		}
-		
-		var button = extraDrawButton;
-		
-		if (mouseX >= button.left && mouseX <= button.right
-		 && mouseY >= button.top && mouseY <= button.bottom)
-		{
-			extraDraw = !extraDraw;
-			
-			return;
-		}
-		
-		
-		for (var i = 0; i < array_length(handButtons); i++)
-		{
-			var lockSearch = ds_list_find_index(lockedHandCards, i);
-			var button = handButtons[i];
-		
-			if (mouseX >= button.left && mouseX <= button.right
-			 && mouseY >= button.top && mouseY <= button.bottom
-			 && lockSearch < 0)
+			var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i);
+			if (lusium != 0 && ds_list_size(highlightedLusium) > 0 
+			 && ds_list_find_index(highlightedLusium, i) >= 0)
 			{
-				dragCard = i;
-			
-				return;
-			}
-		}
-		
-		for (var i = 0; i < array_length(extraButtons); i++)
-		{
-			var button = extraButtons[i];
-		
-			if (mouseX >= button.left && mouseX <= button.right
-			 && mouseY >= button.top && mouseY <= button.bottom)
-			{
-				var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
-				var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
-				if (array_length(lusiumCheck) > 0)
+				for (var j = 0; j < ds_list_size(lusium.slotButtons); j++)
 				{
-					ds_list_clear(highlightedLusium);
-					for (var j = 0; j < array_length(lusiumCheck); j++)
+					var button = ds_list_find_value(lusium.slotButtons, j);
+					if (mouseX >= button.left && mouseX <= button.right
+					 && mouseY >= button.top && mouseY <= button.bottom)
 					{
-						var lusium = lusiumCheck[j];
-						ds_list_add(highlightedLusium, lusium);
+						var runePlay = global.BaseEffect();
+						runePlay.character = global.selectedCharacter;
+						runePlay.index = heldRune;
+						runePlay.lusiumIndex = i;
+						runePlay.Start = method(global, global.PlayRuneEffect);
+					
+						AddEffect(runePlay);
+						
+						spendLusium = false;
+						heldRune = -1;
+						ds_list_clear(highlightedLusium);
+						return;
 					}
 				}
-				
-				return;
 			}
 		}
-	}
-	
-	if (endTurnButton != 0)
-	{
-		var button = endTurnButton;
-		
-		if (mouseX >= button.left && mouseX <= button.right
-		 && mouseY >= button.top && mouseY <= button.bottom)
-		{
-			//end turn
-			
-			prepLoad = false;
-			
-			var endTurn = global.BaseEffect();
-			endTurn.Start = method(global, global.EndTurnEffect);
-		
-			AddEffect(endTurn);
-			
-			return;
-		}
+		return;
 	}
 	
 	if (dashButton != 0)
@@ -399,6 +333,120 @@ else
 			}
 		}
 	}
+	if (igniteButton != 0)
+	{
+		var button = igniteButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			var ignite = global.BaseEffect();
+			ignite.Start = method(global, global.IgniteEffect);
+			ignite.character = global.selectedCharacter
+		
+			AddEffect(ignite);
+			
+			return;
+		}
+	}
+	else if (handDrawButton != 0)
+	{
+		var button = handDrawButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			handDraw = !handDraw;
+			
+			return;
+		}
+		
+		var button = extraDrawButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			extraDraw = !extraDraw;
+			
+			return;
+		}
+		
+		
+		for (var i = 0; i < array_length(handButtons); i++)
+		{
+			var lockSearch = ds_list_find_index(lockedHandCards, i);
+			var button = handButtons[i];
+		
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom
+			 && lockSearch < 0)
+			{
+				dragCard = i;
+			
+				return;
+			}
+		}
+		
+		for (var i = 0; i < array_length(extraButtons); i++)
+		{
+			var button = extraButtons[i];
+		
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
+				var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
+				var size = array_length(lusiumCheck);
+				if (size == 1)
+				{
+					//auto select lusium
+					var runePlay = global.BaseEffect();
+					runePlay.character = global.selectedCharacter;
+					runePlay.index = i;
+					runePlay.lusiumIndex = lusiumCheck[0];
+					runePlay.Start = method(global, global.PlayRuneEffect);
+					
+					AddEffect(runePlay);
+				}
+				else if (size > 0)
+				{
+					spendLusium = true;
+					heldRune = i;
+					ds_list_clear(highlightedLusium);
+					for (var j = 0; j < array_length(lusiumCheck); j++)
+					{
+						var lusium = lusiumCheck[j];
+						ds_list_add(highlightedLusium, lusium);
+					}
+				}
+				
+				return;
+			}
+		}
+	}
+	
+	if (endTurnButton != 0)
+	{
+		var button = endTurnButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//end turn
+			
+			prepLoad = false;
+			
+			var endTurn = global.BaseEffect();
+			endTurn.Start = method(global, global.EndTurnEffect);
+		
+			AddEffect(endTurn);
+			
+			return;
+		}
+	}
+	
+	
 	
 	for (var i = 0; (i < 6 && i < array_length(global.Allies)); i++)
 	{

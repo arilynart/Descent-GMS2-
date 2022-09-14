@@ -536,209 +536,7 @@
 				draw_set_color(c_white);
 				draw_text(sixteenthY, apY, string(global.selectedCharacter.currentAp));
 			
-				if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
-				 && global.selectedCharacter == ds_list_find_value(global.Turns, 0).character 
-				 && global.selectedCharacter.currentAp > 0)
-				{
-					//draw AP spenders
-				
-					var sprintX = thirtySecondY;
-					var sprintY = apY + sixteenthY;
-					dashButton =
-					{
-						left : sprintX - thirtySecondY,
-						top : sprintY - thirtySecondY,
-						right : sprintX + thirtySecondY,
-						bottom : sprintY + thirtySecondY,
-					}
-					if (mouseX >= dashButton.left && mouseX <= dashButton.right
-					 && mouseY >= dashButton.top && mouseY <= dashButton.bottom)
-					{
-						draw_set_color(c_dkgray);
-					}
-					else
-					{
-						draw_set_color(c_black);
-					}
-					draw_circle(sprintX, sprintY, thirtySecondY, false);
-				
-					var sprintWidth = sprite_get_width(spr_Sprint);
-					var sprintScale = thirtySecondY / sprintWidth;
-					draw_sprite_ext(spr_Sprint, 0, sprintX, sprintY, sprintScale, sprintScale, 0, c_white, 1);
-				
-					if (global.selectedCharacter.characterStats.equippedWeapon != 0)
-					{
-						var loadX = sixteenthY + thirtySecondY;
-						var loadY = apY + sixteenthY;
-						loadButton =
-						{
-							left : loadX - thirtySecondY,
-							top : loadY - thirtySecondY,
-							right : loadX + thirtySecondY,
-							bottom : loadY + thirtySecondY,
-						}
 
-						if (mouseX >= loadButton.left && mouseX <= loadButton.right
-						 && mouseY >= loadButton.top && mouseY <= loadButton.bottom)
-						{
-							var sprite = spr_Reload;
-							draw_set_color(c_dkgray);
-						}
-						else
-						{
-							var sprite = global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).sprite;
-							draw_set_color(c_black);
-						}
-						draw_circle(loadX, loadY, thirtySecondY, false);
-					
-						var loadWidth = sprite_get_width(sprite);
-						var loadScale = thirtySecondY / loadWidth;
-						draw_sprite_ext(sprite, 0, loadX, loadY, loadScale, loadScale, 0, c_white, 1);
-						lusiumButtons = array_create(0);
-						cancelLoadButton = 0;
-						confirmLoadButton = 0;
-						if (prepLoad)
-						{
-							draw_set_color(c_black);
-							draw_circle(halfX, halfY, quarterY, false)
-						
-							draw_set_halign(fa_center);
-							draw_set_valign(fa_middle);
-							draw_set_font(fnt_Cambria16)
-							draw_set_color(c_white);
-							draw_text(halfX, halfY - eighthY, "Choose up to " + string(global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).lusiumPerAp) + " to load.");
-						
-							for (var i = 0; i < 4; i++)
-							{
-								var item = global.FindItem(ItemTypes.Lusium, i, 0);
-								var foundQuantity = 0;
-								var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
-								var lusiumY = halfY + allyRadius;
-														
-								var newButton =
-								{
-									left : lusiumX - allyRadius,
-									top : lusiumY - allyRadius,
-									right : lusiumX + allyRadius,
-									bottom : lusiumY + allyRadius,
-								}
-								array_push(lusiumButtons, newButton);
-								if (mouseX >= newButton.left && mouseX <= newButton.right
-								 && mouseY >= newButton.top && mouseY <= newButton.bottom
-								 && global.selectedCharacter.loadedQuantity() < global.FindItem(ItemTypes.Weapon, global.selectedCharacter.characterStats.equippedWeapon.index, 0).lusiumPerAp)
-								{
-									draw_set_color(c_ltgray);
-								}
-								else
-								{
-									draw_set_color(c_gray);
-								}
-								draw_circle(lusiumX, lusiumY, allyRadius, false);
-								var lusiumScale = allyRadius / sprite_get_width(item.sprite);
-								draw_sprite_ext(item.sprite, 0, lusiumX, lusiumY, lusiumScale, lusiumScale, 0, c_white, 1);
-								for (var j = 0; j < array_length(global.selectedCharacter.characterStats.equippedPacks); j++)
-								{
-									var pack = global.selectedCharacter.characterStats.equippedPacks[j];
-									if (pack != 0 && pack.tier <= tierToLoadFrom)
-									{
-										for (var k = 0; k < array_length(pack.contents); k++)
-										{
-											var checkItem = pack.contents[k];
-											if (checkItem != 0 && checkItem.type == ItemTypes.Lusium && checkItem.index == i)
-											{
-												foundQuantity += checkItem.quantity;
-											}
-										}
-									}
-								}
-
-							
-								draw_text_outline(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(foundQuantity), c_black, 1);
-								draw_set_color(c_white);
-								draw_text(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(foundQuantity));
-							}
-							for (var i = 0; i < 4; i++)
-							{
-								var item = global.FindItem(ItemTypes.Lusium, i, 0);
-								var foundQuantity = 0;
-								var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
-								var lusiumY = halfY - allyRadius;
-							
-								var lusiumScale = allyRadius / sprite_get_width(item.sprite);
-							
-								for (var k = 0; k < array_length(global.selectedCharacter.itemsToLoad); k++)
-								{
-									var checkItem = global.selectedCharacter.itemsToLoad[k];
-									if (checkItem != 0 && checkItem.type == ItemTypes.Lusium && checkItem.index == i)
-									{
-										draw_set_color(c_gray);							
-										draw_circle(lusiumX, lusiumY, allyRadius, false);
-										draw_sprite_ext(item.sprite, 0, lusiumX, lusiumY, lusiumScale, lusiumScale, 0, c_white, 1);
-										draw_text_outline(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(checkItem.quantity), c_black, 1);
-										draw_set_color(c_white);
-										draw_text(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(checkItem.quantity));
-									}
-								}
-							}
-						
-							//confirm
-							var confirmX = halfX;
-							var confirmY = halfY + eighthY;
-						
-							confirmLoadButton = 
-							{
-								left : confirmX - allyRadius,
-								top : confirmY - allyRadius,
-								right : confirmX + allyRadius,
-								bottom : confirmY + allyRadius,
-							}
-						
-							if (mouseX >= confirmLoadButton.left && mouseX <= confirmLoadButton.right
-							 && mouseY >= confirmLoadButton.top && mouseY <= confirmLoadButton.bottom
-							 && global.selectedCharacter.loadedQuantity() > 0)
-							{
-								draw_set_color(c_lime);
-							}
-							else draw_set_color(c_green);
-							draw_circle(confirmX, confirmY, allyRadius, false);
-						
-							var confirmScale = allyRadius / sprite_get_width(spr_Confirm);
-							draw_sprite_ext(spr_Confirm, 0, confirmX - (allyRadius / 2), confirmY - (allyRadius / 2), confirmScale, confirmScale, 0, c_black, 1);
-						
-							//cancel
-							var cancelX = halfX;
-							var cancelY = confirmY + allyRadius * 2;
-						
-							cancelLoadButton = 
-							{
-								left : cancelX - allyRadius,
-								top : cancelY - allyRadius,
-								right : cancelX + allyRadius,
-								bottom : cancelY + allyRadius,
-							}
-						
-							if (mouseX >= cancelLoadButton.left && mouseX <= cancelLoadButton.right
-							 && mouseY >= cancelLoadButton.top && mouseY <= cancelLoadButton.bottom
-							 && global.selectedCharacter.loadedQuantity() > 0)
-							{
-								draw_set_color(c_red);
-							}
-							else draw_set_color(c_maroon);
-							draw_circle(cancelX, cancelY, allyRadius, false);
-						
-							var cancelScale = allyRadius / sprite_get_width(spr_Cancel);
-							draw_sprite_ext(spr_Cancel, 0, cancelX - (allyRadius / 2), cancelY - (allyRadius / 2), cancelScale, cancelScale, 0, c_black, 1);
-						}
-					}
-				}
-				else
-				{
-					dashButton = 0;
-					loadButton = 0;
-				
-					prepLoad = false;
-				}
-			
 				if (ds_list_find_value(global.Turns, 0).character.characterStats.team == CharacterTeams.Ally)
 				{
 					//end turn button
@@ -1272,6 +1070,210 @@
 					}
 				}
 				else igniteButton = 0;
+				
+				if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
+				 && global.selectedCharacter == ds_list_find_value(global.Turns, 0).character 
+				 && global.selectedCharacter.currentAp > 0)
+				{
+					//draw AP spenders
+				
+					var sprintX = thirtySecondY;
+					var sprintY = apY + sixteenthY;
+					dashButton =
+					{
+						left : sprintX - thirtySecondY,
+						top : sprintY - thirtySecondY,
+						right : sprintX + thirtySecondY,
+						bottom : sprintY + thirtySecondY,
+					}
+					if (mouseX >= dashButton.left && mouseX <= dashButton.right
+						&& mouseY >= dashButton.top && mouseY <= dashButton.bottom)
+					{
+						draw_set_color(c_dkgray);
+					}
+					else
+					{
+						draw_set_color(c_black);
+					}
+					draw_circle(sprintX, sprintY, thirtySecondY, false);
+				
+					var sprintWidth = sprite_get_width(spr_Sprint);
+					var sprintScale = thirtySecondY / sprintWidth;
+					draw_sprite_ext(spr_Sprint, 0, sprintX, sprintY, sprintScale, sprintScale, 0, c_white, 1);
+				
+					if (global.selectedCharacter.characterStats.equippedWeapon != 0)
+					{
+						var loadX = sixteenthY + thirtySecondY;
+						var loadY = apY + sixteenthY;
+						loadButton =
+						{
+							left : loadX - thirtySecondY,
+							top : loadY - thirtySecondY,
+							right : loadX + thirtySecondY,
+							bottom : loadY + thirtySecondY,
+						}
+
+						if (mouseX >= loadButton.left && mouseX <= loadButton.right
+							&& mouseY >= loadButton.top && mouseY <= loadButton.bottom)
+						{
+							var sprite = spr_Reload;
+							draw_set_color(c_dkgray);
+						}
+						else
+						{
+							var sprite = global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).sprite;
+							draw_set_color(c_black);
+						}
+						draw_circle(loadX, loadY, thirtySecondY, false);
+					
+						var loadWidth = sprite_get_width(sprite);
+						var loadScale = thirtySecondY / loadWidth;
+						draw_sprite_ext(sprite, 0, loadX, loadY, loadScale, loadScale, 0, c_white, 1);
+						lusiumButtons = array_create(0);
+						cancelLoadButton = 0;
+						confirmLoadButton = 0;
+						if (prepLoad)
+						{
+							draw_set_color(c_black);
+							draw_circle(halfX, halfY, quarterY, false)
+						
+							draw_set_halign(fa_center);
+							draw_set_valign(fa_middle);
+							draw_set_font(fnt_Cambria16)
+							draw_set_color(c_white);
+							draw_text(halfX, halfY - eighthY, "Choose up to " + string(global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).lusiumPerAp) + " to load.");
+						
+							for (var i = 0; i < 4; i++)
+							{
+								var item = global.FindItem(ItemTypes.Lusium, i, 0);
+								var foundQuantity = 0;
+								var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
+								var lusiumY = halfY + allyRadius;
+														
+								var newButton =
+								{
+									left : lusiumX - allyRadius,
+									top : lusiumY - allyRadius,
+									right : lusiumX + allyRadius,
+									bottom : lusiumY + allyRadius,
+								}
+								array_push(lusiumButtons, newButton);
+								if (mouseX >= newButton.left && mouseX <= newButton.right
+									&& mouseY >= newButton.top && mouseY <= newButton.bottom
+									&& global.selectedCharacter.loadedQuantity() < global.FindItem(ItemTypes.Weapon, global.selectedCharacter.characterStats.equippedWeapon.index, 0).lusiumPerAp)
+								{
+									draw_set_color(c_ltgray);
+								}
+								else
+								{
+									draw_set_color(c_gray);
+								}
+								draw_circle(lusiumX, lusiumY, allyRadius, false);
+								var lusiumScale = allyRadius / sprite_get_width(item.sprite);
+								draw_sprite_ext(item.sprite, 0, lusiumX, lusiumY, lusiumScale, lusiumScale, 0, c_white, 1);
+								for (var j = 0; j < array_length(global.selectedCharacter.characterStats.equippedPacks); j++)
+								{
+									var pack = global.selectedCharacter.characterStats.equippedPacks[j];
+									if (pack != 0 && pack.tier <= tierToLoadFrom)
+									{
+										for (var k = 0; k < array_length(pack.contents); k++)
+										{
+											var checkItem = pack.contents[k];
+											if (checkItem != 0 && checkItem.type == ItemTypes.Lusium && checkItem.index == i)
+											{
+												foundQuantity += checkItem.quantity;
+											}
+										}
+									}
+								}
+
+							
+								draw_text_outline(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(foundQuantity), c_black, 1);
+								draw_set_color(c_white);
+								draw_text(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(foundQuantity));
+							}
+							for (var i = 0; i < 4; i++)
+							{
+								var item = global.FindItem(ItemTypes.Lusium, i, 0);
+								var foundQuantity = 0;
+								var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
+								var lusiumY = halfY - allyRadius;
+							
+								var lusiumScale = allyRadius / sprite_get_width(item.sprite);
+							
+								for (var k = 0; k < array_length(global.selectedCharacter.itemsToLoad); k++)
+								{
+									var checkItem = global.selectedCharacter.itemsToLoad[k];
+									if (checkItem != 0 && checkItem.type == ItemTypes.Lusium && checkItem.index == i)
+									{
+										draw_set_color(c_gray);							
+										draw_circle(lusiumX, lusiumY, allyRadius, false);
+										draw_sprite_ext(item.sprite, 0, lusiumX, lusiumY, lusiumScale, lusiumScale, 0, c_white, 1);
+										draw_text_outline(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(checkItem.quantity), c_black, 1);
+										draw_set_color(c_white);
+										draw_text(lusiumX + (allyRadius / 2), lusiumY - (allyRadius / 2), string(checkItem.quantity));
+									}
+								}
+							}
+						
+							//confirm
+							var confirmX = halfX;
+							var confirmY = halfY + eighthY;
+						
+							confirmLoadButton = 
+							{
+								left : confirmX - allyRadius,
+								top : confirmY - allyRadius,
+								right : confirmX + allyRadius,
+								bottom : confirmY + allyRadius,
+							}
+						
+							if (mouseX >= confirmLoadButton.left && mouseX <= confirmLoadButton.right
+								&& mouseY >= confirmLoadButton.top && mouseY <= confirmLoadButton.bottom
+								&& global.selectedCharacter.loadedQuantity() > 0)
+							{
+								draw_set_color(c_lime);
+							}
+							else draw_set_color(c_green);
+							draw_circle(confirmX, confirmY, allyRadius, false);
+						
+							var confirmScale = allyRadius / sprite_get_width(spr_Confirm);
+							draw_sprite_ext(spr_Confirm, 0, confirmX - (allyRadius / 2), confirmY - (allyRadius / 2), confirmScale, confirmScale, 0, c_black, 1);
+						
+							//cancel
+							var cancelX = halfX;
+							var cancelY = confirmY + allyRadius * 2;
+						
+							cancelLoadButton = 
+							{
+								left : cancelX - allyRadius,
+								top : cancelY - allyRadius,
+								right : cancelX + allyRadius,
+								bottom : cancelY + allyRadius,
+							}
+						
+							if (mouseX >= cancelLoadButton.left && mouseX <= cancelLoadButton.right
+								&& mouseY >= cancelLoadButton.top && mouseY <= cancelLoadButton.bottom
+								&& global.selectedCharacter.loadedQuantity() > 0)
+							{
+								draw_set_color(c_red);
+							}
+							else draw_set_color(c_maroon);
+							draw_circle(cancelX, cancelY, allyRadius, false);
+						
+							var cancelScale = allyRadius / sprite_get_width(spr_Cancel);
+							draw_sprite_ext(spr_Cancel, 0, cancelX - (allyRadius / 2), cancelY - (allyRadius / 2), cancelScale, cancelScale, 0, c_black, 1);
+						}
+					}
+				}
+				else
+				{
+					dashButton = 0;
+					loadButton = 0;
+				
+					prepLoad = false;
+				}
+			
 			}
 		}
 	}
