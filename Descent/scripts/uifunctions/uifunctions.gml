@@ -127,7 +127,7 @@ function DrawCard(x, y, card)
 	//text
 	draw_set_valign(fa_top);
 	
-	draw_wrapped_text(card.text, cardWidth - cardWidth / 8, sixteenthX, halfY + 15 + fontSize, 6, 1.4);
+	draw_wrapped_text(card.text, cardWidth - (cardWidth / 16) * 3, sixteenthX + (cardWidth / 32), halfY + 15 + fontSize, 6, 1.4);
 	
 	//supply
 	if (card.type == CardTypes.Node)

@@ -188,12 +188,13 @@ FindCard = function(class, type, element, rarity, index)
 											card.index = index;
 											card.title = "SYNERGY BOND";
 											card.costText = "2 BONDING NODES";
+											card.permanent = true;
 											var cost1 = ds_list_create();
 											ds_list_add(cost1, "BONDING", "NODE")
 											ds_list_add(card.costList, cost1, cost1);
 											card.typeText = "BONDING RUNE - DIVINITY"
 											card.text = "Permanent.\n \nWhen a bonded monster within " 
-													  + "  6 |spr_Square|  deals damage, you can discard this "
+													  + "6 |spr_Square|  deals damage, you can discard this "
 													  + "card to allow that monster to make another attack " 
 													  + "this turn without spending |spr_Ap| . ";
 									
@@ -270,6 +271,7 @@ BaseCard = function(type)
 		{
 			costText = "";
 			costList = ds_list_create();
+			permanent = false;
 		}
 	}
 	return struct;

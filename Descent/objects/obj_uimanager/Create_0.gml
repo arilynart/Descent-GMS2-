@@ -82,6 +82,7 @@ handButtons = array_create(0);
 lockedHandCards = ds_list_create();
 
 highlightedLusium = ds_list_create();
+spendLusium = false;
 
 spendMana = false;
 manaButtons = ds_list_create();
