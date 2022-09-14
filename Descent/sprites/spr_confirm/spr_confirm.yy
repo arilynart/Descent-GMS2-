@@ -20,8 +20,8 @@
   "width": 50,
   "height": 50,
   "textureGroupId": {
-    "name": "Default",
-    "path": "texturegroups/Default",
+    "name": "Interface",
+    "path": "texturegroups/Interface",
   },
   "swatchColours": null,
   "gridX": 0,

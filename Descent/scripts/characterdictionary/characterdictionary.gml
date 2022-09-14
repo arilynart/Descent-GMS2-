@@ -20,6 +20,7 @@ FindCharacter = function(class, index)
 			character.team = CharacterTeams.Ally;
 			character.class = class;
 			character.sprite = spr_Player;
+			character.textureGroup = "ClassBonding";
 			character.force = 3;
 			character.endurance = 8;
 			character.vitality = 4;
@@ -150,6 +151,7 @@ BaseCharacter = function()
 		team : CharacterTeams.Neutral,
 		class : CharacterClass.Monster,
 		sprite : spr_Cancel,
+		textureGroup : "",
 		uiScale : 0.25,
 		packSlots : array_create(0),
 		equippedPacks : array_create(0),

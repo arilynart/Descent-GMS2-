@@ -20,8 +20,8 @@
   "width": 1500,
   "height": 2250,
   "textureGroupId": {
-    "name": "Default",
-    "path": "texturegroups/Default",
+    "name": "CardAssets",
+    "path": "texturegroups/CardAssets",
   },
   "swatchColours": null,
   "gridX": 0,

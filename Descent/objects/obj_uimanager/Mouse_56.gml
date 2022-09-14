@@ -70,6 +70,9 @@ if (dragCard >= 0)
 							}
 							else
 							{
+								item.quantity--;
+								if (item.quantity <= 0) ds_list_delete(global.selectedCharacter.loadedLusium, j);
+								
 								var newLusiumIndex = ds_list_size(global.selectedCharacter.burntLusium);
 								var burn = global.BaseEffect();
 								burn.Start = method(global, global.BurnLusiumEffect);

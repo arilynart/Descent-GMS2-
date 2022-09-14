@@ -686,6 +686,11 @@
 									draw_circle(poolX, poolY, allyRadius, false);
 								}
 							}
+							if (spendLusium)
+							{
+								var card = ds_list_find_value(global.selectedCharacter.extra, heldRune);
+								DrawPrompt("Select which lusium to use to evoke " + card.title);
+							}
 						
 							var poolScale = allyRadius / sprite_get_width(pool.sprite);
 							draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
@@ -862,6 +867,7 @@
 						
 						if (handDraw)
 						{
+							
 							var burntSize = ds_list_size(global.selectedCharacter.burntLusium);
 							var burntY = fullY - (allyRadius * 2) - eighthY - sixteenthY;
 							var burntX = fullX - quarterY;
