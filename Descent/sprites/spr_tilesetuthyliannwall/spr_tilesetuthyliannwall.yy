@@ -20,8 +20,8 @@
   "width": 2592,
   "height": 1728,
   "textureGroupId": {
-    "name": "Default",
-    "path": "texturegroups/Default",
+    "name": "MapUthyliann",
+    "path": "texturegroups/MapUthyliann",
   },
   "swatchColours": null,
   "gridX": 0,
