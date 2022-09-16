@@ -67,7 +67,7 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Uthyliann",
-    "path": "folders/Sprites/Maps/Tilesets/Uthyliann.yy",
+    "name": "Tilesets",
+    "path": "folders/Sprites/Maps/Uthyliann/Tilesets.yy",
   },
 }

@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMTileSet",
+  "resourceVersion": "1.0",
+  "name": "tile_UthyliannWallTop",
   "spriteId": {
     "name": "spr_TilesetUthyliannWallTop",
     "path": "sprites/spr_TilesetUthyliannWallTop/spr_TilesetUthyliannWallTop.yy",
@@ -9,7 +12,7 @@
   "tileyoff": 0,
   "tilehsep": 0,
   "tilevsep": 0,
-  "spriteNoExport": true,
+  "spriteNoExport": false,
   "textureGroupId": {
     "name": "Default",
     "path": "texturegroups/Default",
@@ -19,7 +22,7 @@
   "out_columns": 7,
   "tile_count": 54,
   "autoTileSets": [
-    {"tiles":[
+    {"resourceType":"GMAutoTileSet","resourceVersion":"1.0","name":"autotile_1","tiles":[
         1,
         2,
         3,
@@ -67,7 +70,7 @@
         50,
         51,
         52,
-      ],"closed_edge":false,"resourceVersion":"1.0","name":"autotile_1","tags":[],"resourceType":"GMAutoTileSet",},
+      ],"closed_edge":false,},
   ],
   "tileAnimationFrames": [],
   "tileAnimationSpeed": 15.0,
@@ -139,8 +142,4 @@
     "name": "Uthyliann",
     "path": "folders/Tile Sets/Uthyliann.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "tile_UthyliannWallTop",
-  "tags": [],
-  "resourceType": "GMTileSet",
 }

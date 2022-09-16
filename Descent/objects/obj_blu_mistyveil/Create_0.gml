@@ -11,8 +11,7 @@ encounters = ds_list_create();
 
 displaying = false;
 
-mapWidth = 16;
-mapHeight = 26
+
 mapPad = 1;
 
 mapName = "Misty Veil"

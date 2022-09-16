@@ -14,13 +14,12 @@ for (var i = 0; i < array_length(textureArray); ++i;)
 blueprint = 0;
 blueprint = instance_find(obj_blu_MistyVeil, 0);
 
-gridWidth = blueprint.mapWidth;
-gridHeight = blueprint.mapHeight;
 gridSize = 288;
+gridWidth = (room_width / gridSize) - (blueprint.mapPad * 2);
+gridHeight = (room_height / gridSize) - (blueprint.mapPad * 2);
+
 gridPad = gridSize * blueprint.mapPad;
 
-room_width = (gridWidth * gridSize) + (gridPad * 2);
-room_height = (gridHeight * gridSize) + (gridPad * 2);
 
 global.InCombat = false;
 global.Combatants = ds_list_create();

@@ -27,7 +27,7 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"ed99cc2b-0dc1-4915-9967-6502ec9a3afc",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b3cc083c-bf86-4042-8c23-7b96c1bffef4",},
   ],
   "sequence": {
     "resourceType": "GMSequence",
@@ -44,7 +44,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"3b8b26ff-39a3-4f93-9573-c08c1a78c685","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"ed99cc2b-0dc1-4915-9967-6502ec9a3afc","path":"sprites/spr_TilesetUthyliannSurface/spr_TilesetUthyliannSurface.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"b607e3a4-5715-453e-b480-3d61ca81e588","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"b3cc083c-bf86-4042-8c23-7b96c1bffef4","path":"sprites/spr_TilesetUthyliannSurface/spr_TilesetUthyliannSurface.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
@@ -63,11 +63,11 @@
     "eventStubScript": null,
   },
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"16ab2d83-5c88-4437-bffd-bbd75bb85996","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"3b44aae4-17a0-4f79-b8e5-2e8141f31376","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Uthyliann",
-    "path": "folders/Sprites/Maps/Tilesets/Uthyliann.yy",
+    "name": "Tilesets",
+    "path": "folders/Sprites/Maps/Uthyliann/Tilesets.yy",
   },
 }

@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMTileSet",
+  "resourceVersion": "1.0",
+  "name": "tile_UthyliannBlocks",
   "spriteId": {
     "name": "spr_TilesetUthyliannBlocks",
     "path": "sprites/spr_TilesetUthyliannBlocks/spr_TilesetUthyliannBlocks.yy",
@@ -9,7 +12,7 @@
   "tileyoff": 0,
   "tilehsep": 0,
   "tilevsep": 0,
-  "spriteNoExport": true,
+  "spriteNoExport": false,
   "textureGroupId": {
     "name": "Default",
     "path": "texturegroups/Default",
@@ -67,8 +70,4 @@
     "name": "Uthyliann",
     "path": "folders/Tile Sets/Uthyliann.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "tile_UthyliannBlocks",
-  "tags": [],
-  "resourceType": "GMTileSet",
 }
