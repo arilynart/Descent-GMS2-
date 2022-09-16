@@ -16,16 +16,18 @@ velocityY = 0;
 
 //card variables
 artQueue = ds_queue_create();
-artMaxTime = 12000;
+artOutTime = 30;
+artMaxTime = 30;
+artInTime = 15;
 currentArt = -1;
 
 function AddArtToQueue(card)
 {
-	ds_queue_enqueue(card.art);
-	if (alarm_get(0) <= 0)
+	ds_queue_enqueue(artQueue, card.art);
+	if (alarm_get(1) <= 0 && alarm_get(0) <= 0)
 	{
 		currentArt = ds_queue_dequeue(artQueue);
-		alarm_set(0, artMaxTime);
+		alarm_set(1, artInTime);
 	}
 }
 

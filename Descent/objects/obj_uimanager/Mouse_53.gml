@@ -180,6 +180,8 @@ else
 					if (mouseX >= button.left && mouseX <= button.right
 					 && mouseY >= button.top && mouseY <= button.bottom)
 					{
+						ds_list_find_value(global.selectedCharacter.extra, heldRune).playedThisTurn = true;
+						
 						var runePlay = global.BaseEffect();
 						runePlay.character = global.selectedCharacter;
 						runePlay.index = heldRune;
@@ -401,6 +403,8 @@ else
 				if (size == 1)
 				{
 					//auto select lusium
+					extraCard.playedThisTurn = true;
+					
 					var runePlay = global.BaseEffect();
 					runePlay.character = global.selectedCharacter;
 					runePlay.index = i;
@@ -422,6 +426,30 @@ else
 				}
 				
 				return;
+			}
+		}
+		
+		for (var i = 0; i < ds_list_size(global.selectedCharacter.burntLusium); i++)
+		{
+			var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i);
+			if (lusium != 0)
+			{
+				for (var j = 0; j < ds_list_size(lusium.slotButtons); j++)
+				{
+					var button = ds_list_find_value(lusium.slotButtons, j);
+					if (mouseX >= button.left && mouseX <= button.right
+					 && mouseY >= button.top && mouseY <= button.bottom
+					 && j < ds_list_size(lusium.heldCards))
+					{
+						dragSlot =
+						{
+							lusiumIndex : i,
+							slot : j
+						}
+						
+						return;
+					}
+				}
 			}
 		}
 	}

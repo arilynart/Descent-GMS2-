@@ -81,7 +81,7 @@ function DrawCard(x, y, card)
 	draw_set_valign(fa_middle);
 	draw_set_font(global.UiManager.fnt_Bold);
 	draw_set_color(c_white);
-	draw_text(halfX, eighthY, card.title);
+	draw_text_transformed(halfX, eighthY, card.title, card.titleFontScale, card.titleFontScale, 0);
 	
 	//cost
 	if (card.type == CardTypes.Node)
@@ -120,7 +120,7 @@ function DrawCard(x, y, card)
 	//type
 	draw_set_halign(fa_left);
 	draw_set_font(fnt_CardText);
-	draw_text(sixteenthX, halfY + fontSize, card.typeText);
+	draw_text_transformed(sixteenthX, halfY + fontSize, card.typeText, card.typeFontScale, card.typeFontScale, 0);
 	
 	draw_line(sixteenthX, halfY + 10 + fontSize, x + cardWidth - cardWidth / 16, halfY + 10 + fontSize)
 	
@@ -191,20 +191,12 @@ function DrawPrompt(text)
 	}
 }
 
-function SupplyFromCard(index, character, element, amount)
+function SupplyFromCard(character, element, amount)
 {
-	ds_list_add(lockedHandCards, index);
-	
-	var discard = global.BaseEffect();
-	discard.Start = method(global, global.DiscardFromHandEffect);
-	discard.character = character;
-	discard.index = index;
-	
-	AddEffect(discard);
 	
 	var supply = global.BaseEffect();
 	supply.Start = method(global, global.SupplyManaEffect);
-	supply.character = global.selectedCharacter;
+	supply.character = character;
 	supply.element = element;
 	supply.amount = amount;
 	

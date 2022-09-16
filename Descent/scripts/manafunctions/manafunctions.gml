@@ -570,7 +570,7 @@ CheckForViableLusium = function(character, card)
 	
 	var foundLusium = array_create(0);
 	
-	if (card.type == CardTypes.Rune)
+	if ((card.type == CardTypes.Rune || card.type == CardTypes.Manifest) && !card.playedThisTurn)
 	{
 		//search through all lusium
 		for (var i = 0; i < ds_list_size(character.burntLusium); i++)
@@ -620,7 +620,7 @@ CheckForViableLusium = function(character, card)
 							//if the current card is viable
 							if (cardViable)
 							{
-								ds_list_add(validCards, k);
+								ds_list_add(validCards, checkCard);
 							}
 						}
 						

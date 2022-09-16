@@ -1,8 +1,3 @@
-/// @description card play animation
+/// @description card finish wait
 
-if (ds_queue_size(artQueue) > 0)
-{
-	currentArt = ds_queue_dequeue(artQueue);
-	alarm_set(0, artMaxTime);
-}
-else currentArt = -1;
+alarm_set(2, artOutTime);

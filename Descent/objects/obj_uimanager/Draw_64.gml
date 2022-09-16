@@ -837,7 +837,12 @@
 							bottom : igniteY + sixteenthY
 						}
 						var deckCount = ds_list_size(global.selectedCharacter.nodes);
-			
+						
+						var draggingNode = false;
+						if (dragCard >= 0 || (dragSlot != 0 && ds_list_find_value(ds_list_find_value(global.selectedCharacter.burntLusium, dragSlot.lusiumIndex).heldCards, dragSlot.slot).type == CardTypes.Node))
+						{
+							draggingNode = true;
+						}
 					
 						var deckRatio = deckCount / 30;
 						draw_set_color(c_black);
@@ -847,7 +852,7 @@
 						{
 							draw_set_color(c_gray);
 						}
-						else if (dragCard < 0) draw_set_color(deckLightColor);
+						else if (!draggingNode) draw_set_color(deckLightColor);
 						else
 						{
 							deckRatio = 7 / 8;
@@ -858,7 +863,7 @@
 						draw_set_halign(fa_center);
 						draw_set_valign(fa_middle);
 						draw_set_font(fnt_Bold);
-						if (dragCard < 0) var deckString = string(deckCount);
+						if (!draggingNode) var deckString = string(deckCount);
 						else var deckString = "Supply";
 						draw_text_outline(igniteX, igniteY, deckString, c_black, 1);
 						draw_set_color(c_white);
@@ -874,55 +879,73 @@
 							for (var i = 0; i < burntSize; i++)
 							{
 								var lusium = ds_list_find_value(global.selectedCharacter.burntLusium, i);
-							
-								if (i > 0) burntX -= eighthY;
-							
-							
-								for (var j = 0; j < lusium.capacity; j++)
+								if (lusium != 0)
 								{
-									burntX -= (allyRadius * 2 * j);
-								
-									var newButton =
-									{
-										left : burntX - allyRadius,
-										top : burntY - allyRadius,
-										right : burntX + allyRadius,
-										bottom : burntY + allyRadius
-									}
-					
-									ds_list_add(lusium.slotButtons, newButton);
-									draw_set_color(c_black);
-									draw_circle(burntX, burntY, allyRadius, false);
-									if (mouseX >= newButton.left && mouseX <= newButton.right
-									 && mouseY >= newButton.top && mouseY <= newButton.bottom)
-									{
+									ds_list_clear(lusium.slotButtons);
 									
-										draw_set_color(c_gray);
-									}
-									else if (ds_list_size(highlightedLusium) > 0 && ds_list_find_index(highlightedLusium, i) >= 0) draw_set_color(c_aqua);
-									else draw_set_color(c_dkgray);
+									if (i > 0) burntX -= eighthY;
 									
-									draw_line_width(burntX, burntY - allyRadius, burntX + allyRadius, burntY, outlineRadius);
-									draw_line_width(burntX, burntY + allyRadius, burntX + allyRadius, burntY, outlineRadius);
-									draw_line_width(burntX, burntY - allyRadius, burntX - allyRadius, burntY, outlineRadius);
-									draw_line_width(burntX, burntY + allyRadius, burntX - allyRadius, burntY, outlineRadius);
-									draw_circle(burntX, burntY - allyRadius, outlineRadius, false);
-									draw_circle(burntX, burntY + allyRadius, outlineRadius, false);
-									draw_circle(burntX - allyRadius, burntY, outlineRadius, false);
-									draw_circle(burntX + allyRadius, burntY, outlineRadius, false);
-								
-									if (j < ds_list_size(lusium.heldCards))
+									for (var j = 0; j < lusium.capacity; j++)
 									{
-										var card = ds_list_find_value(lusium.heldCards, j);
-										var spriteScale =  eighthY / sprite_get_width(card.art);
-										draw_sprite_ext(card.art, 0, burntX, burntY, spriteScale, spriteScale, 0, c_white, 1);
+										if (j > 0) burntX -= (allyRadius * 2);
+									
+										var slotX = burntX;
+										var slotY = burntY;
+										
+										var newButton =
+										{
+											left : burntX - allyRadius,
+											top : burntY - allyRadius,
+											right : burntX + allyRadius,
+											bottom : burntY + allyRadius
+										}
+									
+										if (!spendLusium && dragSlot != 0 && dragSlot.lusiumIndex == i && dragSlot.slot == j)
+										{
+											var card = ds_list_find_value(lusium.heldCards, j);
+											DrawCard(fullX - quarterX, eighthY, card);
+											
+											slotX = mouseX;
+											slotY = mouseY;
+										}
+										
+										ds_list_add(lusium.slotButtons, newButton);
+									
+
+										draw_set_color(c_black);
+										draw_circle(burntX, burntY, allyRadius, false);
 										if (mouseX >= newButton.left && mouseX <= newButton.right
 										 && mouseY >= newButton.top && mouseY <= newButton.bottom)
 										{
-											DrawCard(fullX - quarterX, eighthY, card);
+									
+											draw_set_color(c_gray);
+										}
+										else if (ds_list_size(highlightedLusium) > 0 && ds_list_find_index(highlightedLusium, i) >= 0) draw_set_color(c_aqua);
+										else draw_set_color(c_dkgray);
+									
+										draw_line_width(burntX, burntY - allyRadius, burntX + allyRadius, burntY, outlineRadius);
+										draw_line_width(burntX, burntY + allyRadius, burntX + allyRadius, burntY, outlineRadius);
+										draw_line_width(burntX, burntY - allyRadius, burntX - allyRadius, burntY, outlineRadius);
+										draw_line_width(burntX, burntY + allyRadius, burntX - allyRadius, burntY, outlineRadius);
+										draw_circle(burntX, burntY - allyRadius, outlineRadius, false);
+										draw_circle(burntX, burntY + allyRadius, outlineRadius, false);
+										draw_circle(burntX - allyRadius, burntY, outlineRadius, false);
+										draw_circle(burntX + allyRadius, burntY, outlineRadius, false);
+								
+										if (j < ds_list_size(lusium.heldCards))
+										{
+											var card = ds_list_find_value(lusium.heldCards, j);
+											var spriteScale =  eighthY / sprite_get_width(card.art);
+											draw_sprite_ext(card.art, 0, slotX, slotY, spriteScale, spriteScale, 0, c_white, 1);
+											if (mouseX >= newButton.left && mouseX <= newButton.right
+											 && mouseY >= newButton.top && mouseY <= newButton.bottom)
+											{
+												DrawCard(fullX - quarterX, eighthY, card);
+											}
 										}
 									}
 								}
+								
 							}
 						
 							var handSize = ds_list_size(global.selectedCharacter.hand);
@@ -1066,9 +1089,14 @@
 								
 									if (usable) var alpha = 1;
 									else var alpha = 0.5;
+									
+
+									if (card.playedThisTurn) shader_set(sha_Gray);
 				
 									var spriteScale =  eighthY / sprite_get_width(card.art);
 									draw_sprite_ext(card.art, 0, artX, artY, spriteScale, spriteScale, 0, c_white, alpha);
+									
+									shader_reset();
 								}
 							}
 						}

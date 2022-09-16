@@ -72,7 +72,6 @@ FindCard = function(class, type, element, rarity, index)
 											card.frame = spr_NodeBgSE;
 											card.art = spr_ArtBondingNodeEC000;
 											card.class = class;
-											card.type = type;
 											card.element = element;
 											card.index = index;
 											card.title = "FERVOR NODE";
@@ -105,7 +104,6 @@ FindCard = function(class, type, element, rarity, index)
 											var card = global.BaseCard(type);
 											card.art = spr_ArtBondingNodeDC000;
 											card.class = class;
-											card.type = type;
 											card.element = element;
 											card.index = index;
 											card.title = "TRUST NODE";
@@ -114,6 +112,21 @@ FindCard = function(class, type, element, rarity, index)
 											card.dSupply = 2;
 											card.typeText = "BONDING NODE - DIVINITY"
 											card.text = "While a bonded monster is within 3 |spr_Square| , this card becomes a COVENANT NODE. ";
+									
+											return card;
+										break;
+										case 1:
+											var card = global.BaseCard(type);
+											card.art = spr_ArtBondingNodeDC001;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.title = "ACCORDANCE NODE";
+											card.dCost = 2;
+											card.vCost = 1;
+											card.dSupply = 2;
+											card.typeText = "COVENANT NODE - DIVINITY"
+											card.text = " ";
 									
 											return card;
 										break;
@@ -148,7 +161,6 @@ FindCard = function(class, type, element, rarity, index)
 											card.frame = spr_RuneBgE;
 											card.art = spr_ArtBondingRuneEC000;
 											card.class = class;
-											card.type = type;
 											card.element = element;
 											card.index = index;
 											card.title = "NURTURING RUNE";
@@ -158,6 +170,25 @@ FindCard = function(class, type, element, rarity, index)
 											ds_list_add(card.costList, cost1);
 											card.typeText = "BONDING RUNE - ESSENCE"
 											card.text = "Supply the total supply value of all node cards you use to evoke this rune to a bonded monster within 6 |spr_Square| . ";
+									
+											return card;
+										break;
+										case 1:
+											var card = global.BaseCard(type);
+											card.frame = spr_RuneBgE;
+											card.art = spr_ArtBondingRuneEC001;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.title = "SHIELDING BOND";
+											card.permanent = true;
+											card.costText = "COVENANT NODE";
+											var cost1 = ds_list_create();
+											ds_list_add(cost1, "COVENANT", "NODE");
+											ds_list_add(card.costList, cost1);
+											card.typeText = "BONDING RUNE - ESSENCE"
+											card.text = "Permanent.\n \nWhile this card is in play and a bonded monster within 6 |spr_Square|  "
+													  + "takes damage, you can discard this card to reduce the damage by up to 5.";
 									
 											return card;
 										break;
@@ -183,7 +214,6 @@ FindCard = function(class, type, element, rarity, index)
 											card.frame = spr_RuneBgD;
 											card.art = spr_ArtBondingRuneDC000;
 											card.class = class;
-											card.type = type;
 											card.element = element;
 											card.index = index;
 											card.title = "SYNERGY BOND";
@@ -198,6 +228,53 @@ FindCard = function(class, type, element, rarity, index)
 													  + "card to allow that monster to make another attack " 
 													  + "this turn without spending |spr_Ap| . ";
 									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						default:
+							return 0;
+						break;
+					}
+				break;
+				case CardTypes.Manifest:
+					switch (element)
+					{
+						case Elements.ED:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 1:
+											var card = global.BaseCard(type);
+											card.frame = spr_RuneBgED;
+											card.art = spr_ArtBondingManifestEDC000;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.title = "EMPOWERING BOND";
+											card.costText = "2 BOND RUNES";
+											var cost1 = ds_list_create();
+											ds_list_add(cost1, "BOND", "RUNE");
+											ds_list_add(card.costList, cost1, cost1);
+											card.typeText = "BONDING MANIFEST - DIVINITY & ESSENCE"
+											card.text = "+X for each BOND card you control.\n \nWhile this "
+												+ "card is in play and a bonded monster within 6 |spr_Square|  deals damage, "
+												+ "you can discard this card to deal 2X damage to that same target. ";
+											
+											card.titleFontScale = 0.9;
+											card.typeFontScale = 0.72;
+											
 											return card;
 										break;
 										default:
@@ -236,13 +313,15 @@ BaseCard = function(type)
 		frame : spr_NodeBgWD,
 		art : spr_NodeArtDefault,
 		class : Classes.NONE,
-		type : CardTypes.Node,
+		type : type,
 		element : Elements.W,
 		rarity : CardRarities.Common,
 		index : -1,
 		title : "",
 		typeText : "",
 		text : "",
+		titleFontScale : 1,
+		typeFontScale : 1,
 	}
 	if (type == CardTypes.Node)
 	{
@@ -272,6 +351,9 @@ BaseCard = function(type)
 			costText = "";
 			costList = ds_list_create();
 			permanent = false;
+			playedThisTurn = false;
+			
+			if (type == CardTypes.Manifest) permanent = true;
 		}
 	}
 	return struct;

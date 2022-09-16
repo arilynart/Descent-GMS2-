@@ -85,6 +85,8 @@ heldRune = -1;
 highlightedLusium = ds_list_create();
 spendLusium = false;
 
+dragSlot = 0;
+
 spendMana = false;
 manaButtons = ds_list_create();
 revertManaButtons = ds_list_create();
