@@ -85,6 +85,8 @@ heldRune = -1;
 highlightedLusium = ds_list_create();
 hoverHighlightedLusium = ds_list_create();
 spendLusium = false;
+confirmLusiumButton = 0;
+cancelLusiumButton = 0;
 
 dragSlot = 0;
 

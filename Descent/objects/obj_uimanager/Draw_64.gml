@@ -706,8 +706,27 @@
 					{
 						var card = ds_list_find_value(global.selectedCharacter.extra, heldRune);
 						DrawPrompt("Select which lusium to use to evoke " + card.title);
+						var cancelEvokeX = fullX - allyRadius * 7;
+						var cancelEvokeY = halfY + allyRadius * 2;
+						cancelLusiumButton =
+						{
+							left : cancelEvokeX - allyRadius,
+							top : cancelEvokeY - allyRadius,
+							right : cancelEvokeX + allyRadius,
+							bottom : cancelEvokeY + allyRadius
+						}
+						
+						if (mouseX >= cancelLusiumButton.left && mouseX <= cancelLusiumButton.right
+							&& mouseY >= cancelLusiumButton.top && mouseY <= cancelLusiumButton.bottom)
+						{
+							draw_set_color(c_ltgray);
+						}
+						else draw_set_color(c_red);
+						draw_circle(cancelEvokeX, cancelEvokeY, allyRadius, false);
+						var cancelEvokeScale = allyRadius / sprite_get_width(spr_Cancel);
+						draw_sprite_ext(spr_Cancel, 0, cancelEvokeX - (allyRadius / 2), cancelEvokeY - (allyRadius / 2), cancelEvokeScale, cancelEvokeScale, 0, c_black, 1)
 					}
-					if (spendMana)
+					else if (spendMana)
 					{
 						//spendPools
 						var sortedPools = global.SortSpendPools();

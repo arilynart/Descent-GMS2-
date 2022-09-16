@@ -198,6 +198,20 @@ else
 				}
 			}
 		}
+		
+		var button = cancelLusiumButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			
+			spendLusium = false;
+			ds_list_clear(highlightedLusium);
+			heldRune = -1;
+			
+			return;
+		}
+		
 		return;
 	}
 	
