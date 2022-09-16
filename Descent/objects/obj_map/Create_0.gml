@@ -2,6 +2,14 @@
 
 
 randomize();
+
+//load textures
+var textureArray = texturegroup_get_textures("CardAssets");
+for (var i = 0; i < array_length(textureArray); ++i;)
+{
+    texture_prefetch(textureArray[i]);
+}
+
 //load blueprint
 blueprint = 0;
 blueprint = instance_find(obj_blu_MistyVeil, 0);

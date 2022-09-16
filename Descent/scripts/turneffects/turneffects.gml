@@ -18,12 +18,21 @@ EndTurnEffect = function(effect)
 	turn.character.currentAp = turn.character.maxAp;
 	turn.character.currentSquare.Deactivate();
 	turn.character.ResetLoaded();
+	
+
 
 	ds_list_clear(global.UiManager.lockedHandCards);
 	
 	if (turn.character.ignited)
 	{
-		//discard hand, draw new 5
+		for (var i = 0; i < ds_list_size(turn.character.extra); i++)
+		{
+			var card = ds_list_find_value(turn.character.extra, i);
+		
+			if (card != 0 && card.type != CardTypes.Node) card.playedThisTurn = false;
+		}
+		
+		//supply hand, draw new 5
 		var discardHandEffect = global.BaseEffect();
 		discardHandEffect.Start = method(global, global.SupplyWholeHandEffect);
 		discardHandEffect.character = turn.character;
@@ -38,6 +47,7 @@ EndTurnEffect = function(effect)
 		
 			AddEffect(draw);
 		}
+		
 	}
 	
 	ds_list_delete(global.Turns, 0);

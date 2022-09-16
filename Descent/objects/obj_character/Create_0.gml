@@ -15,10 +15,26 @@ velocityX = 0;
 velocityY = 0;
 
 //card variables
+artQueue = ds_queue_create();
+artOutTime = 30;
+artMaxTime = 30;
+artInTime = 15;
+currentArt = -1;
+
+function AddArtToQueue(card)
+{
+	ds_queue_enqueue(artQueue, card.art);
+	if (alarm_get(1) <= 0 && alarm_get(0) <= 0)
+	{
+		currentArt = ds_queue_dequeue(artQueue);
+		alarm_set(1, artInTime);
+	}
+}
+
 ignited = false;
 
 nodes = ds_list_create();
-extras = ds_list_create();
+extra = ds_list_create();
 removed = ds_list_create();
 hand = ds_list_create();
 discard = ds_list_create();

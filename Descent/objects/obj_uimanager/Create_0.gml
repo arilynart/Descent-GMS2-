@@ -1,6 +1,6 @@
 /// @description Initialize
 
-fnt_Bold = font_add("sitka-small.ttf", 24, true, false, 32, 128);
+fnt_Bold = font_add("sitka-small.ttf", 18, true, false, 32, 128);
 
 global.UiManager = self;
 global.UiLock = false;
@@ -11,6 +11,8 @@ global.SquareLock = false;
 deckLightColor = #348CEB;
 
 #endregion
+
+//display_reset(8, false);
 
 fullX = display_get_gui_width();
 fullY = display_get_gui_height();
@@ -28,7 +30,7 @@ sixteenthY = eighthY / 2;
 thirtySecondY = sixteenthY / 2;
 
 thirdX = ceil(fullX / 3);
-thirdY = ceil(fullY / 3);
+//thirdY = ceil(fullY / 3);
 
 dialogueCount = 0;
 dialogueArray = array_create(0);
@@ -41,7 +43,7 @@ uiPackButtons = 0;
 uiItemButtons = 0;
 uiMethodButtons = 0;
 
-allyRadius = quarterY / 6
+allyRadius = ceil(quarterY / 6);
 
 mouseX = 0;
 mouseY = 0;
@@ -73,8 +75,20 @@ loadedButtons = array_create(0);
 dragCard = -1;
 handDraw = true;
 handDrawButton = 0;
+extraDraw = false;
+extraDrawButton = 0;
+extraButtons = array_create(0);
 handButtons = array_create(0);
 lockedHandCards = ds_list_create();
+
+heldRune = -1;
+highlightedLusium = ds_list_create();
+hoverHighlightedLusium = ds_list_create();
+spendLusium = false;
+confirmLusiumButton = 0;
+cancelLusiumButton = 0;
+
+dragSlot = 0;
 
 spendMana = false;
 manaButtons = ds_list_create();
@@ -105,8 +119,6 @@ tempItemPack =
 {
 	contents : array_create(1)	
 }
-
-window_set_fullscreen(true);
 
 var emptyStats =
 {

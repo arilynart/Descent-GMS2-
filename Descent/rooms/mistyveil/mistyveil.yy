@@ -105,9 +105,9 @@
   "creationCodeFile": "",
   "inheritCode": false,
   "instanceCreationOrder": [
-    {"name":"inst_5143481F","path":"rooms/MistyVeil/MistyVeil.yy",},
     {"name":"inst_2264E4DA","path":"rooms/MistyVeil/MistyVeil.yy",},
     {"name":"inst_1B5DEFDD","path":"rooms/MistyVeil/MistyVeil.yy",},
+    {"name":"inst_5143481F","path":"rooms/MistyVeil/MistyVeil.yy",},
   ],
   "inheritCreationOrder": false,
   "sequenceId": null,

@@ -13,9 +13,20 @@ IgniteEffect = function(effect)
 		var loadedNode = global.FindCard(node.class, node.type, node.element, node.rarity, node.index);
 		
 		if (loadedNode != 0) ds_list_add(effect.character.nodes, loadedNode);
+		else show_debug_message("Invalid card info: " + string(node));
 	}
-	
 	effect.character.nodes = RandomizeList(effect.character.nodes);
+	
+	var extraLength = array_length(effect.character.characterStats.extraDeck)
+	for (var i = 0; i < extraLength; i++)
+	{
+		var rune = effect.character.characterStats.extraDeck[i];
+		var loadedRune = global.FindCard(rune.class, rune.type, rune.element, rune.rarity, rune.index);
+		
+		if (loadedRune != 0) ds_list_add(effect.character.extra, loadedRune);
+		else show_debug_message("Invalid card info: " + string(rune));
+	}
+
 	
 	repeat(5)
 	{
@@ -46,12 +57,57 @@ BurnLusiumEffect = function(effect)
 PlayNodeEffect = function(effect)
 {
 	var card = ds_list_find_value(effect.character.hand, effect.index);
+	
 
 	var lusium = ds_list_find_value(effect.character.burntLusium, effect.lusiumIndex);
 	ds_list_add(lusium.heldCards, card);
 	
 	ds_list_delete(effect.character.hand, effect.index);
+	
+	effect.character.AddArtToQueue(card);
 				
+	EndEffect();
+}
+
+PlayRuneEffect = function(effect)
+{
+	var card = ds_list_find_value(effect.character.extra, effect.index);
+	var lusium = ds_list_find_value(effect.character.burntLusium, effect.lusiumIndex);
+	
+	//discard all cards attached to lusium
+	for (var i = 0; i < ds_list_size(lusium.heldCards); i++)
+	{
+		var attachedCard = ds_list_find_value(lusium.heldCards, i);
+		if (attachedCard != 0)
+		{
+			if (attachedCard.type == CardTypes.Node) ds_list_add(effect.character.discard, attachedCard);
+			else ds_list_add(effect.character.extra, attachedCard);
+		}
+		
+	}
+	
+	ds_list_clear(lusium.heldCards);
+	
+	//if card is permanent
+	if (card.permanent)
+	{
+		//lusium capacity becomes 1
+		lusium.capacity = 1;
+		//play rune on lusium
+		ds_list_add(lusium.heldCards, card);
+		ds_list_delete(effect.character.extra, effect.index);
+	}
+	//else
+	else
+	{
+		//destroy lusium
+		ds_list_delete(effect.character.burntLusium, effect.lusiumIndex);
+		//play rune effect
+		
+	}
+	
+	effect.character.AddArtToQueue(card);
+	
 	EndEffect();
 }
 

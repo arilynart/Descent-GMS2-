@@ -1,6 +1,8 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+
+
 function DisplayDialogue(character, dialogue)
 {
 	show_debug_message("Displaying Dialogue from " + string(character.characterStats.name) + ". Array: " 
@@ -73,6 +75,13 @@ function DrawCard(x, y, card)
 	}
 	var rarityScale = (cardWidth / 24) / sprite_get_width(raritySprite);
 	draw_sprite_ext(raritySprite, 0, halfX, sixteenthY, rarityScale, rarityScale, 0, c_white, 1);
+
+	//title
+	draw_set_halign(fa_center);
+	draw_set_valign(fa_middle);
+	draw_set_font(global.UiManager.fnt_Bold);
+	draw_set_color(c_white);
+	draw_text_transformed(halfX, eighthY, card.title, card.titleFontScale, card.titleFontScale, 0);
 	
 	//cost
 	if (card.type == CardTypes.Node)
@@ -94,114 +103,31 @@ function DrawCard(x, y, card)
 				
 			costX += costWidth + 1;
 		}
+	}
+	else
+	{
+		var costX = halfX;
+		var costY = eighthY + 18;
 		
-
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_middle);
+		draw_set_font(fnt_CardText);
+		draw_text(costX, costY, card.costText);
 	}
 	
-	//title
-	draw_set_halign(fa_center);
-	draw_set_valign(fa_middle);
-	draw_set_font(global.UiManager.fnt_Bold);
-	draw_set_color(c_white);
-	draw_text(halfX, eighthY, card.title);
+	var fontSize = font_get_size(draw_get_font());
 	
 	//type
 	draw_set_halign(fa_left);
 	draw_set_font(fnt_CardText);
-	draw_text(sixteenthX, halfY, card.typeText);
+	draw_text_transformed(sixteenthX, halfY + fontSize, card.typeText, card.typeFontScale, card.typeFontScale, 0);
 	
-	draw_line(sixteenthX, halfY + 10, x + cardWidth - cardWidth / 16, halfY + 10)
+	draw_line(sixteenthX, halfY + 10 + fontSize, x + cardWidth - cardWidth / 16, halfY + 10 + fontSize)
 	
 	//text
 	draw_set_valign(fa_top);
 	
-	var wrap = global.TextWrap(card.text, cardWidth - cardWidth / 8);
-	
-	var wrapCopy = string_copy(wrap.text, 0, string_length(wrap.text));
-	var wrapSplits = array_create(0);
-	var splitBy = "||";
-			
-	for (var slot = 0; string_length(wrapCopy) > 0; slot++)
-	{
-		if (string_pos(splitBy, wrapCopy) > 0)
-		{
-			if (string_pos("\n", wrapCopy) > 0)
-			{
-				var splitString = string_copy(wrapCopy, 1, string_pos("\n", wrapCopy) - 1);
-				array_push(wrapSplits, splitString)
-				wrapCopy = string_delete(wrapCopy, 1, string_pos("\n", wrapCopy));
-			}
-			else
-			{
-				array_push(wrapSplits, wrapCopy);
-				wrapCopy = "";
-			}
-					
-		}
-		else
-		{
-			array_push(wrapSplits, wrapCopy);
-			wrapCopy = "";
-		}
-	}
-			
-			
-	var topY = halfY + 15;
-	var imageIndex = 0;
-	for (var section = 0; section < array_length(wrapSplits); section++)
-	{
-		var firstCopy =  wrapSplits[section];
-		var descriptionCopy =  wrapSplits[section];
-				
-		var slot = 0;
-		var splits = array_create(0);
-	
-		var currentX = sixteenthX;
-		var currentY = topY;
-			
-		for (slot = 0; string_length(descriptionCopy) > 0; slot++)
-		{
-			if (string_pos(splitBy, descriptionCopy) > 0)
-			{
-				var splitString = string_copy(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) - 1);
-				array_push(splits, splitString)
-				descriptionCopy = string_delete(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) + 1);
-			}
-			else
-			{
-				array_push(splits, descriptionCopy);
-				descriptionCopy = "";
-			}
-		}
-		
-		var descModifier = 1;
-		
-		for (var j = 0; j < array_length(splits); j++)
-		{
-			if (j % 2 == 1)
-			{
-				//draw image at current spot
-				currentX += string_width(splits[j - 1]);
-				//currentY += string_height(splits[i - 1]);
-			
-				var sprite = wrap.sprites[imageIndex];
-				var spriteWidth  = sprite_get_width(sprite);
-				var imgScale = (font_get_size(draw_get_font()) + descModifier) / spriteWidth;
-				var scaledWidth = sprite_get_width(sprite) * imgScale;
-			
-				draw_sprite_ext(sprite, 0, currentX + ceil(scaledWidth / 1.5), currentY + descModifier + ceil(scaledWidth / 1.5), imgScale, imgScale, 0, c_white, 1);
-			
-				currentX += font_get_size(draw_get_font()) + descModifier;
-				imageIndex++;
-			}
-			else
-			{
-				//draw string
-				draw_text(currentX, currentY, splits[j]);
-			}
-		}
-		topY += string_height(firstCopy);
-	}
+	draw_wrapped_text(card.text, cardWidth - (cardWidth / 16) * 3, sixteenthX + (cardWidth / 32), halfY + 15 + fontSize, 6, 1.4);
 	
 	//supply
 	if (card.type == CardTypes.Node)
@@ -259,112 +185,18 @@ function DrawPrompt(text)
 
 		draw_set_color(c_white);
 		draw_set_halign(fa_center);
-		draw_set_valign(fa_top);
+		draw_set_valign(fa_middle);
 		draw_set_font(fnt_Cambria24);
-		var wrap = global.TextWrap(text, halfX);
-	
-		var wrapCopy = string_copy(wrap.text, 0, string_length(wrap.text));
-		var wrapSplits = array_create(0);
-		var splitBy = "||";
-			
-		for (var slot = 0; string_length(wrapCopy) > 0; slot++)
-		{
-			if (string_pos(splitBy, wrapCopy) > 0)
-			{
-				if (string_pos("\n", wrapCopy) > 0)
-				{
-					var splitString = string_copy(wrapCopy, 1, string_pos("\n", wrapCopy) - 1);
-					array_push(wrapSplits, splitString)
-					wrapCopy = string_delete(wrapCopy, 1, string_pos("\n", wrapCopy));
-				}
-				else
-				{
-					array_push(wrapSplits, wrapCopy);
-					wrapCopy = "";
-				}
-					
-			}
-			else
-			{
-				array_push(wrapSplits, wrapCopy);
-				wrapCopy = "";
-			}
-		}
-			
-			
-		//var topY = yDiff;
-		var imageIndex = 0;
-		for (var section = 0; section < array_length(wrapSplits); section++)
-		{
-			var firstCopy =  wrapSplits[section];
-			var descriptionCopy =  wrapSplits[section];
-				
-			var slot = 0;
-			var splits = array_create(0);
-	
-			var currentX = halfX;
-			var currentY = topY;
-			
-			for (slot = 0; string_length(descriptionCopy) > 0; slot++)
-			{
-				if (string_pos(splitBy, descriptionCopy) > 0)
-				{
-					var splitString = string_copy(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) - 1);
-					array_push(splits, splitString)
-					descriptionCopy = string_delete(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) + 1);
-				}
-				else
-				{
-					array_push(splits, descriptionCopy);
-					descriptionCopy = "";
-				}
-			}
-		
-			var descModifier = 1;
-		
-			for (var j = 0; j < array_length(splits); j++)
-			{
-				if (j % 2 == 1)
-				{
-					//draw image at current spot
-					currentX += string_width(splits[j - 1]);
-					//currentY += string_height(splits[i - 1]);
-			
-					var sprite = wrap.sprites[imageIndex];
-					var spriteWidth  = sprite_get_width(sprite);
-					var imgScale = (font_get_size(draw_get_font()) + descModifier) / spriteWidth;
-					var scaledWidth = sprite_get_width(sprite) * imgScale;
-			
-					draw_sprite_ext(sprite, 0, currentX + ceil(scaledWidth / 1.5), currentY + descModifier + ceil(scaledWidth / 1.5), imgScale, imgScale, 0, c_white, 1);
-			
-					currentX += font_get_size(draw_get_font()) + descModifier;
-					imageIndex++;
-				}
-				else
-				{
-					//draw string
-					draw_text(currentX, currentY, splits[j]);
-				}
-			}
-			topY += string_height(firstCopy);
-		}
+		draw_wrapped_text(text, halfX, halfX, topY + (quarterY / 8), 4, 1);
 	}
 }
 
-function SupplyFromCard(index, character, element, amount)
+function SupplyFromCard(character, element, amount)
 {
-	ds_list_add(lockedHandCards, index);
-	
-	var discard = global.BaseEffect();
-	discard.Start = method(global, global.DiscardFromHandEffect);
-	discard.character = character;
-	discard.index = index;
-	
-	AddEffect(discard);
 	
 	var supply = global.BaseEffect();
 	supply.Start = method(global, global.SupplyManaEffect);
-	supply.character = global.selectedCharacter;
+	supply.character = character;
 	supply.element = element;
 	supply.amount = amount;
 	
@@ -428,14 +260,16 @@ TextWrap = function(inputString, maxWidth)
 				newLine = "";
 			}
 		}
-		else if (character == "|" &&  string_char_at(checkString, 2) == "|")
+		else if (character == "|")
 		{
 			//sprite found.
-			var spriteString = string_copy(checkString, 3, string_pos_ext("||", checkString, 3) - 3);
+			var spriteString = string_copy(checkString, 2, string_pos_ext("|", checkString, 2) - 2);
 			//show_debug_message("Drawing Sprite: " + spriteString);
 			array_push(sprites, asset_get_index(spriteString));
-			newLine += "|||";
-			checkString = string_delete(checkString, 1, string_pos_ext("||", checkString, 3));
+			newLine += "|";
+			
+			//show_debug_message("Deleting: " + string_copy(checkString, 1, string_pos_ext("|", checkString, 2)));
+			checkString = string_delete(checkString, 1, string_pos_ext("|", checkString, 2));
 		}
 		
 		if (string_length(checkString) <= 1)
@@ -719,4 +553,90 @@ SortSpendPools = function()
 	}
 	
 	return array;
+}
+
+function draw_wrapped_text(text, maxWidth, topX, topY, descModifier, descRatio)
+{
+	var wrap = global.TextWrap(text, maxWidth);
+	
+	var wrapCopy = wrap.text;
+	var wrapSplits = array_create(0);
+	var splitBy = "|";
+			
+	while(string_length(wrapCopy) > 0)
+	{
+		if (string_pos(splitBy, wrapCopy) > 0)
+		{
+			if (string_pos("\n", wrapCopy) > 0)
+			{
+				var splitString = string_copy(wrapCopy, 1, string_pos("\n", wrapCopy) - 1);
+				array_push(wrapSplits, splitString)
+				wrapCopy = string_delete(wrapCopy, 1, string_pos("\n", wrapCopy));
+			}
+			else
+			{
+				array_push(wrapSplits, wrapCopy);
+				wrapCopy = "";
+			}
+					
+		}
+		else
+		{
+			array_push(wrapSplits, wrapCopy);
+			wrapCopy = "";
+		}
+	}
+			
+	var imageIndex = 0;
+	var currentY = topY;
+	for (var section = 0; section < array_length(wrapSplits); section++)
+	{
+		var firstCopy =  wrapSplits[section];
+		var descriptionCopy =  wrapSplits[section];
+		var splits = array_create(0);
+		var currentX = topX;
+		
+			
+		while(string_length(descriptionCopy) > 0)
+		{
+			if (string_pos(splitBy, descriptionCopy) > 0)
+			{
+				var splitString = string_copy(descriptionCopy, 1, string_pos(splitBy, descriptionCopy) - 1);
+				array_push(splits, splitString)
+				descriptionCopy = string_delete(descriptionCopy, 1, string_pos(splitBy, descriptionCopy));
+			}
+			else
+			{
+				array_push(splits, descriptionCopy);
+				descriptionCopy = "";
+			}
+		}
+		
+		for (var j = 0; j < array_length(splits); j++)
+		{
+			if (j % 2 == 1)
+			{
+				//draw image at current spot
+				currentX += string_width(splits[j - 1]);
+				//currentY += string_height(splits[i - 1]);
+			
+				var sprite = wrap.sprites[imageIndex];
+				var spriteWidth  = sprite_get_width(sprite);
+				var imgScale = (font_get_size(draw_get_font()) + descModifier) / spriteWidth;
+				
+				draw_sprite_ext(sprite, 0, currentX + ceil(descModifier * descRatio), currentY + ceil(descModifier * descRatio), imgScale, imgScale, 0, c_white, 1);
+			
+				currentX += font_get_size(draw_get_font()) + descModifier;
+				imageIndex++;
+				
+				draw_text(currentX, currentY, splits[j]);
+			}
+			else
+			{
+				//draw string
+				draw_text(currentX, currentY, splits[j]);
+			}
+		}
+		currentY += string_height(firstCopy);
+	}
 }
