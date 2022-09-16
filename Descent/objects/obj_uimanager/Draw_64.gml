@@ -500,7 +500,10 @@
 		
 		
 		
-			if (global.InCombat)
+			
+		}
+		
+		if (global.InCombat)
 			{
 				//draw turn order
 			
@@ -686,11 +689,7 @@
 									draw_circle(poolX, poolY, allyRadius, false);
 								}
 							}
-							if (spendLusium)
-							{
-								var card = ds_list_find_value(global.selectedCharacter.extra, heldRune);
-								DrawPrompt("Select which lusium to use to evoke " + card.title);
-							}
+
 						
 							var poolScale = allyRadius / sprite_get_width(pool.sprite);
 							draw_sprite_ext(pool.sprite, 0, poolX, poolY, poolScale, poolScale, 0, c_white, 1);
@@ -702,6 +701,11 @@
 							draw_text(poolX, poolY, poolString);
 						
 						}
+					}
+					if (spendLusium)
+					{
+						var card = ds_list_find_value(global.selectedCharacter.extra, heldRune);
+						DrawPrompt("Select which lusium to use to evoke " + card.title);
 					}
 					if (spendMana)
 					{
@@ -798,6 +802,8 @@
 					extraButtons = array_create(0);
 					
 					handButtons = array_create(0);
+					ds_list_clear(hoverHighlightedLusium);
+					
 					if (!global.selectedCharacter.ignited && global.selectedCharacter.characterStats.team == CharacterTeams.Ally)
 					{
 						//end turn button
@@ -873,6 +879,96 @@
 						if (handDraw)
 						{
 							
+							//extra deck
+							if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
+							 && ds_list_size(global.selectedCharacter.extra) > 0)
+							{
+								var extraX = igniteX - sixteenthY;
+								var extraY = igniteY - eighthY;
+								extraDrawButton =
+								{
+									left : extraX - sixteenthY,
+									top : extraY - sixteenthY,
+									right : extraX + sixteenthY,
+									bottom : extraY + sixteenthY
+								}
+								draw_set_color(c_black);
+								draw_circle(extraX, extraY, sixteenthY, false);
+					
+								if (mouseX >= extraDrawButton.left && mouseX <= extraDrawButton.right
+									&& mouseY >= extraDrawButton.top && mouseY <= extraDrawButton.bottom)
+								{
+									draw_set_color(c_gray);
+								}
+								else draw_set_color(deckLightColor);
+								draw_circle(extraX, extraY, ceil(sixteenthY * (7 / 8)), false);
+					
+								var extraScale = sixteenthY / sprite_get_width(spr_Extra);
+								draw_sprite_ext(spr_Extra, 0, extraX, extraY, extraScale, extraScale, 0, c_black, 1);
+							
+								if (extraDraw)
+								{
+									var extraCount = ds_list_size(global.selectedCharacter.extra);
+									var extraDrawX = halfX;
+									var extraDrawY = halfY + allyRadius * 2;
+						
+									for (var i = 0; i < extraCount; i++)
+									{
+										var card = ds_list_find_value(global.selectedCharacter.extra, i);
+										var handX = ceil(extraDrawX - ((extraCount / 2)* eighthY) + (eighthY * i));
+										var handY = extraDrawY
+										//draw slots
+										var artX = handX;
+										var artY = handY;
+								
+										var handButton =
+										{
+											left : handX - allyRadius,
+											top : handY - allyRadius,
+											right : handX + allyRadius,
+											bottom : handY + allyRadius
+										}
+					
+										array_push(extraButtons, handButton);
+										var usable = false;
+								
+										var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, card);
+										//show_debug_message("Lusium Check size: " + string(array_length(lusiumCheck)));
+										if (array_length(lusiumCheck) > 0) usable = true;
+										draw_set_color(c_black);
+										if (mouseX >= handButton.left && mouseX <= handButton.right
+										 && mouseY >= handButton.top && mouseY <= handButton.bottom)
+										{
+											DrawCard(fullX - quarterX, eighthY, card);
+											if (usable)
+											{
+												draw_set_color(c_dkgray);
+												for (var j = 0; j < array_length(lusiumCheck); j++)
+												{
+													ds_list_add(hoverHighlightedLusium, lusiumCheck[j]);
+												}
+											}
+											else draw_set_color(c_black);
+										}
+								
+								
+										draw_circle(handX, handY, allyRadius, false);
+								
+										if (usable) var alpha = 1;
+										else var alpha = 0.5;
+									
+
+										if (card.playedThisTurn) shader_set(sha_Gray);
+				
+										var spriteScale =  eighthY / sprite_get_width(card.art);
+										draw_sprite_ext(card.art, 0, artX, artY, spriteScale, spriteScale, 0, c_white, alpha);
+									
+										shader_reset();
+									}
+								}
+							}
+						
+							
 							var burntSize = ds_list_size(global.selectedCharacter.burntLusium);
 							var burntY = fullY - (allyRadius * 2) - eighthY - sixteenthY;
 							var burntX = fullX - quarterY;
@@ -920,7 +1016,8 @@
 									
 											draw_set_color(c_gray);
 										}
-										else if (ds_list_size(highlightedLusium) > 0 && ds_list_find_index(highlightedLusium, i) >= 0) draw_set_color(c_aqua);
+										else if (ds_list_size(highlightedLusium) > 0 && ds_list_find_index(highlightedLusium, i) >= 0) draw_set_color(deckLightColor);
+										else if (ds_list_size(hoverHighlightedLusium) > 0 && ds_list_find_index(hoverHighlightedLusium, i) >= 0) draw_set_color(c_aqua);
 										else draw_set_color(c_dkgray);
 									
 										draw_line_width(burntX, burntY - allyRadius, burntX + allyRadius, burntY, outlineRadius);
@@ -1016,90 +1113,11 @@
 								var spriteScale =  eighthY / sprite_get_width(sprite);
 								draw_sprite_ext(sprite, 0, artX, artY, spriteScale, spriteScale, 0, c_white, 1);
 							}
-						
-						}
-					
-						//extra deck
-						if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
-						 && ds_list_size(global.selectedCharacter.extra) > 0)
-						{
-							var extraX = igniteX - sixteenthY;
-							var extraY = igniteY - eighthY;
-							extraDrawButton =
-							{
-								left : extraX - sixteenthY,
-								top : extraY - sixteenthY,
-								right : extraX + sixteenthY,
-								bottom : extraY + sixteenthY
-							}
-							draw_set_color(c_black);
-							draw_circle(extraX, extraY, sixteenthY, false);
-					
-							if (mouseX >= extraDrawButton.left && mouseX <= extraDrawButton.right
-								&& mouseY >= extraDrawButton.top && mouseY <= extraDrawButton.bottom)
-							{
-								draw_set_color(c_gray);
-							}
-							else draw_set_color(deckLightColor);
-							draw_circle(extraX, extraY, ceil(sixteenthY * (7 / 8)), false);
-					
-							var extraScale = sixteenthY / sprite_get_width(spr_Extra);
-							draw_sprite_ext(spr_Extra, 0, extraX, extraY, extraScale, extraScale, 0, c_black, 1);
 							
-							if (extraDraw)
-							{
-								var extraCount = ds_list_size(global.selectedCharacter.extra);
-								var extraDrawX = halfX;
-								var extraDrawY = halfY + allyRadius * 2;
-						
-								for (var i = 0; i < extraCount; i++)
-								{
-									var card = ds_list_find_value(global.selectedCharacter.extra, i);
-									var handX = ceil(extraDrawX - ((extraCount / 2)* eighthY) + (eighthY * i));
-									var handY = extraDrawY
-									//draw slots
-									var artX = handX;
-									var artY = handY;
-								
-									var handButton =
-									{
-										left : handX - allyRadius,
-										top : handY - allyRadius,
-										right : handX + allyRadius,
-										bottom : handY + allyRadius
-									}
-					
-									array_push(extraButtons, handButton);
-									var usable = false;
-								
-									var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, card);
-									//show_debug_message("Lusium Check size: " + string(array_length(lusiumCheck)));
-									if (array_length(lusiumCheck) > 0) usable = true;
-									draw_set_color(c_black);
-									if (mouseX >= handButton.left && mouseX <= handButton.right
-									 && mouseY >= handButton.top && mouseY <= handButton.bottom)
-									{
-										DrawCard(fullX - quarterX, eighthY, card);
-										if (usable) draw_set_color(c_dkgray);
-										else draw_set_color(c_black);
-									}
-								
-								
-									draw_circle(handX, handY, allyRadius, false);
-								
-									if (usable) var alpha = 1;
-									else var alpha = 0.5;
-									
 
-									if (card.playedThisTurn) shader_set(sha_Gray);
-				
-									var spriteScale =  eighthY / sprite_get_width(card.art);
-									draw_sprite_ext(card.art, 0, artX, artY, spriteScale, spriteScale, 0, c_white, alpha);
-									
-									shader_reset();
-								}
-							}
 						}
+					
+						
 					
 					}
 				}
@@ -1169,20 +1187,22 @@
 						if (prepLoad)
 						{
 							draw_set_color(c_black);
-							draw_circle(halfX, halfY, quarterY, false)
+							var prepX = halfY;
+							var prepY = quarterY;
+							draw_circle(prepX, prepY, quarterY, false)
 						
 							draw_set_halign(fa_center);
 							draw_set_valign(fa_middle);
 							draw_set_font(fnt_Cambria16)
 							draw_set_color(c_white);
-							draw_text(halfX, halfY - eighthY, "Choose up to " + string(global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).lusiumPerAp) + " to load.");
+							draw_text(prepX, prepY - eighthY, "Choose up to " + string(global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).lusiumPerAp) + " to load.");
 						
 							for (var i = 0; i < 4; i++)
 							{
 								var item = global.FindItem(ItemTypes.Lusium, i, 0);
 								var foundQuantity = 0;
-								var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
-								var lusiumY = halfY + allyRadius;
+								var	lusiumX = prepX - eighthY - sixteenthY + (i * eighthY);
+								var lusiumY = prepY + allyRadius;
 														
 								var newButton =
 								{
@@ -1230,8 +1250,8 @@
 							{
 								var item = global.FindItem(ItemTypes.Lusium, i, 0);
 								var foundQuantity = 0;
-								var	lusiumX = halfX - eighthY - sixteenthY + (i * eighthY);
-								var lusiumY = halfY - allyRadius;
+								var	lusiumX = prepX - eighthY - sixteenthY + (i * eighthY);
+								var lusiumY = prepY - allyRadius;
 							
 								var lusiumScale = allyRadius / sprite_get_width(item.sprite);
 							
@@ -1251,8 +1271,8 @@
 							}
 						
 							//confirm
-							var confirmX = halfX;
-							var confirmY = halfY + eighthY;
+							var confirmX = prepX;
+							var confirmY = prepY + eighthY;
 						
 							confirmLoadButton = 
 							{
@@ -1275,7 +1295,7 @@
 							draw_sprite_ext(spr_Confirm, 0, confirmX - (allyRadius / 2), confirmY - (allyRadius / 2), confirmScale, confirmScale, 0, c_black, 1);
 						
 							//cancel
-							var cancelX = halfX;
+							var cancelX = prepX;
 							var cancelY = confirmY + allyRadius * 2;
 						
 							cancelLoadButton = 
@@ -1309,5 +1329,4 @@
 				}
 			
 			}
-		}
 	}

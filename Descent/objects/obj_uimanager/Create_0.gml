@@ -30,7 +30,7 @@ sixteenthY = eighthY / 2;
 thirtySecondY = sixteenthY / 2;
 
 thirdX = ceil(fullX / 3);
-thirdY = ceil(fullY / 3);
+//thirdY = ceil(fullY / 3);
 
 dialogueCount = 0;
 dialogueArray = array_create(0);
@@ -83,6 +83,7 @@ lockedHandCards = ds_list_create();
 
 heldRune = -1;
 highlightedLusium = ds_list_create();
+hoverHighlightedLusium = ds_list_create();
 spendLusium = false;
 
 dragSlot = 0;

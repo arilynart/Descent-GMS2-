@@ -187,7 +187,7 @@ FindCard = function(class, type, element, rarity, index)
 											ds_list_add(cost1, "COVENANT", "NODE");
 											ds_list_add(card.costList, cost1);
 											card.typeText = "BONDING RUNE - ESSENCE"
-											card.text = "Permanent.\n \nWhile this card is in play and a bonded monster within 6 |spr_Square|  "
+											card.text = "Permanent.\n \nWhen a bonded monster within 6 |spr_Square|  "
 													  + "takes damage, you can discard this card to reduce the damage by up to 5.";
 									
 											return card;
@@ -268,8 +268,7 @@ FindCard = function(class, type, element, rarity, index)
 											ds_list_add(cost1, "BOND", "RUNE");
 											ds_list_add(card.costList, cost1, cost1);
 											card.typeText = "BONDING MANIFEST - DIVINITY & ESSENCE"
-											card.text = "+X for each BOND card you control.\n \nWhile this "
-												+ "card is in play and a bonded monster within 6 |spr_Square|  deals damage, "
+											card.text = "+X for each BOND card you control.\n \nWhen a bonded monster within 6 |spr_Square|  deals damage, "
 												+ "you can discard this card to deal 2X damage to that same target. ";
 											
 											card.titleFontScale = 0.9;
