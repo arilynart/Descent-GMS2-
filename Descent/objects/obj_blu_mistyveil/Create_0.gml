@@ -113,31 +113,16 @@ playerSpawnX = 6;
 playerSpawnY = 6;
 
 var forsakenSoul0 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul0.spawnX = 9;
-forsakenSoul0.spawnY = 24;
+forsakenSoul0.spawnX = 12;
+forsakenSoul0.spawnY = 30;
 var forsakenSoul1 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul1.spawnX = 11;
-forsakenSoul1.spawnY = 25;
+forsakenSoul1.spawnX = 16;
+forsakenSoul1.spawnY = 27;
 var forsakenSoul2 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul2.spawnX = 8;
-forsakenSoul2.spawnY = 24;
-var forsakenSoul3 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul3.spawnX = 8;
-forsakenSoul3.spawnY = 25;
-var forsakenSoul4 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul4.spawnX = 14;
-forsakenSoul4.spawnY = 25;
-var forsakenSoul5 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul5.spawnX = 14;
-forsakenSoul5.spawnY = 24;
-var forsakenSoul6 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul6.spawnX = 14;
-forsakenSoul6.spawnY = 22;
-var forsakenSoul7 = global.FindCharacter(CharacterClass.Monster, 0);
-forsakenSoul7.spawnX = 14;
-forsakenSoul7.spawnY = 21;
+forsakenSoul1.spawnX = 5;
+forsakenSoul1.spawnY = 30;
 
-ds_list_add(characters, forsakenSoul0, forsakenSoul1, /*forsakenSoul2, forsakenSoul3, forsakenSoul4, forsakenSoul5, forsakenSoul6, forsakenSoul7*/);
+ds_list_add(characters, forsakenSoul0, forsakenSoul1, forsakenSoul2, /*forsakenSoul3, forsakenSoul4, forsakenSoul5, forsakenSoul6, forsakenSoul7*/);
 
 #endregion
 
@@ -146,17 +131,47 @@ ds_list_add(characters, forsakenSoul0, forsakenSoul1, /*forsakenSoul2, forsakenS
 var firstEncounterEver =
 {
 	startIndex : 0,
-	endIndex : 1,
+	endIndex : 2,
 	alive : true,
 	respawn : true,
 	triggers : ds_list_create()
 }
-hallwayTrigger =
+var trigger0 =
+{
+	x : 8,
+	y : 27
+}
+var trigger1 =
+{
+	x : 9,
+	y : 27
+}
+var trigger2 =
+{
+	x : 10,
+	y : 27
+}
+var trigger3 =
+{
+	x : 11,
+	y : 27
+}
+var trigger4 =
 {
 	x : 12,
-	y : 23
+	y : 27
 }
-ds_list_add(firstEncounterEver.triggers, hallwayTrigger);
+var trigger5 =
+{
+	x : 13,
+	y : 27
+}
+var trigger6 =
+{
+	x : 14,
+	y : 27
+}
+ds_list_add(firstEncounterEver.triggers, trigger0, trigger1, trigger2, trigger3, trigger4, trigger5, trigger6);
 
 ds_list_add(encounters, firstEncounterEver);
 
