@@ -22,7 +22,7 @@
   "out_columns": 7,
   "tile_count": 54,
   "autoTileSets": [
-    {"resourceType":"GMAutoTileSet","resourceVersion":"1.0","name":"autotile_1","tiles":[
+    {"resourceType":"GMAutoTileSet","resourceVersion":"1.0","name":"wallTops","tiles":[
         1,
         2,
         3,
