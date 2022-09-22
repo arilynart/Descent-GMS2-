@@ -1,6 +1,8 @@
 
 	mouseX = device_mouse_x_to_gui(0);
 	mouseY = device_mouse_y_to_gui(0);
+	
+	
 
 	//draw Dialogue Box.
 	var dialogueLength = array_length(dialogueArray);
@@ -53,7 +55,23 @@
 			//make the circles into diamonds instead.
 		draw_set_circle_precision(4);
 	
-
+		if (map.blueprint.displaying && map.blueprint.currentMode == WallModes.Range)
+		{
+	
+			
+			//var fullY = display_get_gui_height();
+			var radius = fullX / 16;
+	
+			draw_set_color(c_white);
+			draw_circle(fullX, 0, radius, false);
+			draw_set_color(c_black);
+	
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_font(fnt_Cambria24);
+	
+			draw_text(fullX - radius / 3, 0 + radius / 3, string(map.blueprint.currentRangeMode));
+		}
 		//draw character selection HUD
 		
 		if (global.ItemToMove != 0)

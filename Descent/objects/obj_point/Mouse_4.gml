@@ -23,6 +23,10 @@ else if (global.wallBuildPoint2 == 0)
 		y : coordinate.y
 	}
 	
+	var wallArray = 0;
+	if (map.blueprint.currentMode == WallModes.Move) wallArray = map.blueprint.walls;
+	else wallArray = map.blueprint.rangeWalls;
+	
 	//make sure only one of the points is different.
 	var xDiff = abs(global.wallBuildPoint1.x - global.wallBuildPoint2.x);
 	var yDiff = abs(global.wallBuildPoint1.y - global.wallBuildPoint2.y);
@@ -78,11 +82,11 @@ else if (global.wallBuildPoint2 == 0)
 	
 			var wallExists = false;
 			var index = -1;
-			var size = array_length(map.blueprint.walls);
+			var size = array_length(wallArray);
 	
 			for (var i = 0; i < size; i++)
 			{
-				var checkedWall = map.blueprint.walls[i];
+				var checkedWall = wallArray[i];
 				if ((checkedWall.point1.x == newWall.point1.x && checkedWall.point1.y == newWall.point1.y
 					&& checkedWall.point2.x == newWall.point2.x && checkedWall.point2.y == newWall.point2.y)
 					|| (checkedWall.point1.x == inverseWall.point1.x && checkedWall.point1.y == inverseWall.point1.y
@@ -96,11 +100,15 @@ else if (global.wallBuildPoint2 == 0)
 			if (wallExists == true && index >= 0)
 			{
 				show_debug_message("Wall already exists. Removing.");
-				array_delete(map.blueprint.walls, index, 1);
+				array_delete(wallArray, index, 1);
 			}
 			else
 			{
-				array_push(map.blueprint.walls, newWall);
+				if (map.blueprint.currentMode == WallModes.Range)
+				{
+					newWall.type = map.blueprint.currentRangeMode;
+				}
+				array_push(wallArray, newWall);
 			}
 		}
 		for (var step = 0; step < yDiff; step++)
@@ -148,11 +156,11 @@ else if (global.wallBuildPoint2 == 0)
 	
 			var wallExists = false;
 			var index = -1;
-			var size = array_length(map.blueprint.walls);
+			var size = array_length(wallArray);
 	
 			for (var i = 0; i < size; i++)
 			{
-				var checkedWall = map.blueprint.walls[i];
+				var checkedWall = wallArray[i];
 				if ((checkedWall.point1.x == newWall.point1.x && checkedWall.point1.y == newWall.point1.y
 					&& checkedWall.point2.x == newWall.point2.x && checkedWall.point2.y == newWall.point2.y)
 					|| (checkedWall.point1.x == inverseWall.point1.x && checkedWall.point1.y == inverseWall.point1.y
@@ -166,11 +174,15 @@ else if (global.wallBuildPoint2 == 0)
 			if (wallExists == true && index >= 0)
 			{
 				show_debug_message("Wall already exists. Removing.");
-				array_delete(map.blueprint.walls, index, 1);
+				array_delete(wallArray, index, 1);
 			}
 			else
 			{
-				array_push(map.blueprint.walls, newWall);
+				if (map.blueprint.currentMode == WallModes.Range)
+				{
+					newWall.type = map.blueprint.currentRangeMode;
+				}
+				array_push(wallArray, newWall);
 			}
 		}
 		

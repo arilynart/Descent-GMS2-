@@ -11,14 +11,14 @@
   "collisionTolerance": 0,
   "swfPrecision": 2.525,
   "bbox_left": 0,
-  "bbox_right": 1151,
+  "bbox_right": 1439,
   "bbox_top": 0,
-  "bbox_bottom": 1151,
+  "bbox_bottom": 4607,
   "HTile": false,
   "VTile": false,
   "For3D": false,
-  "width": 1152,
-  "height": 1152,
+  "width": 1440,
+  "height": 4608,
   "textureGroupId": {
     "name": "MapUthyliann",
     "path": "texturegroups/MapUthyliann",
@@ -27,7 +27,7 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f9bb0634-e4a3-49fc-9d24-93521ee03664",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"0f91427a-00da-4419-8ce0-e14d8d21003f",},
   ],
   "sequence": {
     "resourceType": "GMSequence",
@@ -44,7 +44,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"5f47f687-e02b-439e-add8-b7050f5aaa67","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"f9bb0634-e4a3-49fc-9d24-93521ee03664","path":"sprites/spr_TilesetUthyliannBlocks/spr_TilesetUthyliannBlocks.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"0f545bdc-dd4a-4744-aae8-47a3907e2912","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"0f91427a-00da-4419-8ce0-e14d8d21003f","path":"sprites/spr_TilesetUthyliannBlocks/spr_TilesetUthyliannBlocks.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
@@ -63,11 +63,11 @@
     "eventStubScript": null,
   },
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"7c1b03c5-0941-4f1a-b3dd-a4b34673a076","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"f1ad37d8-315b-4192-8fcf-7a5e6054cb90","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Uthyliann",
-    "path": "folders/Sprites/Maps/Tilesets/Uthyliann.yy",
+    "name": "Tilesets",
+    "path": "folders/Sprites/Maps/Uthyliann/Tilesets.yy",
   },
 }

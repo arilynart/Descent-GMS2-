@@ -13,6 +13,22 @@ if (dehighlightArray != 0)
 		var squareToHighlight = ds_list_find_value(dehighlightArray, i);
 		
 		if (squareToHighlight.interaction != 0) squareToHighlight.image_blend = interactionColor;
+		else if (squareToHighlight.character != 0)
+		{
+			if (squareToHighlight.character.characterStats.team == CharacterTeams.Ally)
+			{
+				squareToHighlight.image_blend = c_lime;
+			}
+			else if (squareToHighlight.character.characterStats.team == CharacterTeams.Enemy)
+			{
+				squareToHighlight.image_blend = c_red;
+			}
+			else if (squareToHighlight.character.characterStats.team == CharacterTeams.Neutral)
+			{
+				squareToHighlight.image_blend = c_blue;
+			}
+			squareToHighlight.image_alpha = 1;
+		}
 		else squareToHighlight.image_blend = c_white;
 
 	}

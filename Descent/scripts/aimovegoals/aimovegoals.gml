@@ -30,7 +30,7 @@ function AiMoveToEnemyGoal(character)
 			
 			character.currentSquare.Deactivate();
 			
-			character.currentSquare.Activate(character.currentSquare, moveDistance + h);
+			character.currentSquare.Activate(character.currentSquare, moveDistance + h, character);
 			
 			var activatedSize = ds_list_size(character.currentSquare.activatedSquares);
 			for (var i = 0; i < activatedSize; i++)

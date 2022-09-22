@@ -378,14 +378,17 @@ else
 			return;
 		}
 		
-		var button = extraDrawButton;
-		
-		if (mouseX >= button.left && mouseX <= button.right
-		 && mouseY >= button.top && mouseY <= button.bottom)
+		if (extraDrawButton != 0)
 		{
-			extraDraw = !extraDraw;
+			var button = extraDrawButton;
+		
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				extraDraw = !extraDraw;
 			
-			return;
+				return;
+			}
 		}
 		
 		

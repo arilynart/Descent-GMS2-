@@ -11,6 +11,12 @@ if (global.InCombat)
 		if (moveTarget == 0 && ds_queue_empty(moveQueue) == false)
 		{
 			moveTarget = ds_queue_dequeue(moveQueue);
+			if (ds_queue_empty(moveQueue))
+			{
+				currentSquare.character = 0;
+				currentSquare = moveTarget;
+				moveTarget.character = id;
+			}
 			move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
 			//show_debug_message("No target. Dequeueing next target: " + string(moveTarget));
 		}
@@ -22,13 +28,7 @@ if (global.InCombat)
 				move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
 			
 				//show_debug_message("arrived at target. Restting variables.");
-				currentSquare.character = 0;
-				moveTarget.character = id;
-				currentSquare = moveTarget;
 				moveTarget = 0;
-			
-				//x = moveTarget.x;
-				//y = moveTarget.y;
 			}
 			else if (x != moveTarget.x || y != moveTarget.y)
 			{

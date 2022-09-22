@@ -7,6 +7,8 @@ var saveStruct =
 {
 	mapName: self.mapName,
 	walls : self.walls,
+	invalidRange : self.invalidRange,
+	rangeWalls : self.rangeWalls,
 	mapWidth : self.mapWidth,
 	mapHeight : self.mapHeight
 }

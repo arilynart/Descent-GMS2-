@@ -1,5 +1,7 @@
 /// @description Initialize
 
+map = instance_find(obj_Map, 0);
+
 fnt_Bold = font_add("sitka-small.ttf", 18, true, false, 32, 128);
 
 global.UiManager = self;
