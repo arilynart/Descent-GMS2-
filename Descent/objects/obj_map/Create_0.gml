@@ -46,6 +46,9 @@ for (var i = 0; i < gridWidth; i++)
 			}
 			image_alpha = 0;
 		}
+		
+
+		
 		squares[i,j] = newSquare;
 		
 		//show_debug_message("Square Created: " + string(squares[i,j].id));
@@ -69,6 +72,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.right = squares[targetX, targetY];
+			sq.range.right = squares[targetX, targetY];
 		}
 		//downRight
 		targetX = i + 1;
@@ -76,6 +80,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.downRight = squares[targetX, targetY];
+			sq.range.downRight = squares[targetX, targetY];
 		}
 		//down
 		targetX = i;
@@ -83,6 +88,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.down = squares[targetX, targetY];
+			sq.range.down = squares[targetX, targetY];
 		}
 		//downLeft
 		targetX = i - 1;
@@ -90,6 +96,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.downLeft = squares[targetX, targetY];
+			sq.range.downLeft = squares[targetX, targetY];
 		}
 		//left
 		targetX = i - 1;
@@ -97,6 +104,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.left = squares[targetX, targetY];
+			sq.range.left = squares[targetX, targetY];
 		}
 		//upLeft
 		targetX = i - 1;
@@ -104,6 +112,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.upLeft = squares[targetX, targetY];
+			sq.range.upLeft = squares[targetX, targetY];
 		}
 		//up
 		targetX = i;
@@ -111,6 +120,7 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.up = squares[targetX, targetY];
+			sq.range.up = squares[targetX, targetY];
 		}
 		//upRight
 		targetX = i + 1;
@@ -118,12 +128,13 @@ for (var i = 0; i < gridWidth; i++)
 		if (targetX >= 0 && targetX < gridWidth && targetY >= 0 && targetY < gridHeight)
 		{
 			sq.upRight = squares[targetX, targetY];
+			sq.range.upRight = squares[targetX, targetY];
 		}
 		
-		show_debug_message("Square gateways set: right: " + string(sq.right) 
-			+ " downright: " + string(sq.downRight) + " down: " + string(sq.down) 
-			+ " downleft: " + string(sq.downLeft) + " left: " + string(sq.left) + " upleft: "
-			+ string(sq.upLeft) + " up: " + string(sq.up) + " upright: " + string(sq.upRight));
+		//show_debug_message("Square gateways set: right: " + string(sq.range.right) 
+		//	+ " downright: " + string(sq.range.downRight) + " down: " + string(sq.range.down) 
+		//	+ " downleft: " + string(sq.range.downLeft) + " left: " + string(sq.range.left) + " upleft: "
+		//	+ string(sq.range.upLeft) + " up: " + string(sq.range.up) + " upright: " + string(sq.range.upRight));
 	}
 }
 
@@ -306,6 +317,290 @@ for (var i = 0; i < wallSize; i++)
 			}
 		}
 	}
+}
+
+var wallSize = array_length(blueprint.rangeWalls);
+for (var i = 0; i < wallSize; i++)
+{
+	var checkedWall = blueprint.rangeWalls[i];
+	//find orientation of wall, then disconnect square accordingly. It can only be vertical or horizontal.
+	
+	var xDiff = abs(checkedWall.point1.x - checkedWall.point2.x);
+	
+	if (xDiff > 0)
+	{
+		var bottomSquare = 0;
+		//horizontal
+		if (checkedWall.point1.x < checkedWall.point2.x)
+		{
+			//oriented normally
+			if (checkedWall.point1.x >= 0 && checkedWall.point1.x < gridWidth 
+				&& checkedWall.point1.y >= 0 && checkedWall.point1.y < gridHeight)
+			{
+				bottomSquare = squares[checkedWall.point1.x, checkedWall.point1.y];
+			}
+		}
+		else
+		{
+			//flipped
+			if (checkedWall.point2.x >= 0 && checkedWall.point2.x < gridWidth 
+				&& checkedWall.point2.y >= 0 && checkedWall.point2.y < gridHeight)
+			{
+				bottomSquare = squares[checkedWall.point2.x, checkedWall.point2.y];
+			}
+		}
+		
+			// x | v | x 
+			//---1~~~2---
+			// v | o | v 
+		switch (checkedWall.type)
+		{
+			case RangeWallTypes.AllowUpToDown:
+				if (bottomSquare != 0)
+				{
+					if (bottomSquare.range.up != 0)
+					{
+						if (bottomSquare.range.up.range.downLeft != 0)
+						{
+							if (bottomSquare.range.up.range.downLeft.range.upRight != 0)
+							{
+								bottomSquare.range.up.range.downLeft.range.upRight = 0;
+							}
+						}
+						if (bottomSquare.range.up.range.downRight != 0)
+						{
+							if (bottomSquare.range.up.range.downRight.range.upLeft != 0)
+							{
+								bottomSquare.range.up.range.downRight.range.upLeft = 0;
+
+							}
+						}
+						bottomSquare.range.up = 0;
+					}
+					if (bottomSquare.range.upRight != 0)
+					{
+						bottomSquare.range.upRight = 0;
+					}
+					if (bottomSquare.range.upLeft != 0)
+					{
+						bottomSquare.range.upLeft = 0;
+					}
+		
+				}
+			break;
+			default:
+				//show_debug_message("Default: block all connections : " + string(bottomSquare));
+				if (bottomSquare != 0)
+				{
+					if (bottomSquare.range.up != 0)
+					{
+						if (bottomSquare.range.up.range.down != 0)
+						{
+							bottomSquare.range.up.range.down = 0;
+						}
+						if (bottomSquare.range.up.range.downLeft != 0)
+						{
+							if (bottomSquare.range.up.range.downLeft.range.upRight != 0)
+							{
+								bottomSquare.range.up.range.downLeft.range.upRight = 0;
+							}
+							bottomSquare.range.up.range.downLeft = 0;
+						}
+						if (bottomSquare.range.up.range.downRight != 0)
+						{
+							if (bottomSquare.range.up.range.downRight.range.upLeft != 0)
+							{
+								bottomSquare.range.up.range.downRight.range.upLeft = 0;
+
+							}
+							bottomSquare.range.up.range.downRight = 0;
+						}
+						bottomSquare.range.up = 0;
+					}
+					if (bottomSquare.range.upRight != 0)
+					{
+						if (bottomSquare.range.upRight.range.downLeft != 0)
+						{
+							bottomSquare.range.upRight.range.downLeft = 0;
+						}
+						bottomSquare.range.upRight = 0;
+					}
+					if (bottomSquare.range.upLeft != 0)
+					{
+						if (bottomSquare.range.upLeft.range.downRight != 0)
+						{
+							bottomSquare.range.upLeft.range.downRight = 0;
+						}
+						bottomSquare.range.upLeft = 0;
+					}
+		
+				}
+			break;
+			
+		}
+		
+	}
+	else
+	{
+		//vertical
+		
+		var leftSquare = 0;
+		//horizontal
+		if (checkedWall.point1.y < checkedWall.point2.y)
+		{
+			//oriented normally
+			if (checkedWall.point1.x - 1 >= 0 && checkedWall.point1.x - 1 < gridWidth 
+				&& checkedWall.point1.y >= 0 && checkedWall.point1.y < gridHeight)
+			{
+				leftSquare = squares[checkedWall.point1.x - 1, checkedWall.point1.y];
+			}
+
+		}
+		else
+		{
+			//flipped
+			if (checkedWall.point2.x - 1 >= 0 && checkedWall.point2.x - 1 < gridWidth 
+				&& checkedWall.point2.y >= 0 && checkedWall.point2.y < gridHeight)
+			{
+				leftSquare = squares[checkedWall.point2.x - 1, checkedWall.point2.y];
+			}
+		}
+		
+			// x | v | x 
+			//---1~~~2---	(rotate 90 degrees clockwise)
+			// v | o | v 
+			
+		switch (checkedWall.type)
+		{
+			case RangeWallTypes.AllowLeftToRight:
+				if (leftSquare != 0)
+				{
+					if (leftSquare.range.right != 0)
+					{
+						if (leftSquare.range.right.range.left != 0)
+						{
+							leftSquare.range.right.range.left = 0;
+						}
+						if (leftSquare.range.right.range.upLeft != 0)
+						{
+				
+							leftSquare.range.right.range.upLeft = 0;
+						}
+						if (leftSquare.range.right.range.downLeft != 0)
+						{
+				
+							leftSquare.range.right.range.downLeft = 0;
+						}
+					}
+					if (leftSquare.range.downRight != 0)
+					{
+						if(leftSquare.range.downRight.range.upLeft != 0)
+						{
+							leftSquare.range.downRight.range.upLeft = 0;
+						}
+					}
+					if (leftSquare.range.upRight != 0)
+					{
+						if (leftSquare.range.upRight.range.downLeft != 0)
+						{
+							leftSquare.range.upRight.range.downLeft = 0;
+						}
+					}
+				}
+			break;
+			case RangeWallTypes.AllowRightToLeft:
+				if (leftSquare != 0)
+				{
+					if (leftSquare.range.right != 0)
+					{
+						if (leftSquare.range.right.range.upLeft != 0)
+						{
+							if (leftSquare.range.right.range.upLeft.range.downRight != 0)
+							{
+								leftSquare.range.right.range.upLeft.range.downRight = 0;
+							}
+						}
+						if (leftSquare.range.right.range.downLeft != 0)
+						{
+							if (leftSquare.range.right.range.downLeft.range.upRight != 0)
+							{
+								leftSquare.range.right.range.downLeft.range.upRight = 0;
+							}
+			
+						}
+
+						leftSquare.range.right = 0;
+					}
+					if (leftSquare.range.downRight != 0)
+					{
+						leftSquare.range.downRight = 0;
+					}
+					if (leftSquare.range.upRight != 0)
+					{
+						leftSquare.range.upRight = 0;
+					}
+				}
+			break;
+			default:
+				//show_debug_message("Default: block all connections : " + string(leftSquare));
+				if (leftSquare != 0)
+				{
+					if (leftSquare.range.right != 0)
+					{
+						if (leftSquare.range.right.range.left != 0)
+						{
+							leftSquare.range.right.range.left = 0;
+						}
+						if (leftSquare.range.right.range.upLeft != 0)
+						{
+							if (leftSquare.range.right.range.upLeft.range.downRight != 0)
+							{
+								leftSquare.range.right.range.upLeft.range.downRight = 0;
+							}
+				
+							leftSquare.range.right.range.upLeft = 0;
+						}
+						if (leftSquare.range.right.range.downLeft != 0)
+						{
+							if (leftSquare.range.right.range.downLeft.range.upRight != 0)
+							{
+								leftSquare.range.right.range.downLeft.range.upRight = 0;
+							}
+				
+							leftSquare.range.right.range.downLeft = 0;
+						}
+
+						leftSquare.range.right = 0;
+					}
+					if (leftSquare.range.downRight != 0)
+					{
+						if(leftSquare.range.downRight.range.upLeft != 0)
+						{
+							leftSquare.range.downRight.range.upLeft = 0;
+						}
+						leftSquare.range.downRight = 0;
+					}
+					if (leftSquare.range.upRight != 0)
+					{
+						if (leftSquare.range.upRight.range.downLeft != 0)
+						{
+							leftSquare.range.upRight.range.downLeft = 0;
+						}
+						leftSquare.range.upRight = 0;
+					}
+				}
+			break;
+		}
+		
+	}
+}
+
+for (var i = 0; i < array_length(blueprint.invalidRange); i++)
+{
+	var range = blueprint.invalidRange[i];
+	var square = squares[range.x, range.y];
+	square.validRange = false;
+	show_debug_message("Square invalidated at: " + string(range.x) + ", " + string(range.y) + " | Result is: " + string(square.validRange));
 }
 
 //interactables

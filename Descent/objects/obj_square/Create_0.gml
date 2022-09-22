@@ -12,6 +12,20 @@ upLeft = 0;
 up = 0;
 upRight = 0;
 
+validRange = true;
+range = {}
+with (range)
+{
+	right = 0;
+	downRight = 0;
+	down = 0;
+	downLeft = 0;
+	left = 0;
+	upLeft = 0;
+	up = 0;
+	upRight = 0;
+}
+
 coordinate = 
 {
 	x : -1,
@@ -42,7 +56,7 @@ interactionColor = c_fuchsia;
 
 #region Activation
 
-function Activate(start, maxDistance) 
+function Activate(start, maxDistance, activeCharacter) 
 {
 	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
 	
@@ -65,6 +79,28 @@ function Activate(start, maxDistance)
 			currentSquare.image_blend = interactionColor;
 			currentSquare.image_alpha = 1;
 		}
+		else if (currentSquare.character != 0)
+		{
+			currentSquare.image_alpha = 1;
+			if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
+			{
+				currentSquare.image_blend = c_lime;
+			}
+			else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
+			{
+				currentSquare.image_blend = c_red;
+			}
+			else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
+			{
+				currentSquare.image_blend = c_blue;
+			}
+		}
+		else
+		{
+			currentSquare.image_alpha = 0.3;
+			currentSquare.image_blend = c_white;
+		}
+		currentSquare.activated = true;
 		
 		ds_list_add(activatedSquares, currentSquare);
 		
@@ -81,28 +117,28 @@ function Activate(start, maxDistance)
 			targetY = currentSquare.coordinate.y;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.right, nextDistance, currentSquare);
+				ParseSquare(currentSquare.right, nextDistance, currentSquare, activeCharacter);
 			}
 			//down
 			targetX = currentSquare.coordinate.x;
 			targetY = currentSquare.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.down, nextDistance, currentSquare);
+				ParseSquare(currentSquare.down, nextDistance, currentSquare, activeCharacter);
 			}
 			//left
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.left, nextDistance, currentSquare);
+				ParseSquare(currentSquare.left, nextDistance, currentSquare, activeCharacter);
 			}
 			//up
 			targetX = currentSquare.coordinate.x;
 			targetY = currentSquare.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.up, nextDistance, currentSquare);
+				ParseSquare(currentSquare.up, nextDistance, currentSquare, activeCharacter);
 			}
 		}
 		
@@ -114,28 +150,28 @@ function Activate(start, maxDistance)
 			targetY = currentSquare.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.downRight, nextDistance, currentSquare);
+				ParseSquare(currentSquare.downRight, nextDistance, currentSquare, activeCharacter);
 			}
 			//downleft
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.downLeft, nextDistance, currentSquare);
+				ParseSquare(currentSquare.downLeft, nextDistance, currentSquare, activeCharacter);
 			}
 			//upleft
 			targetX = currentSquare.coordinate.x - 1;
 			targetY = currentSquare.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.upLeft, nextDistance, currentSquare);
+				ParseSquare(currentSquare.upLeft, nextDistance, currentSquare, activeCharacter);
 			}
 			//upright
 			targetX = currentSquare.coordinate.x + 1;
 			targetY = currentSquare.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.upRight, nextDistance, currentSquare);
+				ParseSquare(currentSquare.upRight, nextDistance, currentSquare, activeCharacter);
 			}
 		}
 	}
@@ -157,7 +193,7 @@ function Deactivate()
 	}
 }
 
-function ParseSquare(square, parseDistance, source)
+function ParseSquare(square, parseDistance, source, activeCharacter)
 {
 	//show_debug_message("Parsing Square: " + string(square));
 	if (square != 0 && square.character == 0
@@ -183,16 +219,165 @@ function ParseSquare(square, parseDistance, source)
 		if (square.interaction != 0)
 		{
 			square.image_blend = interactionColor;
-			
 		}
-		else
+		else if (square.character.characterStats.team == CharacterTeams.Ally)
 		{
 			square.image_blend = c_lime;
+		}
+		else if (square.character.characterStats.team == CharacterTeams.Enemy)
+		{
+			square.image_blend = c_red;
+		}
+		else if (square.character.characterStats.team == CharacterTeams.Neutral)
+		{
+			square.image_blend = c_blue;
+		}
+		
+		if (square.character.characterStats.team == activeCharacter.characterStats.team)
+		{
+			ds_queue_enqueue(parseQueue, square);
 		}
 		
 		square.distance = parseDistance;
 		square.closestToTarget = source;
 		ds_list_add(activatedSquares, square);
+		ds_list_add(parsedCoordinates, square.coordinate);
+	}
+}
+
+function ActivateRange(start, maxDistance, activeCharacter) 
+{
+	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
+	
+	ds_queue_clear(parseQueue);
+	ds_list_clear(parsedCoordinates);
+	ds_list_clear(activatedSquares);
+	
+	ds_queue_enqueue(parseQueue, start);
+	ds_list_add(parsedCoordinates, start.coordinate);
+	start.distance = 0;
+	
+	while (!ds_queue_empty(parseQueue))
+	{
+		var currentSquare = ds_queue_dequeue(parseQueue);
+		
+		if (currentSquare.validRange)
+		{
+			if (currentSquare.interaction != 0)
+			{
+				currentSquare.image_blend = interactionColor;
+				currentSquare.image_alpha = 1;
+			}
+			else if (currentSquare.character != 0)
+			{
+				currentSquare.image_alpha = 1;
+				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
+				{
+					currentSquare.image_blend = c_lime;
+				}
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
+				{
+					currentSquare.image_blend = c_red;
+				}
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
+				{
+					currentSquare.image_blend = c_blue;
+				}
+			}
+			else
+			{
+				currentSquare.image_alpha = 0.3;
+				currentSquare.image_blend = c_white;
+			}
+			currentSquare.activated = true;
+			
+		}
+		var nextDistance = currentSquare.distance + 1
+		ds_list_add(activatedSquares, currentSquare);;
+		
+		var targetX = -1;
+		var targetY = -1;
+		
+		//straight
+		
+		
+		if (nextDistance <= maxDistance)
+		{
+			//right
+			targetX = currentSquare.coordinate.x + 1;
+			targetY = currentSquare.coordinate.y;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.right, nextDistance, currentSquare, activeCharacter);
+			}
+			//down
+			targetX = currentSquare.coordinate.x;
+			targetY = currentSquare.coordinate.y + 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.down, nextDistance, currentSquare, activeCharacter);
+			}
+			//left
+			targetX = currentSquare.coordinate.x - 1;
+			targetY = currentSquare.coordinate.y;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.left, nextDistance, currentSquare, activeCharacter);
+			}
+			//up
+			targetX = currentSquare.coordinate.x;
+			targetY = currentSquare.coordinate.y - 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.up, nextDistance, currentSquare, activeCharacter);
+			}
+		}
+		nextDistance = currentSquare.distance + 1.5;
+		if (nextDistance <= maxDistance)
+		{
+			//downright
+			targetX = currentSquare.coordinate.x + 1;
+			targetY = currentSquare.coordinate.y + 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.downRight, nextDistance, currentSquare, activeCharacter);
+			}
+			//downleft
+			targetX = currentSquare.coordinate.x - 1;
+			targetY = currentSquare.coordinate.y + 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.downLeft, nextDistance, currentSquare, activeCharacter);
+			}
+			//upleft
+			targetX = currentSquare.coordinate.x - 1;
+			targetY = currentSquare.coordinate.y - 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.upLeft, nextDistance, currentSquare, activeCharacter);
+			}
+			//upright
+			targetX = currentSquare.coordinate.x + 1;
+			targetY = currentSquare.coordinate.y - 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseRange(currentSquare.range.upRight, nextDistance, currentSquare, activeCharacter);
+			}
+		}
+	}
+}
+
+function ParseRange(square, parseDistance, source, activeCharacter)
+{
+	//show_debug_message("Parsing Square: " + string(square));
+	if (square != 0 && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
+	 || parseDistance < square.distance))
+	{
+		//show_debug_message("Square is valid: " + string(square));
+		
+		square.distance = parseDistance;
+		square.closestToTarget = source;
+		ds_queue_enqueue(parseQueue, square);
 		ds_list_add(parsedCoordinates, square.coordinate);
 	}
 }
@@ -228,7 +413,7 @@ Select = function()
 			
 			global.selectedSquare = self;
 			map.movingCharacter = character;
-			Activate(self, character.maxMove);
+			Activate(self, character.maxMove, character);
 		}
 	}
 	else if (activated && interaction != 0)
