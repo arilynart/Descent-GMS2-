@@ -6,6 +6,8 @@ moving = false;
 moveTarget = 0;
 maxMove = characterStats.baseMaxMove;
 
+global.BarSurface = 0;
+
 currentSquare = 0;
 
 moveRight = 0;
@@ -77,7 +79,7 @@ function ResetLoaded()
 	itemsToLoad = array_create(0);
 }
 
-//combat variables
+#region combat variables
 hpGrowthValue = 0.35;
 spGrowthValue = 0.65;
 
@@ -97,6 +99,24 @@ maxAp = 2;
 currentHp = maxHp();
 currentSp = maxSp();
 currentAp = maxAp;
+
+function DealDamage(amount)
+{
+	var damage = amount;
+	if (currentSp > 0)
+	{
+		damage -= currentSp;
+		currentSp = clamp(currentSp - amount, 0, maxSp);
+	}
+	if (damage > 0)
+	{
+		currentHp = clamp(currentHp - damage, 0, maxHp);
+		
+		//if (currentHp <= 0) instance_destroy(id);
+	}
+}
+
+#endregion
 
 //ai variables
 aiMind = 0;

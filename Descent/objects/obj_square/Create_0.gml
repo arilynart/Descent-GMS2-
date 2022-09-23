@@ -386,11 +386,19 @@ function ParseRange(square, parseDistance, source, activeCharacter)
 Select = function()
 {
 	show_debug_message("Select Square: " + string(coordinate.x) + ", " + string(coordinate.y));
-	if (activated && global.SelectSquareExecute != 0)
+	if (global.SelectSquareExecute != 0)
 	{
-		if (interaction == 0)
+		if (activated)
 		{
-			global.SelectSquareExecute(self);
+			if (interaction == 0)
+			{
+				global.SelectSquareExecute(self);
+			}
+		}
+		else
+		{
+			global.selectedCharacter.currentSquare.Deactivate();
+			global.SelectSquareExecute = 0;
 		}
 		return;
 	}

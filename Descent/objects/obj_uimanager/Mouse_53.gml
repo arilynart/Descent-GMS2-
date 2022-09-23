@@ -348,6 +348,28 @@ else
 				
 			}
 		}
+		
+		var weaponData = global.selectedCharacter.characterStats.equippedWeapon;
+		var weapon = global.FindItem(weaponData.type, weaponData.index, 0);
+		
+		for (var i = 0; i < array_length(weapon.abilities); i++)
+		{
+			
+			var ability = weapon.abilities[i];
+			
+			var button = abilityButtons[i];
+			
+			if (mouseX >= button.left && mouseX <= button.right
+			 && mouseY >= button.top && mouseY <= button.bottom)
+			{
+				//Ability Target Range
+				ability.Select(global.selectedCharacter, ability);
+				
+				global.SelectSquareExecute = ability.Execute;
+				
+				return;
+			}
+		}
 	}
 	if (igniteButton != 0)
 	{

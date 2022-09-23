@@ -21,7 +21,7 @@ FindCharacter = function(class, index)
 			character.class = class;
 			character.sprite = spr_Player;
 			character.textureGroup = "ClassBonding";
-			character.force = 3;
+			character.force = 2;
 			character.endurance = 8;
 			character.vitality = 4;
 			character.tempo = 3;
@@ -30,10 +30,10 @@ FindCharacter = function(class, index)
 			{
 				type : ItemTypes.Weapon,
 				index : 0,
-				quantity : 3,
+				quantity : 1,
 				maxQuantity : 1,
-				pack : 0,
-				slot : 0
+				pack : -1,
+				slot : -1
 			}
 			
 			character.equippedWeapon = weapon;
@@ -137,6 +137,7 @@ FindCharacter = function(class, index)
 					character.class = class;
 					character.sprite = spr_CharacterMonster0;
 					character.vitality = 2;
+					character.endurance = 4;
 					character.tempo = 2;
 					array_push(character.packSlots, 1);
 
