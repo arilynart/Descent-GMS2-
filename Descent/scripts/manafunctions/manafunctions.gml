@@ -576,13 +576,13 @@ CheckForViableLusium = function(character, card)
 		for (var i = 0; i < ds_list_size(character.burntLusium); i++)
 		{
 			var lusium = ds_list_find_value(character.burntLusium, i);
-			if (lusium != 0 && lusium.capacity >= ds_list_size(card.costList))
+			if (lusium != 0 && lusium.capacity >= array_length(card.costList))
 			{
 				var parsedCosts = array_create(0);
 				//make sure the lusium fulfills all costs
-				for (var j = 0; j < ds_list_size(card.costList); j++)
+				for (var j = 0; j < array_length(card.costList); j++)
 				{
-					var cost = ds_list_find_value(card.costList, j);
+					var cost = card.costList[j];
 					
 					var validCards = ds_list_create();
 					//search through all cards on lusium piece
@@ -594,9 +594,9 @@ CheckForViableLusium = function(character, card)
 						{
 							var cardViable = true;
 							//check through all cards on that piece of lusium for the current cost.
-							for (var l = 0; l < ds_list_size(cost); l++)
+							for (var l = 0; l < array_length(cost); l++)
 							{
-								var costString = ds_list_find_value(cost, l);
+								var costString = cost[l];
 							
 								//show_debug_message("Checking word: " + costString + " to type: " + checkCard.typeText);
 							
@@ -663,6 +663,9 @@ CheckForViableLusium = function(character, card)
 		}
 		
 	}
+	
+	ds_list_destroy(validLusium);
+	ds_list_destroy(singularCards)
 	
 	return foundLusium;
 }
