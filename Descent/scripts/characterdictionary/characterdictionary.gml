@@ -23,7 +23,7 @@ FindCharacter = function(class, index)
 			character.textureGroup = "ClassBonding";
 			character.force = 2;
 			character.endurance = 8;
-			character.vitality = 4;
+			character.vitality = 2;
 			character.tempo = 3;
 			
 			var weapon = 
@@ -125,7 +125,40 @@ FindCharacter = function(class, index)
 			repeat(10) array_push(character.nodeDeck, startingNode0, startingNode1, startingNode2);
 			
 			return character;
-			break;
+		break;
+		case CharacterClass.Bondable:
+			switch (index)
+			{
+				case 0:
+					var character = global.BaseCharacter();
+					character.name = "Ahlya";
+					character.team = CharacterTeams.Ally;
+					character.class = class;
+					character.sprite = spr_CharacterBondable000;
+					character.force = 4;
+					character.vitality = 3;
+					character.endurance = 6;
+					character.tempo = 4;
+					array_push(character.packSlots, 1);
+
+					var starterPack1 = {};
+					with (starterPack1)
+					{
+						sprite = spr_Pack1;
+						tier = 1;
+						width = 1;
+						height = 2;
+						contents = array_create(width * height);
+					}
+
+					array_push(character.equippedPacks, starterPack1);
+					return character;
+				break;
+				default:
+					return 0;
+				break;
+			}
+		break;
 		case CharacterClass.Monster:
 			switch (index)
 			{
@@ -135,7 +168,7 @@ FindCharacter = function(class, index)
 					character.aiMindIndex = 0;
 					character.team = CharacterTeams.Enemy;
 					character.class = class;
-					character.sprite = spr_CharacterMonster0;
+					character.sprite = spr_CharacterMonster000;
 					character.vitality = 2;
 					character.endurance = 4;
 					character.tempo = 2;
@@ -158,10 +191,10 @@ FindCharacter = function(class, index)
 					return 0;
 					break;
 			}
-			break;
+		break;
 		default:
 			return 0;
-			break;
+		break;
 	}
 	return 0;
 }
