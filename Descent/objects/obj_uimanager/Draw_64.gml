@@ -327,9 +327,9 @@
 										//draw all item methods (maximum of 6, 2 base)
 										uiMethodButtons = array_create(0);
 								
-										for (var m = 0; (m < ds_list_size(fetchedItem.methods) && m < 6); m++)
+										for (var m = 0; (m < array_length(fetchedItem.methods) && m < 6); m++)
 										{
-											var drawMethod = ds_list_find_value(fetchedItem.methods, m);
+											var drawMethod = fetchedItem.methods[m];
 									
 											var methodX = 0;
 											var methodY = 0;
@@ -1194,6 +1194,8 @@
 					{
 						var loadX = sixteenthY + thirtySecondY;
 						var loadY = apY + sixteenthY;
+						var weapon = global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1);
+						
 						loadButton =
 						{
 							left : loadX - thirtySecondY,
@@ -1210,7 +1212,7 @@
 						}
 						else
 						{
-							var sprite = global.FindItem(global.selectedCharacter.characterStats.equippedWeapon.type, global.selectedCharacter.characterStats.equippedWeapon.index, 1).sprite;
+							var sprite = weapon.sprite;
 							draw_set_color(c_black);
 						}
 						draw_circle(loadX, loadY, thirtySecondY, false);
@@ -1218,6 +1220,22 @@
 						var loadWidth = sprite_get_width(sprite);
 						var loadScale = thirtySecondY / loadWidth;
 						draw_sprite_ext(sprite, 0, loadX, loadY, loadScale, loadScale, 0, c_white, 1);
+						
+						var abilityY = apY + eighthY;
+						for (var i = 0; i < array_length(weapon.abilities); i++)
+						{
+							var ability = weapon.abilities[i];
+							var abilityX = loadX + (sixteenthY * i);
+							
+							var abilityButton =
+							{
+								left : loadX - thirtySecondY,
+								top : loadY - thirtySecondY,
+								right : loadX + thirtySecondY,
+								bottom : loadY + thirtySecondY,
+							}
+						}
+						
 						lusiumButtons = array_create(0);
 						cancelLoadButton = 0;
 						confirmLoadButton = 0;

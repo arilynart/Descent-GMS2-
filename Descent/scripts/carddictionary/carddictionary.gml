@@ -165,9 +165,9 @@ FindCard = function(class, type, element, rarity, index)
 											card.index = index;
 											card.title = "NURTURING RUNE";
 											card.costText = "ESSENCE BONDING NODE";
-											var cost1 = ds_list_create();
-											ds_list_add(cost1, "ESSENCE", "BONDING", "NODE");
-											ds_list_add(card.costList, cost1);
+											var cost1 = array_create(0);
+											array_push(cost1, "ESSENCE", "BONDING", "NODE");
+											array_push(card.costList, cost1);
 											card.typeText = "BONDING RUNE - ESSENCE"
 											card.text = "Supply the total supply value of all node cards you use to evoke this rune to a bonded monster within 6 |spr_Square| . ";
 									
@@ -183,9 +183,9 @@ FindCard = function(class, type, element, rarity, index)
 											card.title = "SHIELDING BOND";
 											card.permanent = true;
 											card.costText = "COVENANT NODE";
-											var cost1 = ds_list_create();
-											ds_list_add(cost1, "COVENANT", "NODE");
-											ds_list_add(card.costList, cost1);
+											var cost1 = array_create(0);
+											array_push(cost1, "COVENANT", "NODE");
+											array_push(card.costList, cost1);
 											card.typeText = "BONDING RUNE - ESSENCE"
 											card.text = "Permanent.\n \nWhen a bonded monster within 6 |spr_Square|  "
 													  + "takes damage, you can discard this card to reduce the damage by up to 5.";
@@ -219,9 +219,9 @@ FindCard = function(class, type, element, rarity, index)
 											card.title = "SYNERGY BOND";
 											card.costText = "2 BONDING NODES";
 											card.permanent = true;
-											var cost1 = ds_list_create();
-											ds_list_add(cost1, "BONDING", "NODE")
-											ds_list_add(card.costList, cost1, cost1);
+											var cost1 = array_create(0);
+											array_push(cost1, "BONDING", "NODE")
+											array_push(card.costList, cost1, cost1);
 											card.typeText = "BONDING RUNE - DIVINITY"
 											card.text = "Permanent.\n \nWhen a bonded monster within " 
 													  + "6 |spr_Square|  deals damage, you can discard this "
@@ -264,9 +264,9 @@ FindCard = function(class, type, element, rarity, index)
 											card.index = index;
 											card.title = "EMPOWERING BOND";
 											card.costText = "2 BOND RUNES";
-											var cost1 = ds_list_create();
-											ds_list_add(cost1, "BOND", "RUNE");
-											ds_list_add(card.costList, cost1, cost1);
+											var cost1 = array_create(0);
+											array_push(cost1, "BOND", "RUNE");
+											array_push(card.costList, cost1, cost1);
 											card.typeText = "BONDING MANIFEST - DIVINITY & ESSENCE"
 											card.text = "+X for each BOND card you control.\n \nWhen a bonded monster within 6 |spr_Square|  deals damage, "
 												+ "you can discard this card to deal 2X damage to that same target. ";
@@ -348,7 +348,7 @@ BaseCard = function(type)
 		with (struct)
 		{
 			costText = "";
-			costList = ds_list_create();
+			costList = array_create(0);
 			permanent = false;
 			playedThisTurn = false;
 			

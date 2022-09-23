@@ -32,7 +32,4 @@ if (dehighlightArray != 0)
 		else squareToHighlight.image_blend = c_white;
 
 	}
-	
-	dehighlightArray = 0;
-	highlightArray = 0;
 }

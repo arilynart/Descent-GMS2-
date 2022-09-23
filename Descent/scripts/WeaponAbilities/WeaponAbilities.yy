@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "ItemDictionary",
+  "name": "WeaponAbilities",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

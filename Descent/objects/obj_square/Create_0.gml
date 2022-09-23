@@ -40,7 +40,7 @@ character = 0;
 
 activatedSquares = ds_list_create();
 
-parsedCoordinates = ds_list_create
+parsedCoordinates = ds_list_create();
 parseQueue = ds_queue_create();
 
 activated = false;
@@ -49,8 +49,8 @@ interaction = 0;
 
 encounterTrigger = -1;
 
-highlightArray = 0;
-dehighlightArray = 0;
+highlightArray = ds_list_create();
+dehighlightArray = ds_list_create();
 
 interactionColor = c_fuchsia;
 
@@ -60,9 +60,9 @@ function Activate(start, maxDistance, activeCharacter)
 {
 	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
 	
-	parseQueue = ds_queue_create();
-	parsedCoordinates = ds_list_create();
-	activatedSquares = ds_list_create();
+	ds_queue_clear(parseQueue);
+	ds_list_clear(parsedCoordinates);
+	ds_list_clear(activatedSquares);
 	
 	ds_queue_enqueue(parseQueue, start);
 	ds_list_add(parsedCoordinates, start.coordinate);
@@ -181,7 +181,7 @@ function Deactivate()
 {
 	var size = ds_list_size(activatedSquares);
 	
-	for (i = 0; i < size; i++)
+	for (var i = 0; i < size; i++)
 	{
 		var sq = ds_list_find_value(activatedSquares, i);
 		sq.image_alpha = 0;

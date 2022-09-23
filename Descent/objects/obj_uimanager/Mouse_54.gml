@@ -25,7 +25,7 @@ else if (itemDraw >= 0)
 
 				var character = global.Allies[inventoryDraw];
 				var item = character.characterStats.equippedPacks[packDraw].contents[itemDraw]
-				var tempMethod = ds_list_find_value(global.FindItem(item.type, item.index, item.quantity).methods, i);
+				var tempMethod = global.FindItem(item.type, item.index, item.quantity).methods[i];
 			
 				if (tempMethod.split)  
 				{

@@ -1,7 +1,7 @@
 {
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
-  "name": "spr_Weapon0",
+  "name": "spr_Weapon000a0",
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
@@ -20,19 +20,19 @@
   "width": 256,
   "height": 256,
   "textureGroupId": {
-    "name": "Interface",
-    "path": "texturegroups/Interface",
+    "name": "Items",
+    "path": "texturegroups/Items",
   },
   "swatchColours": null,
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"edb014a2-358b-4ef0-af80-f78147bfee2e",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1ecc8dca-1fa7-459b-b65c-dd912b8d68b7",},
   ],
   "sequence": {
     "resourceType": "GMSequence",
     "resourceVersion": "1.4",
-    "name": "spr_Weapon0",
+    "name": "spr_Weapon000a0",
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 30.0,
@@ -44,7 +44,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"8633c240-5298-458a-a13c-7facde448a77","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"edb014a2-358b-4ef0-af80-f78147bfee2e","path":"sprites/spr_Weapon0/spr_Weapon0.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"5db8fbfc-fae4-4260-9d72-454686f4e2a8","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"1ecc8dca-1fa7-459b-b65c-dd912b8d68b7","path":"sprites/spr_Weapon000a0/spr_Weapon000a0.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
@@ -63,11 +63,11 @@
     "eventStubScript": null,
   },
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"214491ce-42c2-45e0-a712-4fbe1f4aba49","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"e7ed65ac-ab59-4683-bede-10bb0eabdab0","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Items",
-    "path": "folders/Sprites/Icons/Items.yy",
+    "name": "Abilities",
+    "path": "folders/Sprites/Icons/Items/Weapons/Weapon000/Abilities.yy",
   },
 }
