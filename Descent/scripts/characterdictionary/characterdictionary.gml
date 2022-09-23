@@ -136,6 +136,7 @@ FindCharacter = function(class, index)
 					character.team = CharacterTeams.Enemy;
 					character.class = class;
 					character.sprite = spr_CharacterMonster0;
+					character.vitality = 2;
 					character.tempo = 2;
 					array_push(character.packSlots, 1);
 
@@ -200,4 +201,3 @@ enum CharacterTeams
 	Neutral,
 	Enemy
 }
-

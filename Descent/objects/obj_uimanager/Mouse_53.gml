@@ -608,7 +608,7 @@ else
 					{
 					
 					
-						ds_list_find_value(global.FindItem(item.type, item.index, item.quantity).methods, i).Execute(character, pack, item);
+						global.FindItem(item.type, item.index, item.quantity).methods[i].Execute(character, pack, item);
 
 						split = 0;
 						return;

@@ -24,22 +24,30 @@ FindItem = function(type, index, quantity)
 					quantity = clamp(quantity, 1, maxQuantity);
 					var item = global.BaseWeapon();
 					item.name = "Lapis Rod";
-					item.description = "A simple; traditional rod made of lapis stone from Protector's" 
+					item.description = "A simple, traditional rod made of lapis stone from Protector's" 
 									 + " Pass. The material's conducivity to mana makes even this basic " 
-								 	 + "medium's potency strong.";
-					item.sprite = spr_Weapon0;
+								 	 + "medium lethally potent.";
+					item.sprite = spr_Weapon000;
 					item.maxQuantity = maxQuantity;
 					item.quantity = quantity;
 					item.index = index;
 					item.type = type;
 					item.pack = 0;
 					item.slot = -1;
-					item.methods = ds_list_create();
+					item.methods = array_create(0);
 					item.lusiumPerAp = 2;
 					item.maximumLusium = 9;
 					item.forceRatio = 0.8;
 					
-					ds_list_add(item.methods, Trash, Move, EquipWeapon);
+					var weaponAbility0 =
+					{
+						sprite : spr_Weapon000a0,
+						range : 6,
+						Execute : method(global, global.RangedAttackExecute)
+					}
+					
+					array_push(item.methods, Trash, Move, EquipWeapon);
+					array_push(item.abilities, weaponAbility0);
 					
 					return item;
 				break;
@@ -88,7 +96,7 @@ FindItem = function(type, index, quantity)
 					item.type = type;
 					item.pack = 0;
 					item.slot = -1;
-					item.methods = ds_list_create();
+					item.methods = array_create(0);
 					
 					var Consume = 
 					{
@@ -98,7 +106,7 @@ FindItem = function(type, index, quantity)
 						Execute : method(global, ConsumeMedicine),
 						split : false
 					}
-					ds_list_add(item.methods, Trash, Move, Consume);
+					array_push(item.methods, Trash, Move, Consume);
 					
 					return item;
 				break;
@@ -126,9 +134,9 @@ FindItem = function(type, index, quantity)
 					item.type = type;
 					item.pack = 0;
 					item.slot = -1;
-					item.methods = ds_list_create();
+					item.methods = array_create(0);
 					
-					ds_list_add(item.methods, Trash, Move);
+					array_push(item.methods, Trash, Move);
 					
 					return item;
 				break;
@@ -146,9 +154,9 @@ FindItem = function(type, index, quantity)
 					item.type = type;
 					item.pack = 0;
 					item.slot = -1;
-					item.methods = ds_list_create();
+					item.methods = array_create(0);
 					
-					ds_list_add(item.methods, Trash, Move);
+					array_push(item.methods, Trash, Move);
 					
 					return item;
 				break;
@@ -166,9 +174,9 @@ FindItem = function(type, index, quantity)
 					item.type = type;
 					item.pack = 0;
 					item.slot = -1;
-					item.methods = ds_list_create();
+					item.methods = array_create(0);
 					
-					ds_list_add(item.methods, Trash, Move);
+					array_push(item.methods, Trash, Move);
 					
 					return item;
 				break;
@@ -186,9 +194,9 @@ FindItem = function(type, index, quantity)
 					item.type = type;
 					item.pack = 0;
 					item.slot = -1;
-					item.methods = ds_list_create();
+					item.methods = array_create(0);
 					
-					ds_list_add(item.methods, Trash, Move);
+					array_push(item.methods, Trash, Move);
 					
 					return item;
 				break;
@@ -220,7 +228,7 @@ BaseItem = function()
 		type : ItemTypes.Consumable,
 		pack : 0,
 		slot : -1,
-		methods : ds_list_create()
+		methods : array_create(0)
 	}
 	return item;
 }
@@ -231,8 +239,9 @@ BaseWeapon = function()
 	item.lusiumPerAp = 2;
 	item.maximumLusium = 9;
 	item.forceRatio = 0.5;
+	item.abilities = array_create(0);
 					
-	ds_list_add(item.methods, global.Trash, global.Move, global.EquipWeapon);
+	array_push(item.methods, global.Trash, global.Move, global.EquipWeapon);
 					
 	return item;
 }
@@ -475,8 +484,6 @@ Trash =
 	Execute : method(global, ItemDiscard),
 	split : true
 }
-
-
 
 Move = 
 {

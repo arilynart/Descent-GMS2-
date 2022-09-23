@@ -245,5 +245,6 @@ function RandomizeList(list)
 		ds_list_delete(list, roll);
 	}
 	
+	ds_list_destroy(list);
 	return shuffledList;
 }

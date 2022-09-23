@@ -10,7 +10,7 @@ if (position_meeting(mouse_x, mouse_y, id))
 	
 	if (activated && character == 0 && interaction == 0)
 	{
-		highlightArray = ds_list_create();
+		ds_list_clear(highlightArray)
 		var foundCharacter = -1;
 		ds_list_add(highlightArray, self);
 	
@@ -35,6 +35,6 @@ if (position_meeting(mouse_x, mouse_y, id))
 			squareToHighlight.image_blend = c_yellow;
 		}
 	
-		dehighlightArray = highlightArray;
+		ds_list_copy(dehighlightArray, highlightArray)
 	}
 }
