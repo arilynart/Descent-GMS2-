@@ -1,5 +1,11 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+RangedAttackSelect = function(character, ability)
+{
+	character.currentSquare.Deactivate();
+	character.currentSquare.ActivateRange(character.currentSquare, ability.range, character);
+}
+
 RangedAttackExecute = function(square)
 {
 	if (square.character != 0)

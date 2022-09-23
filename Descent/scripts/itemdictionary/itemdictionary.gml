@@ -43,6 +43,7 @@ FindItem = function(type, index, quantity)
 					{
 						sprite : spr_Weapon000a0,
 						range : 6,
+						Select : method(global, global.RangedAttackSelect),
 						Execute : method(global, global.RangedAttackExecute)
 					}
 					

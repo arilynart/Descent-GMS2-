@@ -363,8 +363,7 @@ else
 			 && mouseY >= button.top && mouseY <= button.bottom)
 			{
 				//Ability Target Range
-				global.selectedCharacter.currentSquare.Deactivate();
-				global.selectedCharacter.currentSquare.ActivateRange(global.selectedCharacter.currentSquare, ability.range, global.selectedCharacter);
+				ability.Select(global.selectedCharacter, ability);
 				
 				global.SelectSquareExecute = ability.Execute;
 				
