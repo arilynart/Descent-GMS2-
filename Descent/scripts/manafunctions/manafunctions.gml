@@ -569,6 +569,8 @@ CheckForViableLusium = function(character, card)
 {
 	
 	var foundLusium = array_create(0);
+	var singularCards = ds_list_create();
+	var validCards = ds_list_create();
 	
 	if ((card.type == CardTypes.Rune || card.type == CardTypes.Manifest) && !card.playedThisTurn)
 	{
@@ -583,8 +585,8 @@ CheckForViableLusium = function(character, card)
 				for (var j = 0; j < array_length(card.costList); j++)
 				{
 					var cost = card.costList[j];
+					ds_list_clear(validCards);
 					
-					var validCards = ds_list_create();
 					//search through all cards on lusium piece
 					for (var k = 0; k < ds_list_size(lusium.heldCards); k++)
 					{
@@ -629,8 +631,8 @@ CheckForViableLusium = function(character, card)
 					
 					array_push(parsedCosts, validCards);
 				}
+				ds_list_clear(singularCards);
 				
-				var singularCards = ds_list_create();
 				var validLusium = true;
 				//search through our parsed costs
 				for (var j = 0; j < array_length(parsedCosts); j++)
@@ -664,7 +666,7 @@ CheckForViableLusium = function(character, card)
 		
 	}
 	
-	ds_list_destroy(validLusium);
+	ds_list_destroy(validCards);
 	ds_list_destroy(singularCards)
 	
 	return foundLusium;

@@ -15,8 +15,8 @@ function StartCombat(index)
 		
 		if (!global.InCombat)
 		{
-			global.Combatants = ds_list_create();
-			global.Turns = ds_list_create();
+			ds_list_clear(global.Combatants);
+			ds_list_clear(global.Turns);
 		}
 		
 		global.InCombat = true;
@@ -107,7 +107,7 @@ function StartCombat(index)
 				else ds_list_insert(sortedList, foundSlot, turnToSort);
 			}
 		}
-	
+		ds_list_destroy(global.Turns);
 		global.Turns = sortedList;
 	
 		var startTurnEffect = global.BaseEffect();
@@ -119,3 +119,6 @@ function StartCombat(index)
 	
 	
 }
+
+global.Combatants = ds_list_create();
+global.Turns = ds_list_create();

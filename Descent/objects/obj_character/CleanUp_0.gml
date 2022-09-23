@@ -18,5 +18,12 @@ ds_list_destroy(discard);
 //burntLusium = ds_list_create();
 //loadedLusium = ds_list_create();
 
+for (var i = 0; i < ds_list_size(burntLusium); i++)
+{
+	var piece = ds_list_find_value(burntLusium, i);
+	
+	ds_list_destroy(piece.heldCards);
+	ds_list_destroy(piece.slotButtons);
+}
 ds_list_destroy(burntLusium);
 ds_list_destroy(loadedLusium);

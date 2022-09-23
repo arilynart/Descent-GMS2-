@@ -13,3 +13,7 @@ ds_list_destroy(highlightedLusium);
 ds_list_destroy(hoverHighlightedLusium);
 ds_list_destroy(manaButtons);
 ds_list_destroy(revertManaButtons);
+
+ds_list_destroy(global.EffectList);
+ds_list_destroy(global.Combatants);
+ds_list_destroy(global.Turns);

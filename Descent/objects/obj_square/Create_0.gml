@@ -71,7 +71,6 @@ function Activate(start, maxDistance, activeCharacter)
 	while (!ds_queue_empty(parseQueue))
 	{
 		var currentSquare = ds_queue_dequeue(parseQueue);
-		currentSquare.image_alpha = 0.3;
 		currentSquare.activated = true;
 		
 		if (currentSquare.interaction != 0)
@@ -100,7 +99,6 @@ function Activate(start, maxDistance, activeCharacter)
 			currentSquare.image_alpha = 0.3;
 			currentSquare.image_blend = c_white;
 		}
-		currentSquare.activated = true;
 		
 		ds_list_add(activatedSquares, currentSquare);
 		
@@ -191,6 +189,8 @@ function Deactivate()
 		sq.closestToTarget = 0;
 		if (sq.character == map.movingCharacter) map.movingCharacter = 0;
 	}
+	
+	ds_list_clear(activatedSquares);
 }
 
 function ParseSquare(square, parseDistance, source, activeCharacter)
