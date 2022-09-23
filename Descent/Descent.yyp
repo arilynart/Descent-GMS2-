@@ -31,6 +31,7 @@
     {"id":{"name":"spr_RuneBgWD","path":"sprites/spr_RuneBgWD/spr_RuneBgWD.yy",},"order":6,},
     {"id":{"name":"spr_Place","path":"sprites/spr_Place/spr_Place.yy",},"order":3,},
     {"id":{"name":"obj_Point","path":"objects/obj_Point/obj_Point.yy",},"order":5,},
+    {"id":{"name":"DamageEffects","path":"scripts/DamageEffects/DamageEffects.yy",},"order":5,},
     {"id":{"name":"spr_ArtBondingRuneEC001","path":"sprites/spr_ArtBondingRuneEC001/spr_ArtBondingRuneEC001.yy",},"order":1,},
     {"id":{"name":"spr_RuneBgWS","path":"sprites/spr_RuneBgWS/spr_RuneBgWS.yy",},"order":10,},
     {"id":{"name":"spr_F","path":"sprites/spr_F/spr_F.yy",},"order":2,},
