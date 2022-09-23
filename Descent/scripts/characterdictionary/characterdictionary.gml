@@ -10,7 +10,7 @@ enum CharacterClass
 	Hostile
 }
 
-FindCharacter = function(class, index)
+function FindCharacter(class, index)
 {
 	switch (class)
 	{
@@ -139,6 +139,10 @@ FindCharacter = function(class, index)
 					character.vitality = 3;
 					character.endurance = 6;
 					character.tempo = 4;
+					character.generation =
+					{
+						
+					}
 					array_push(character.packSlots, 1);
 
 					var starterPack1 = {};

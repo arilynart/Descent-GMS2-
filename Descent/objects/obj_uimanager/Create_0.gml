@@ -47,6 +47,8 @@ uiMethodButtons = 0;
 
 allyRadius = ceil(quarterY / 6);
 
+summonButton = 0;
+
 mouseX = 0;
 mouseY = 0;
 

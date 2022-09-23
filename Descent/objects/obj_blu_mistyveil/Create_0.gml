@@ -133,13 +133,13 @@ ds_list_add(interactables, firstTestInteractable, secondTestInteractable, thirdT
 playerSpawnX = 6;
 playerSpawnY = 6;
 
-var forsakenSoul0 = global.FindCharacter(CharacterClass.Monster, 0);
+var forsakenSoul0 = FindCharacter(CharacterClass.Monster, 0);
 forsakenSoul0.spawnX = 12;
 forsakenSoul0.spawnY = 32;
-var forsakenSoul1 = global.FindCharacter(CharacterClass.Monster, 0);
+var forsakenSoul1 = FindCharacter(CharacterClass.Monster, 0);
 forsakenSoul1.spawnX = 21;
 forsakenSoul1.spawnY = 29;
-var forsakenSoul2 = global.FindCharacter(CharacterClass.Monster, 0);
+var forsakenSoul2 = FindCharacter(CharacterClass.Monster, 0);
 forsakenSoul2.spawnX = 4;
 forsakenSoul2.spawnY = 30;
 

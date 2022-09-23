@@ -24,6 +24,7 @@ gridPad = gridSize * blueprint.mapPad;
 global.InCombat = false;
 global.Combatants = ds_list_create();
 global.Turns = ds_list_create();
+global.BondedMonsters = ds_list_create();
 
 movingCharacter = 0;
 
@@ -621,7 +622,7 @@ spawnedCharacters = ds_list_create();
 var playerSpawnSquare = squares[blueprint.playerSpawnX, blueprint.playerSpawnY];
 player = instance_create_layer(playerSpawnSquare.x, playerSpawnSquare.y, "Characters", obj_Character, 
 {
-	characterStats : global.FindCharacter(CharacterClass.Player, 0)
+	characterStats : FindCharacter(CharacterClass.Player, 0)
 });
 player.currentSquare = playerSpawnSquare;
 playerSpawnSquare.character = player;
@@ -629,7 +630,12 @@ global.Player = player;
 player.sprite_index = player.characterStats.sprite;
 global.selectedCharacter = player;
 
+var ahlya = FindCharacter(CharacterClass.Bondable, 0);
+
+
 global.Allies = array_create(0);
+
+ds_list_add(global.BondedMonsters, ahlya);
 array_push(global.Allies, player);
 
 cameraTarget = instance_create_layer(player.x, player.y, "AboveCharacters", obj_CameraTarget);

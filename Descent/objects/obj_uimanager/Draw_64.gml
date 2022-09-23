@@ -100,9 +100,46 @@ else
 	draw_circle(0, 0, outlineRadius, false);
 	draw_circle(quarterY, quarterY, outlineRadius, false);
 	draw_circle(0, halfY, outlineRadius, false);
+	
+	#region summon button
+	
+	var summonX = 0;
+	var summonY = quarterY;
+	
+	summonButton =
+	{
+		left : summonX,
+		top : summonY - sixteenthY,
+		right : summonX + sixteenthY,
+		bottom : summonY + sixteenthY
+	}
+	if (mouseX >= summonButton.left && mouseX <= summonButton.right
+	 && mouseY >= summonButton.top && mouseY <= summonButton.bottom)
+	{
+		draw_set_color(c_gray);
+	}
+	else draw_set_color(deckLightColor);
+	
+	draw_circle(summonX, summonY, sixteenthY, false);
+	
+	var summonScale = sixteenthY / sprite_get_width(spr_Summon);
+	draw_sprite_ext(spr_Summon, 0, summonX, summonY, summonScale, summonScale, 0, c_black, 1);
+	
+	draw_set_color(c_dkgray);
+
+	//outline
+	draw_line_width(summonX, summonButton.top, summonButton.right, summonY, outlineRadius);
+	draw_line_width(summonX, summonButton.bottom, summonButton.right, summonY, outlineRadius);
+
+	//outline notches
+	draw_set_color(c_gray);
+	draw_circle(summonX, summonButton.top, outlineRadius, false);
+	draw_circle(summonButton.right, summonY, outlineRadius, false);
+	draw_circle(summonX, summonButton.bottom, outlineRadius, false);
+
+	#endregion
 
 	//add diamonds for each ally.
-
 
 	var allySize = array_length(global.Allies);
 

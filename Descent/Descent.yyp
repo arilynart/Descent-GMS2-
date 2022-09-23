@@ -11,6 +11,7 @@
     {"id":{"name":"spr_M","path":"sprites/spr_M/spr_M.yy",},"order":3,},
     {"id":{"name":"obj_blu_MistyVeil","path":"objects/obj_blu_MistyVeil/obj_blu_MistyVeil.yy",},"order":0,},
     {"id":{"name":"spr_legendary","path":"sprites/spr_legendary/spr_legendary.yy",},"order":1,},
+    {"id":{"name":"spr_Summon","path":"sprites/spr_Summon/spr_Summon.yy",},"order":12,},
     {"id":{"name":"spr_Lusium1","path":"sprites/spr_Lusium1/spr_Lusium1.yy",},"order":8,},
     {"id":{"name":"spr_E","path":"sprites/spr_E/spr_E.yy",},"order":1,},
     {"id":{"name":"spr_S","path":"sprites/spr_S/spr_S.yy",},"order":4,},
