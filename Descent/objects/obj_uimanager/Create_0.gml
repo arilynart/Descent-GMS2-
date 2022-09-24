@@ -25,8 +25,10 @@ halfY = fullY / 2;
 quarterX = halfX / 2;
 quarterY = halfY / 2;
 
+eighthX = quarterX / 2;
 eighthY = quarterY / 2;
 
+sixteenthX = eighthX / 2;
 sixteenthY = eighthY / 2;
 
 thirtySecondY = sixteenthY / 2;
@@ -46,6 +48,17 @@ uiItemButtons = 0;
 uiMethodButtons = 0;
 
 allyRadius = ceil(quarterY / 6);
+
+summonButton = 0;
+drawSummons = false;
+summonNavIndex = 0;
+closeSummonButton = 0;
+scrollUpSummonButton = 0;
+scrollDownSummonButton = 0;
+summonCharacter = instance_create_layer(-10000, -10000, "Characters", obj_Character, { characterStats : FindCharacter(CharacterClass.Bondable, 0) });
+monsterButtons = array_create(0);
+selectedSummon = -1;
+confirmSummonButton = 0;
 
 mouseX = 0;
 mouseY = 0;
@@ -74,6 +87,7 @@ confirmLoadButton = 0;
 cancelLoadButton = 0;
 
 abilityButtons = array_create(0);
+heldAbility = 0;
 
 loadedButtons = array_create(0);
 dragCard = -1;

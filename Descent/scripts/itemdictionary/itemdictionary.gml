@@ -4,6 +4,7 @@
 enum ItemTypes
 {
 	Weapon,
+	Claw,
 	Armor,
 	Pack,
 	Consumable,
@@ -20,7 +21,7 @@ FindItem = function(type, index, quantity)
 			switch(index)
 			{
 				case 0:
-					var maxQuantity = 3;
+					var maxQuantity = 1;
 					quantity = clamp(quantity, 1, maxQuantity);
 					var item = global.BaseWeapon();
 					item.name = "Lapis Rod";
@@ -37,14 +38,53 @@ FindItem = function(type, index, quantity)
 					item.methods = array_create(0);
 					item.lusiumPerAp = 2;
 					item.maximumLusium = 9;
-					item.forceRatio = 0.8;
 					
 					var weaponAbility0 =
 					{
 						sprite : spr_Weapon000a0,
 						range : 6,
+						forceRatio : 0.8,
 						Select : method(global, global.RangedAttackSelect),
-						Execute : method(global, global.RangedAttackExecute)
+						Execute : method(global, global.BasicAttackExecute)
+					}
+					
+					array_push(item.methods, Trash, Move, EquipWeapon);
+					array_push(item.abilities, weaponAbility0);
+					
+					return item;
+				break;
+				default:
+					show_error(string(type) + " Item index invalid."  
+							 + " | " + string(index), true);
+					return undefined;
+				break;
+			}
+		break;
+		case ItemTypes.Claw:
+			switch(index)
+			{
+				case 0:
+					var maxQuantity = 1;
+					quantity = clamp(quantity, 1, maxQuantity);
+					var item = global.BaseWeapon();
+					item.name = "Ahlya Claws";
+					item.sprite = spr_Claw000;
+					item.maxQuantity = maxQuantity;
+					item.quantity = quantity;
+					item.index = index;
+					item.type = type;
+					item.pack = 0;
+					item.slot = -1;
+					item.methods = array_create(0);
+					item.maximumLusium = 9;
+					
+					var weaponAbility0 =
+					{
+						sprite : spr_Claw000a0,
+						forceRatio : 0.95,
+						range : 1.5,
+						Select : method(global, global.MeleeAttackSelect),
+						Execute : method(global, global.BasicAttackExecute)
 					}
 					
 					array_push(item.methods, Trash, Move, EquipWeapon);
@@ -239,7 +279,6 @@ BaseWeapon = function()
 	var item = global.BaseItem();
 	item.lusiumPerAp = 2;
 	item.maximumLusium = 9;
-	item.forceRatio = 0.5;
 	item.abilities = array_create(0);
 					
 	array_push(item.methods, global.Trash, global.Move, global.EquipWeapon);

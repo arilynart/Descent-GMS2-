@@ -16,6 +16,16 @@ moveDown = 0;
 velocityX = 0;
 velocityY = 0;
 
+function ResetStats(stats)
+{
+	characterStats = stats;
+	sprite_index = characterStats.sprite;
+	maxMove = characterStats.baseMaxMove;
+	currentHp = maxHp();
+	currentSp = maxSp();
+	currentAp = maxAp;
+}
+
 //card variables
 artQueue = ds_queue_create();
 artOutTime = 30;
@@ -26,7 +36,7 @@ currentArt = -1;
 function AddArtToQueue(card)
 {
 	ds_queue_enqueue(artQueue, card.art);
-	if (alarm_get(1) <= 0 && alarm_get(0) <= 0)
+	if (alarm_get(1) <= 0 && alarm_get(0) <= 0&& alarm_get(2) <= 0)
 	{
 		currentArt = ds_queue_dequeue(artQueue);
 		alarm_set(1, artInTime);

@@ -1,10 +1,19 @@
 
+draw_set_circle_precision(4);
+
 mouseX = device_mouse_x_to_gui(0);
 mouseY = device_mouse_y_to_gui(0);
 	
 abilityButtons = array_create(0);
 
-
+summonButton = 0;
+closeSummonButton = 0;
+scrollUpSummonButton = 0;
+scrollDownSummonButton = 0;
+monsterButtons = array_create(0);
+confirmSummonButton = 0;
+dashButton = 0;
+loadButton = 0;
 
 //draw Dialogue Box.
 var dialogueLength = array_length(dialogueArray);
@@ -52,10 +61,167 @@ if (displayDialogue && dialogueLength > 0)
 		displayDialogue = false;
 	}
 }
+else if (drawSummons)
+{
+	draw_set_color(c_black);
+	
+	draw_rectangle(0, 0, fullX, fullY, false);
+	
+	closeSummonButton =
+	{
+		left : 0,
+		top : 0,
+		right : thirtySecondY,
+		bottom : thirtySecondY
+	}
+	if (mouseX >= closeSummonButton.left && mouseX <= closeSummonButton.right
+	 && mouseY >= closeSummonButton.top && mouseY <= closeSummonButton.bottom)
+	{
+		draw_set_color(c_gray);
+	}
+	else draw_set_color(c_red);
+	
+	draw_circle(0, 0, thirtySecondY, false);
+	
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	draw_set_color(c_black);
+	draw_set_font(fnt_Cambria16);
+	draw_text(4, 0, "x");
+	
+	var monsterX = eighthX;
+	var monsterY = halfY - allyRadius * 6;
+	
+	var drawingHoverSummon = false;
+	for (var i = summonNavIndex; i < ds_list_size(global.BondedMonsters) && i < summonNavIndex + 20; i++)
+	{
+		var monster = ds_list_find_value(global.BondedMonsters, i);
+		
+		draw_set_color(c_gray);
+		
+		var button =
+		{
+			left : monsterX - allyRadius,
+			top : monsterY - allyRadius,
+			right : monsterX + allyRadius,
+			bottom : monsterY + allyRadius
+		}
+		var imageIndex = 0;
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			summonCharacter.ResetStats(monster);
+			imageIndex = summonCharacter.image_index;
+			drawingHoverSummon = true;
+			DrawSummon(summonCharacter, monster);
+			draw_set_color(c_ltgray);
+		}
+		else if (selectedSummon == i)
+		{
+			imageIndex = summonCharacter.image_index;
+			draw_set_color(c_white);
+		}
+		else draw_set_color(c_gray);
+		
+		array_push(monsterButtons, button);
+		
+		draw_circle(monsterX, monsterY, allyRadius, false);
+		
+		draw_sprite_ext(monster.sprite, imageIndex, monsterX, monsterY, monster.uiScale, monster.uiScale, 0, c_white, 1);
+		
+		monsterX += allyRadius * 3;
+		if ((i + 1) % 4 == 0)
+		{
+			monsterY += allyRadius * 3;
+			monsterX = eighthX;
+		}
+	}
+	
+	if (!drawingHoverSummon && selectedSummon >= 0)
+	{
+		var monster = ds_list_find_value(global.BondedMonsters, selectedSummon);
+		summonCharacter.ResetStats(monster);
+		DrawSummon(summonCharacter, monster);
+		ds_list_find_value(global.BondedMonsters, i);
+	}
+	
+	if (selectedSummon >= 0)
+	{
+		
+		var confirmX = halfX + quarterX;
+		var confirmY = fullY - allyRadius;
+		confirmSummonButton =
+		{
+			left : confirmX - allyRadius,
+			top : confirmY - allyRadius,
+			right : confirmX + allyRadius,
+			bottom : confirmY + allyRadius
+		}
+		if (mouseX >= confirmSummonButton.left && mouseX <= confirmSummonButton.right
+		 && mouseY >= confirmSummonButton.top && mouseY <= confirmSummonButton.bottom)
+		{
+			draw_set_color(c_ltgray);
+		}
+		else draw_set_color(c_lime);
+		draw_circle(confirmX, confirmY, allyRadius, false);
+		
+		var confirmScale = allyRadius / sprite_get_width(spr_Confirm);
+		draw_sprite_ext(spr_Confirm, 0, confirmX - allyRadius / 2, confirmY - allyRadius / 2, confirmScale, confirmScale, 0, c_black, 1);
+	}
+	
+	var scrollScale = allyRadius / sprite_get_width(spr_ScrollArrow);
+	var scrollX = eighthX + allyRadius * 12;
+	
+	if (summonNavIndex > 0)
+	{
+		//up
+		
+		var scrollUpY = halfY - allyRadius * 2;
+		scrollUpSummonButton =
+		{
+			left : scrollX - allyRadius,
+			top : scrollUpY - allyRadius,
+			right : scrollX + allyRadius,
+			bottom : scrollUpY + allyRadius
+		}
+		if (mouseX >= scrollUpSummonButton.left && mouseX <= scrollUpSummonButton.right
+		 && mouseY >= scrollUpSummonButton.top && mouseY <= scrollUpSummonButton.bottom)
+		{
+			draw_set_color(c_gray);
+		}
+		else draw_set_color(c_dkgray);
+		draw_circle(scrollX, scrollUpY, allyRadius, false);
+		draw_sprite_ext(spr_ScrollArrow, 0, scrollX, scrollUpY, scrollScale, scrollScale, 0, c_black, 1);
+	}
+	
+	if (summonNavIndex < ds_list_size(global.BondedMonsters) - 20)
+	{
+		//down
+		var scrollDownY = halfY + allyRadius * 2;
+		scrollDownSummonButton =
+		{
+			left : scrollX - allyRadius,
+			top : scrollDownY - allyRadius,
+			right : scrollX + allyRadius,
+			bottom : scrollDownY + allyRadius
+		}
+		if (mouseX >= scrollDownSummonButton.left && mouseX <= scrollDownSummonButton.right
+		 && mouseY >= scrollDownSummonButton.top && mouseY <= scrollDownSummonButton.bottom)
+		{
+			draw_set_color(c_gray);
+		}
+		else draw_set_color(c_dkgray);
+		draw_circle(scrollX, scrollDownY, allyRadius, false);
+		draw_sprite_ext(spr_ScrollArrow, 0, scrollX, scrollDownY, scrollScale, -scrollScale, 0, c_black, 1);
+	}
+	
+	draw_set_color(c_dkgray);
+	draw_line_width(halfX, 0, halfX, fullY, 10);
+}
 else
 {
-		//make the circles into diamonds instead.
-	draw_set_circle_precision(4);
+	//make the circles into diamonds instead.
+	
 	
 	if (map.blueprint.displaying && map.blueprint.currentMode == WallModes.Range)
 	{
@@ -100,9 +266,48 @@ else
 	draw_circle(0, 0, outlineRadius, false);
 	draw_circle(quarterY, quarterY, outlineRadius, false);
 	draw_circle(0, halfY, outlineRadius, false);
+	
+	#region summon button
+	
+	if (global.selectedCharacter == global.Player && (!global.InCombat || ds_list_find_value(global.Turns, 0).character == global.Player))
+	{
+	var summonX = 0;
+	var summonY = quarterY;
+	
+	summonButton =
+	{
+		left : summonX,
+		top : summonY - sixteenthY,
+		right : summonX + sixteenthY,
+		bottom : summonY + sixteenthY
+	}
+		if (mouseX >= summonButton.left && mouseX <= summonButton.right
+		 && mouseY >= summonButton.top && mouseY <= summonButton.bottom)
+		{
+			draw_set_color(c_gray);
+		}
+		else draw_set_color(deckLightColor);
+	
+		draw_circle(summonX, summonY, sixteenthY, false);
+	
+		var summonScale = sixteenthY / sprite_get_width(spr_Summon);
+		draw_sprite_ext(spr_Summon, 0, summonX, summonY, summonScale, summonScale, 0, c_black, 1);
+	
+		draw_set_color(c_dkgray);
+
+		//outline
+		draw_line_width(summonX, summonButton.top, summonButton.right, summonY, outlineRadius);
+		draw_line_width(summonX, summonButton.bottom, summonButton.right, summonY, outlineRadius);
+
+		//outline notches
+		draw_set_color(c_gray);
+		draw_circle(summonX, summonButton.top, outlineRadius, false);
+		draw_circle(summonButton.right, summonY, outlineRadius, false);
+		draw_circle(summonX, summonButton.bottom, outlineRadius, false);
+	}
+	#endregion
 
 	//add diamonds for each ally.
-
 
 	var allySize = array_length(global.Allies);
 
@@ -544,7 +749,8 @@ else
 		{
 			var turnX = halfX + (allyRadius * 2 * i);
 				
-			draw_set_color(c_gray);
+			if (i > 0) draw_set_color(c_gray);
+			else draw_set_color(c_ltgray);
 			draw_circle(turnX, turnY, allyRadius, false);
 				
 			var turn = ds_list_find_value(global.Turns, i);
@@ -1401,9 +1607,7 @@ else
 		}
 		else
 		{
-			dashButton = 0;
-			loadButton = 0;
-				
+
 			prepLoad = false;
 		}
 			

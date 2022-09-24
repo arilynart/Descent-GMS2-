@@ -189,3 +189,85 @@ function AutoPickup(character, item)
 		}
 	}
 }
+
+function Summon(square)
+{
+	if (square.interaction == 0 && square.character == 0)
+	{
+		global.selectedCharacter.currentSquare.Deactivate();
+		global.SelectSquareExecute = 0;
+		
+		var summonStats = ds_list_find_value(global.BondedMonsters, global.UiManager.selectedSummon);
+		ds_list_delete(global.BondedMonsters, global.UiManager.selectedSummon);
+		var character = global.UiManager.summonCharacter;
+		
+		global.UiManager.selectedSummon = -1;
+		
+		character.ResetStats(summonStats);
+		
+		character.x = square.x;
+		character.y = square.y;
+		character.currentSquare = square;
+		square.character = character;
+		
+		array_push(global.Allies, character);
+		
+		global.UiManager.summonCharacter = instance_create_layer(-10000, -10000, "Characters", obj_Character, { characterStats : FindCharacter(CharacterClass.Bondable, 0) });
+		
+		if (global.InCombat)
+		{
+			ds_list_add(global.Combatants, character);
+			
+			var baseInitiative = character.characterStats.tempo * 10;
+			var roll = irandom(15);
+			var initiativeRoll = baseInitiative + roll;
+			
+			var existingTurnSize = ds_list_size(global.Turns);
+			var validInitiative = false;
+			
+			while (!validInitiative)
+			{
+				
+				validInitiative = true;
+				
+				for (var j = 0; j < existingTurnSize; j++)
+				{
+					var turn = ds_list_find_value(global.Turns, j);
+					if (turn.initiative == initiativeRoll)
+					{
+						validInitiative = false;
+						
+						var newRoll = irandom(9);
+						initiativeRoll = baseInitiative + newRoll;
+					}
+				}
+			}
+			
+			var newTurn = 
+			{
+				character : character,
+				initiative : initiativeRoll
+			}
+			
+			var foundTurn = false;
+			var turnSize = ds_list_size(global.Turns);
+			for (var i = 0; i < turnSize; i++)
+			{
+				//go through sorted list until the one we're adding has higher iniative than the next one or we reach the end of the list.
+				var checkedTurn = ds_list_find_value(global.Turns, i);
+				
+				if (i > 0 && checkedTurn.initiative < newTurn.initiative)
+				{
+					ds_list_insert(global.Turns, i, newTurn);
+					foundTurn = true;
+					break;
+				}
+			}
+			
+			if (!foundTurn)
+			{
+				ds_list_add(global.Turns, newTurn);
+			}
+		}
+	}
+}

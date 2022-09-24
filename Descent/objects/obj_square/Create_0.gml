@@ -399,6 +399,7 @@ Select = function()
 		{
 			global.selectedCharacter.currentSquare.Deactivate();
 			global.SelectSquareExecute = 0;
+			global.UiManager.heldAbility = 0;
 		}
 		return;
 	}

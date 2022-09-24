@@ -20,8 +20,8 @@
   "width": 320,
   "height": 320,
   "textureGroupId": {
-    "name": "Default",
-    "path": "texturegroups/Default",
+    "name": "Characters",
+    "path": "texturegroups/Characters",
   },
   "swatchColours": null,
   "gridX": 0,

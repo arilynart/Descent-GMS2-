@@ -79,40 +79,11 @@ function StartCombat(index)
 			show_debug_message(character.characterStats.name + " rolls initiative. Result is " + string(initiativeRoll));
 		}
 		
-		//sort turns descending
-		var sortedList = ds_list_create();
-		var turnSize = ds_list_size(global.Turns);
-		for (var i = 0; i < turnSize; i++)
-		{
-			//go through sorted list until the one we're adding has higher iniative than the next one or we reach the end of the list.
-			var turnToSort = ds_list_find_value(global.Turns, i);
-			var foundSlot = -1;
-			var sortedSize = ds_list_size(sortedList);
-			if (sortedSize == 0)
-			{
-				ds_list_add(sortedList, turnToSort);
-			}
-			else
-			{
-				for (var j = 0; j < sortedSize; j++)
-				{
-					var checkedTurn = ds_list_find_value(sortedList, j);
-					if (checkedTurn.initiative < turnToSort.initiative)
-					{
-						foundSlot = j;
-					}
-				}
-			
-				if (foundSlot < 0) ds_list_add(sortedList, turnToSort);
-				else ds_list_insert(sortedList, foundSlot, turnToSort);
-			}
-		}
-		ds_list_destroy(global.Turns);
-		global.Turns = sortedList;
-	
+		SortInitiative();
+
 		var startTurnEffect = global.BaseEffect();
 		startTurnEffect.Start = method(global, global.StartTurnEffect);
-		startTurnEffect.character = ds_list_find_value(global.Turns, 0).character;
+		startTurnEffect.character = global.StartCharacter;
 	
 		AddEffect(startTurnEffect);
 	}
@@ -120,5 +91,43 @@ function StartCombat(index)
 	
 }
 
+function SortInitiative()
+{
+	//sort turns descending
+	var sortedList = ds_list_create();
+	var turnSize = ds_list_size(global.Turns);
+	for (var i = 0; i < turnSize; i++)
+	{
+		//go through sorted list until the one we're adding has higher iniative than the next one or we reach the end of the list.
+		var turnToSort = ds_list_find_value(global.Turns, i);
+		var foundSlot = -1;
+		var sortedSize = ds_list_size(sortedList);
+		if (sortedSize == 0)
+		{
+			ds_list_add(sortedList, turnToSort);
+		}
+		else
+		{
+			for (var j = 0; j < sortedSize; j++)
+			{
+				var checkedTurn = ds_list_find_value(sortedList, j);
+				if (checkedTurn.initiative < turnToSort.initiative)
+				{
+					foundSlot = j;
+				}
+			}
+			
+			if (foundSlot < 0) ds_list_add(sortedList, turnToSort);
+			else ds_list_insert(sortedList, foundSlot, turnToSort);
+		}
+	}
+	ds_list_destroy(global.Turns);
+	global.Turns = sortedList;
+	global.StartCharacter = ds_list_find_value(global.Turns, 0).character;
+	global.EndCharacter = ds_list_find_value(global.Turns, ds_list_size(global.Turns) - 1).character;
+}
+
+global.StartCharacter = 0;
+global.EndCharacter = 0;
 global.Combatants = ds_list_create();
 global.Turns = ds_list_create();

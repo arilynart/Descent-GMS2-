@@ -20,8 +20,8 @@
   "width": 600,
   "height": 600,
   "textureGroupId": {
-    "name": "ClassBonding",
-    "path": "texturegroups/ClassBonding",
+    "name": "Characters",
+    "path": "texturegroups/Characters",
   },
   "swatchColours": null,
   "gridX": 0,
