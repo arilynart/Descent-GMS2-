@@ -25,6 +25,7 @@ function FindCharacter(class, index)
 			character.endurance = 8;
 			character.vitality = 2;
 			character.tempo = 3;
+			character.element = Elements.ED;
 			
 			var weapon = 
 			{
@@ -132,6 +133,7 @@ function FindCharacter(class, index)
 				case 0:
 					var character = global.BaseCharacter();
 					character.name = "Ahlya";
+					character.uiScale = 0.5;
 					character.team = CharacterTeams.Ally;
 					character.class = class;
 					character.sprite = spr_CharacterBondable000;
@@ -139,12 +141,20 @@ function FindCharacter(class, index)
 					character.vitality = 3;
 					character.endurance = 6;
 					character.tempo = 4;
-					character.generation =
+					character.element = Elements.FM;
+					character.generation = array_create(0);
+					var lusium0 = 
 					{
-						
+						type : ItemTypes.Lusium,
+						index : 0,
+						quantity : 2,
+						maxQuantity : global.FindItem(ItemTypes.Lusium, 0, 1).maxQuantity,
+						pack : 0,
+						slot : 0
 					}
+					array_push(character.generation, lusium0);
+					
 					array_push(character.packSlots, 1);
-
 					var starterPack1 = {};
 					with (starterPack1)
 					{
@@ -176,6 +186,7 @@ function FindCharacter(class, index)
 					character.vitality = 2;
 					character.endurance = 4;
 					character.tempo = 2;
+					character.element = Elements.S;
 					array_push(character.packSlots, 1);
 
 					var starterPack1 = {};
@@ -223,6 +234,7 @@ BaseCharacter = function()
 		unlockedCards : array_create(0),
 		nodeDeck : array_create(0),
 		extraDeck : array_create(0),
+		element : Elements.W,
 		level : 1,
 		force : 1,
 		vitality : 1,

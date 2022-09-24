@@ -16,6 +16,16 @@ moveDown = 0;
 velocityX = 0;
 velocityY = 0;
 
+function ResetStats(stats)
+{
+	characterStats = stats;
+	sprite_index = characterStats.sprite;
+	maxMove = characterStats.baseMaxMove;
+	currentHp = maxHp();
+	currentSp = maxSp();
+	currentAp = maxAp;
+}
+
 //card variables
 artQueue = ds_queue_create();
 artOutTime = 30;

@@ -3,8 +3,64 @@
 if (global.SquareLock) return;
 
 if (displayDialogue) AdvanceDialogue();
+else if (drawSummons)
+{
+	if (closeSummonButton != 0)
+	{
+		var button = closeSummonButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//close summon menu
+			drawSummons = false;
+			
+			return;
+		}
+	}
+	if (scrollUpSummonButton != 0)
+	{
+		var button = scrollUpSummonButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//scroll up summon menu
+			summonNavIndex -= 4;
+			
+			return;
+		}
+	}
+	if (scrollDownSummonButton != 0)
+	{
+		var button = scrollDownSummonButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//scroll down summon menu
+			summonNavIndex += 4;
+			
+			return;
+		}
+	}
+}
 else
 {
+	if (summonButton != 0)
+	{
+		var button = summonButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//open summon menu
+			drawSummons = true;
+			
+			return;
+		}
+	}
+	
 	if (spendMana)
 	{
 		for (var i = 0; i < ds_list_size(manaButtons); i++)

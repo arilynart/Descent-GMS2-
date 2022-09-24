@@ -115,6 +115,7 @@
     {"id":{"name":"spr_RuneBgF","path":"sprites/spr_RuneBgF/spr_RuneBgF.yy",},"order":14,},
     {"id":{"name":"tile_UthyliannSurface","path":"tilesets/tile_UthyliannSurface/tile_UthyliannSurface.yy",},"order":2,},
     {"id":{"name":"spr_mythic","path":"sprites/spr_mythic/spr_mythic.yy",},"order":2,},
+    {"id":{"name":"spr_ScrollArrow","path":"sprites/spr_ScrollArrow/spr_ScrollArrow.yy",},"order":13,},
     {"id":{"name":"fnt_CardText","path":"fonts/fnt_CardText/fnt_CardText.yy",},"order":2,},
     {"id":{"name":"spr_Weapon000","path":"sprites/spr_Weapon000/spr_Weapon000.yy",},"order":0,},
     {"id":{"name":"spr_Extra","path":"sprites/spr_Extra/spr_Extra.yy",},"order":10,},

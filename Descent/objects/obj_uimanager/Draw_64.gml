@@ -1,10 +1,16 @@
 
+draw_set_circle_precision(4);
+
 mouseX = device_mouse_x_to_gui(0);
 mouseY = device_mouse_y_to_gui(0);
 	
 abilityButtons = array_create(0);
 
-
+summonButton = 0;
+closeSummonButton = 0;
+scrollUpSummonButton = 0;
+scrollDownSummonButton = 0;
+monsterButtons = array_create(0);
 
 //draw Dialogue Box.
 var dialogueLength = array_length(dialogueArray);
@@ -52,10 +58,130 @@ if (displayDialogue && dialogueLength > 0)
 		displayDialogue = false;
 	}
 }
+else if (drawSummons)
+{
+	draw_set_color(c_black);
+	
+	draw_rectangle(0, 0, fullX, fullY, false);
+	
+	closeSummonButton =
+	{
+		left : 0,
+		top : 0,
+		right : thirtySecondY,
+		bottom : thirtySecondY
+	}
+	if (mouseX >= closeSummonButton.left && mouseX <= closeSummonButton.right
+	 && mouseY >= closeSummonButton.top && mouseY <= closeSummonButton.bottom)
+	{
+		draw_set_color(c_gray);
+	}
+	else draw_set_color(c_red);
+	
+	draw_circle(0, 0, thirtySecondY, false);
+	
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	draw_set_color(c_black);
+	draw_set_font(fnt_Cambria16);
+	draw_text(4, 0, "x");
+	
+	var monsterX = eighthX;
+	var monsterY = halfY - allyRadius * 6;
+	
+	for (var i = summonNavIndex; i < ds_list_size(global.BondedMonsters) && i < summonNavIndex + 20; i++)
+	{
+		var monster = ds_list_find_value(global.BondedMonsters, i);
+		
+		draw_set_color(c_gray);
+		
+		var button =
+		{
+			left : monsterX - allyRadius,
+			top : monsterY - allyRadius,
+			right : monsterX + allyRadius,
+			bottom : monsterY + allyRadius
+		}
+		var imageIndex = 0;
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			summonCharacter.ResetStats(monster);
+			imageIndex = summonCharacter.image_index;
+			
+			DrawSummon(summonCharacter, monster);
+			draw_set_color(c_ltgray);
+		}
+		else draw_set_color(c_gray);
+		
+		array_push(monsterButtons, button);
+		
+		draw_circle(monsterX, monsterY, allyRadius, false);
+		
+		draw_sprite_ext(monster.sprite, imageIndex, monsterX, monsterY, monster.uiScale, monster.uiScale, 0, c_white, 1);
+		
+		monsterX += allyRadius * 3;
+		if ((i + 1) % 4 == 0)
+		{
+			monsterY += allyRadius * 3;
+			monsterX = eighthX;
+		}
+	}
+	
+	
+	var scrollScale = allyRadius / sprite_get_width(spr_ScrollArrow);
+	var scrollX = eighthX + allyRadius * 12;
+	
+	if (summonNavIndex > 0)
+	{
+		//up
+		
+		var scrollUpY = halfY - allyRadius * 2;
+		scrollUpSummonButton =
+		{
+			left : scrollX - allyRadius,
+			top : scrollUpY - allyRadius,
+			right : scrollX + allyRadius,
+			bottom : scrollUpY + allyRadius
+		}
+		if (mouseX >= scrollUpSummonButton.left && mouseX <= scrollUpSummonButton.right
+		 && mouseY >= scrollUpSummonButton.top && mouseY <= scrollUpSummonButton.bottom)
+		{
+			draw_set_color(c_gray);
+		}
+		else draw_set_color(c_dkgray);
+		draw_circle(scrollX, scrollUpY, allyRadius, false);
+		draw_sprite_ext(spr_ScrollArrow, 0, scrollX, scrollUpY, scrollScale, scrollScale, 0, c_black, 1);
+	}
+	
+	if (summonNavIndex < ds_list_size(global.BondedMonsters) - 20)
+	{
+		//down
+		var scrollDownY = halfY + allyRadius * 2;
+		scrollDownSummonButton =
+		{
+			left : scrollX - allyRadius,
+			top : scrollDownY - allyRadius,
+			right : scrollX + allyRadius,
+			bottom : scrollDownY + allyRadius
+		}
+		if (mouseX >= scrollDownSummonButton.left && mouseX <= scrollDownSummonButton.right
+		 && mouseY >= scrollDownSummonButton.top && mouseY <= scrollDownSummonButton.bottom)
+		{
+			draw_set_color(c_gray);
+		}
+		else draw_set_color(c_dkgray);
+		draw_circle(scrollX, scrollDownY, allyRadius, false);
+		draw_sprite_ext(spr_ScrollArrow, 0, scrollX, scrollDownY, scrollScale, -scrollScale, 0, c_black, 1);
+	}
+	
+	draw_set_color(c_dkgray);
+	draw_line_width(halfX, 0, halfX, fullY, 10);
+}
 else
 {
-		//make the circles into diamonds instead.
-	draw_set_circle_precision(4);
+	//make the circles into diamonds instead.
+	
 	
 	if (map.blueprint.displaying && map.blueprint.currentMode == WallModes.Range)
 	{
