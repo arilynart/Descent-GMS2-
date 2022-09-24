@@ -87,6 +87,7 @@ confirmLoadButton = 0;
 cancelLoadButton = 0;
 
 abilityButtons = array_create(0);
+heldAbility = 0;
 
 loadedButtons = array_create(0);
 dragCard = -1;

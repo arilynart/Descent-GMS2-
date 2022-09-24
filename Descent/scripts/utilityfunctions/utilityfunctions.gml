@@ -197,10 +197,11 @@ function Summon(square)
 		global.selectedCharacter.currentSquare.Deactivate();
 		global.SelectSquareExecute = 0;
 		
-		global.selectedCharacter.currentAp--;
-		
 		var summonStats = ds_list_find_value(global.BondedMonsters, global.UiManager.selectedSummon);
+		ds_list_delete(global.BondedMonsters, global.UiManager.selectedSummon);
 		var character = global.UiManager.summonCharacter;
+		
+		global.UiManager.selectedSummon = -1;
 		
 		character.ResetStats(summonStats);
 		

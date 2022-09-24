@@ -331,7 +331,17 @@ else
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
 			//end turn
-			prepLoad = !prepLoad;
+			if (global.selectedCharacter == global.Player) prepLoad = !prepLoad;
+			else
+			{
+				global.selectedCharacter.currentAp--;
+				
+				var generation = global.BaseEffect();
+				generation.Start = method(global, global.GenerationEffect);
+				generation.character = global.selectedCharacter;
+				
+				AddEffect(generation);
+			}
 			
 			return;
 		}
@@ -449,9 +459,12 @@ else
 			var button = abilityButtons[i];
 			
 			if (mouseX >= button.left && mouseX <= button.right
-			 && mouseY >= button.top && mouseY <= button.bottom)
+			 && mouseY >= button.top && mouseY <= button.bottom
+			 && !global.selectedCharacter.moving)
 			{
 				//Ability Target Range
+				heldAbility = ability;
+				
 				ability.Select(global.selectedCharacter, ability);
 				
 				global.SelectSquareExecute = ability.Execute;
@@ -525,31 +538,38 @@ else
 			if (mouseX >= button.left && mouseX <= button.right
 			 && mouseY >= button.top && mouseY <= button.bottom)
 			{
-				var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
-				var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
-				var size = array_length(lusiumCheck);
-				if (size == 1)
+				if (ds_list_find_value(global.Turns, 0).character == global.selectedCharacter)
 				{
-					//auto select lusium
-					extraCard.playedThisTurn = true;
-					
-					var runePlay = global.BaseEffect();
-					runePlay.character = global.selectedCharacter;
-					runePlay.index = i;
-					runePlay.lusiumIndex = lusiumCheck[0];
-					runePlay.Start = method(global, global.PlayRuneEffect);
-					
-					AddEffect(runePlay);
-				}
-				else if (size > 0)
-				{
-					spendLusium = true;
-					heldRune = i;
-					ds_list_clear(highlightedLusium);
-					for (var j = 0; j < array_length(lusiumCheck); j++)
+					var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
+					var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
+					var size = array_length(lusiumCheck);
+					if (size == 1)
 					{
-						var lusium = lusiumCheck[j];
-						ds_list_add(highlightedLusium, lusium);
+						extraDraw = false;
+						
+						//auto select lusium
+						extraCard.playedThisTurn = true;
+					
+						var runePlay = global.BaseEffect();
+						runePlay.character = global.selectedCharacter;
+						runePlay.index = i;
+						runePlay.lusiumIndex = lusiumCheck[0];
+						runePlay.Start = method(global, global.PlayRuneEffect);
+					
+						AddEffect(runePlay);
+					}
+					else if (size > 0)
+					{
+						extraDraw = false;
+						
+						spendLusium = true;
+						heldRune = i;
+						ds_list_clear(highlightedLusium);
+						for (var j = 0; j < array_length(lusiumCheck); j++)
+						{
+							var lusium = lusiumCheck[j];
+							ds_list_add(highlightedLusium, lusium);
+						}
 					}
 				}
 				

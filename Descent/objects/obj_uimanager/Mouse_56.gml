@@ -50,7 +50,7 @@ if (dragCard >= 0)
 		}
 		
 	}
-	else
+	else if (ds_list_find_value(global.Turns, 0).character == global.selectedCharacter)
 	{
 		var droppedCard = false;
 		for (var i = 0; i < array_length(loadedButtons); i++)

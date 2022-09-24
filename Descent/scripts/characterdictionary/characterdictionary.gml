@@ -33,8 +33,8 @@ function FindCharacter(class, index)
 				index : 0,
 				quantity : 1,
 				maxQuantity : 1,
-				pack : -1,
-				slot : -1
+				pack : 0,
+				slot : 0
 			}
 			
 			character.equippedWeapon = weapon;
@@ -116,8 +116,8 @@ function FindCharacter(class, index)
 				class : Classes.BONDING,
 				type : CardTypes.Manifest,
 				element : Elements.ED,
-				rarity : CardRarities.Common,
-				index : 1
+				rarity : CardRarities.Uncommon,
+				index : 0
 			}
 			
 			array_push(character.unlockedCards, startingNode0, startingNode1, startingNode2, startingRune0, startingRune1, startingRune2, startingManifest1);
@@ -143,16 +143,39 @@ function FindCharacter(class, index)
 					character.tempo = 4;
 					character.element = Elements.FM;
 					character.generation = array_create(0);
-					var lusium0 = 
+					
+					//var lusium0 = 
+					//{
+					//	type : ItemTypes.Lusium,
+					//	index : 0,
+					//	quantity : 1,
+					//	maxQuantity : global.FindItem(ItemTypes.Lusium, 0, 1).maxQuantity,
+					//	pack : 0,
+					//	slot : 0
+					//}
+					
+					var lusium1 = 
 					{
 						type : ItemTypes.Lusium,
-						index : 0,
-						quantity : 2,
+						index : 1,
+						quantity : 1,
 						maxQuantity : global.FindItem(ItemTypes.Lusium, 0, 1).maxQuantity,
 						pack : 0,
 						slot : 0
 					}
-					array_push(character.generation, lusium0);
+					array_push(character.generation, lusium1);
+					
+					var weapon = 
+					{
+						type : ItemTypes.Claw,
+						index : 0,
+						quantity : 1,
+						maxQuantity : 1,
+						pack : 0,
+						slot : 0
+					}
+			
+					character.equippedWeapon = weapon;
 					
 					array_push(character.packSlots, 1);
 					var starterPack1 = {};
@@ -166,6 +189,44 @@ function FindCharacter(class, index)
 					}
 
 					array_push(character.equippedPacks, starterPack1);
+					
+					var startingNode0 =
+					{
+						class : Classes.CHAPEL,
+						type : CardTypes.Node,
+						element : Elements.M,
+						rarity : CardRarities.Common,
+						index : 0
+					}
+					var startingNode1 =
+					{
+						class : Classes.CHAPEL,
+						type : CardTypes.Node,
+						element : Elements.F,
+						rarity : CardRarities.Common,
+						index : 0
+					}
+					var startingRune0 =
+					{
+						class : Classes.CHAPEL,
+						type : CardTypes.Rune,
+						element : Elements.F,
+						rarity : CardRarities.Common,
+						index : 0
+					}
+					var startingManifest0 =
+					{
+						class : Classes.CHAPEL,
+						type : CardTypes.Manifest,
+						element : Elements.FM,
+						rarity : CardRarities.Uncommon,
+						index : 0
+					}
+			
+					array_push(character.unlockedCards, startingNode0, startingNode1, startingRune0, startingManifest0);
+					array_push(character.extraDeck, startingRune0, startingManifest0);
+			
+					repeat(15) array_push(character.nodeDeck, startingNode0, startingNode1);
 					return character;
 				break;
 				default:

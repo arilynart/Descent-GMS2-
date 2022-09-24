@@ -36,7 +36,7 @@ currentArt = -1;
 function AddArtToQueue(card)
 {
 	ds_queue_enqueue(artQueue, card.art);
-	if (alarm_get(1) <= 0 && alarm_get(0) <= 0)
+	if (alarm_get(1) <= 0 && alarm_get(0) <= 0&& alarm_get(2) <= 0)
 	{
 		currentArt = ds_queue_dequeue(artQueue);
 		alarm_set(1, artInTime);

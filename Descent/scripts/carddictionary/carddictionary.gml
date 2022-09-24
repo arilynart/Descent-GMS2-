@@ -4,7 +4,8 @@
 enum Classes
 {
 	NONE,
-	BONDING
+	BONDING,
+	CHAPEL
 }
 
 enum CardTypes
@@ -252,16 +253,17 @@ FindCard = function(class, type, element, rarity, index)
 						case Elements.ED:
 							switch (rarity)
 							{
-								case CardRarities.Common:
+								case CardRarities.Uncommon:
 									switch (index)
 									{
-										case 1:
+										case 0:
 											var card = global.BaseCard(type);
 											card.frame = spr_RuneBgED;
-											card.art = spr_ArtBondingManifestEDC000;
+											card.art = spr_ArtBondingManifestEDU000;
 											card.class = class;
 											card.element = element;
 											card.index = index;
+											card.rarity = rarity;
 											card.title = "EMPOWERING BOND";
 											card.costText = "2 BOND RUNES";
 											var cost1 = array_create(0);
@@ -273,6 +275,181 @@ FindCard = function(class, type, element, rarity, index)
 											
 											card.titleFontScale = 0.9;
 											card.typeFontScale = 0.72;
+											
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						default:
+							return 0;
+						break;
+					}
+				break;
+				default:
+					return 0;
+				break;
+			}
+		break;
+		case Classes.CHAPEL:
+			switch (type)
+			{
+				case CardTypes.Node:
+					switch (element)
+					{
+						
+						case Elements.F:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.frame = spr_NodeBgF;
+											card.art = spr_ArtChapelNodeFC000;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.title = "ARCHITECTURE NODE";
+											card.fCost = 2;
+											card.vCost = 1;
+											card.fSupply = 2;
+											card.typeText = "CATHEDRAL NODE - FLOW"
+									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						case Elements.M:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.frame = spr_NodeBgM;
+											card.art = spr_ArtChapelNodeMC000;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.title = "SCRIPTURE NODE";
+											card.mCost = 1;
+											card.vCost = 1;
+											card.mSupply = 2;
+											card.typeText = "CHAPEL NODE - MIST"
+											card.text = "While you control a Chapel Module Space, this card becomes a CATHEDRAL NODE. ";
+									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						default:
+							return 0;
+						break;
+					}
+				break;
+				case CardTypes.Rune:
+				switch (element)
+					{
+						
+						case Elements.F:
+							switch (rarity)
+							{
+								case CardRarities.Common:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.frame = spr_RuneBgF;
+											card.art = spr_ArtChapelRuneFC000;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.title = "PILGRIMAGE RUNE";
+											card.costText = "FLOW CATHEDRAL NODE";
+											var cost1 = array_create(0);
+											array_push(cost1, "FLOW", "CATHEDRAL", "NODE");
+											array_push(card.costList, cost1);
+											card.typeText = "CHAPEL RUNE - FLOW"
+											card.text = "Teleport target character within 6 |spr_Square|  to any Chapel Module Space you control. ";
+									
+											return card;
+										break;
+										default:
+											return 0;
+										break;
+									}
+								break;
+								default:
+									return 0;
+								break;
+							}
+							
+						break;
+						default:
+							return 0;
+						break;
+					}
+				break;
+				case CardTypes.Manifest:
+					switch (element)
+					{
+						case Elements.FM:
+							switch (rarity)
+							{
+								case CardRarities.Uncommon:
+									switch (index)
+									{
+										case 0:
+											var card = global.BaseCard(type);
+											card.frame = spr_RuneBgFM;
+											card.art = spr_ArtChapelManifestFMU000;
+											card.class = class;
+											card.element = element;
+											card.index = index;
+											card.rarity = rarity;
+											card.title = "DOCTRINE OF WINDS";
+											card.costText = "2 CATHEDRAL NODES";
+											var cost1 = array_create(0);
+											array_push(cost1, "CATHEDRAL", "NODE");
+											array_push(card.costList, cost1, cost1);
+											card.typeText = "CHAPEL MANIFEST - FLOW & MIST"
+											card.text = "When this card is played, choose a square within 6 |spr_Square|  . " 
+													  + "While this card stays in play, that square is a Chapel Module Space." 
+													  + "\n \nUp to once during your turn, discard a card: For each ally that is " 
+													  + "inside a Chapel Module Space you control, you have +1 max movement this turn.";
+											
+											card.titleFontScale = 0.9;
+											card.typeFontScale = 0.72;
+											card.textFont = fnt_CardTextSmaller;
 											
 											return card;
 										break;
@@ -321,6 +498,7 @@ BaseCard = function(type)
 		text : "",
 		titleFontScale : 1,
 		typeFontScale : 1,
+		textFont : fnt_CardText
 	}
 	if (type == CardTypes.Node)
 	{

@@ -126,7 +126,7 @@ function DrawCard(x, y, card)
 	
 	//text
 	draw_set_valign(fa_top);
-	
+	draw_set_font(card.textFont);
 	draw_wrapped_text(card.text, cardWidth - (cardWidth / 16) * 3, sixteenthX + (cardWidth / 32), halfY + 15 + fontSize, 6, 1.4);
 	
 	//supply
@@ -796,6 +796,7 @@ function DrawSummon(character, characterStats)
 		var itemData = characterStats.generation[i];
 		var fetchedItem = global.FindItem(itemData.type, itemData.index, itemData.quantity);
 		
+		draw_set_color(c_gray);
 		draw_circle(generationX, generationY, allyRadius, false);
 		var spriteScale = allyRadius / sprite_get_width(fetchedItem.sprite);
 		draw_sprite_ext(fetchedItem.sprite, 0, generationX, generationY, spriteScale, spriteScale, 0, c_white, 1);
@@ -811,6 +812,7 @@ function DrawSummon(character, characterStats)
 			draw_set_color(c_white);
 			draw_text(generationX + allyRadius / 2, generationY - allyRadius / 2, string(itemData.quantity));
 		}
+		generationX += allyRadius * 2.5;
 	}
 	
 }
