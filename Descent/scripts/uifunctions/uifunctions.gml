@@ -660,6 +660,8 @@ function DrawSummon(character, characterStats)
 	draw_set_color(c_gray);
 	
 	draw_text(spriteX, spriteY + doubleRadius * 1.5, characterStats.name);
+
+	
 	
 	var elementSprites = array_create(0);
 	switch (characterStats.element)
@@ -744,21 +746,25 @@ function DrawSummon(character, characterStats)
 		break;
 	}
 	
+	var elementY = spriteY + doubleRadius * 2;
 	for (var i = 0; i < array_length(elementSprites); i++)
 	{
 		var elementX = spriteX - (floor(array_length(elementSprites) / 2) * (allyRadius / 2)) + (i * allyRadius);
-		var elementY = spriteY + doubleRadius * 2;
+		
 		
 		var elementScale = allyRadius / sprite_get_width(elementSprites[i]);
 		draw_sprite_ext(elementSprites[i], 0, elementX, elementY, elementScale, elementScale, 0, c_white, 1);
 	}
-	
+		
+	draw_set_font(fnt_Cambria16);
+	var linePad = 20;
+	draw_text(spriteX, elementY + allyRadius, "Lvl " + string(characterStats.level));
 	
 	var leftStatsX = ceil(halfX + sixteenthX * 1.5);
-	var rightStatsX = ceil(halfX + eighthX + sixteenthX);
-	var linePad = 20;
+	var rightStatsX = ceil(halfX + eighthX + sixteenthX / 2);
 	
-	var enduranceY = elementY;
+	
+	var enduranceY = elementY + allyRadius;
 	var vitalityY = enduranceY + linePad;
 	var forceY = vitalityY + linePad;
 	var tempoY = forceY + linePad;
@@ -767,7 +773,6 @@ function DrawSummon(character, characterStats)
 	
 	draw_set_halign(fa_right);
 	draw_set_valign(fa_middle);
-	draw_set_font(fnt_Cambria16);
 	draw_set_color(c_gray);
 	
 	draw_text(leftStatsX, enduranceY, "Endurance:  ");
@@ -786,5 +791,26 @@ function DrawSummon(character, characterStats)
 	draw_text(leftStatsX, forceY, string(characterStats.force));
 	draw_text(leftStatsX, tempoY, string(characterStats.tempo));
 	
-	draw_circle(generationX, generationY, allyRadius, false);
+	for (var i = 0; i < array_length(characterStats.generation); i++)
+	{
+		var itemData = characterStats.generation[i];
+		var fetchedItem = global.FindItem(itemData.type, itemData.index, itemData.quantity);
+		
+		draw_circle(generationX, generationY, allyRadius, false);
+		var spriteScale = allyRadius / sprite_get_width(fetchedItem.sprite);
+		draw_sprite_ext(fetchedItem.sprite, 0, generationX, generationY, spriteScale, spriteScale, 0, c_white, 1);
+		
+		if (fetchedItem.maxQuantity > 1)
+		{
+			
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_font(fnt_Cambria16)
+			draw_text_outline(generationX + allyRadius / 2, generationY - allyRadius / 2, string(itemData.quantity), c_black, 1);
+			
+			draw_set_color(c_white);
+			draw_text(generationX + allyRadius / 2, generationY - allyRadius / 2, string(itemData.quantity));
+		}
+	}
+	
 }

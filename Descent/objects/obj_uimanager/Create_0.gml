@@ -55,8 +55,10 @@ summonNavIndex = 0;
 closeSummonButton = 0;
 scrollUpSummonButton = 0;
 scrollDownSummonButton = 0;
-summonCharacter = instance_create_layer(-1000, -1000, "Characters", obj_Character, { characterStats : FindCharacter(CharacterClass.Bondable, 0) });
+summonCharacter = instance_create_layer(-10000, -10000, "Characters", obj_Character, { characterStats : FindCharacter(CharacterClass.Bondable, 0) });
 monsterButtons = array_create(0);
+selectedSummon = -1;
+confirmSummonButton = 0;
 
 mouseX = 0;
 mouseY = 0;

@@ -18,8 +18,6 @@ EndTurnEffect = function(effect)
 	turn.character.currentAp = turn.character.maxAp;
 	turn.character.currentSquare.Deactivate();
 	turn.character.ResetLoaded();
-	
-
 
 	ds_list_clear(global.UiManager.lockedHandCards);
 	
@@ -50,8 +48,13 @@ EndTurnEffect = function(effect)
 		
 	}
 	
+	var sort = false;
+	if (turn.character == global.EndCharacter) sort = true;
+	
 	ds_list_delete(global.Turns, 0);
 	ds_list_add(global.Turns, turn);
+	
+	if (sort) SortInitiative();
 
 	var startTurnEffect = global.BaseEffect();
 	startTurnEffect.Start = method(global, global.StartTurnEffect);

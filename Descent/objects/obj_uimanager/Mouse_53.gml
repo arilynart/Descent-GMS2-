@@ -44,6 +44,39 @@ else if (drawSummons)
 			return;
 		}
 	}
+	
+	if (confirmSummonButton != 0)
+	{
+		var button = confirmSummonButton;
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//confirm summon
+			global.Player.currentSquare.Deactivate();
+			global.Player.currentSquare.ActivateRange(global.Player.currentSquare, 1.5, global.Player);
+			
+			drawSummons = false;
+			
+			global.SelectSquareExecute = method(global, Summon);
+			
+			return;
+		}
+	}
+	
+	for (var i = 0; i < array_length(monsterButtons); i++)
+	{
+		var button = monsterButtons[i];
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			//select summon
+			selectedSummon = i + summonNavIndex;
+			
+			return;
+		}
+	}
 }
 else
 {

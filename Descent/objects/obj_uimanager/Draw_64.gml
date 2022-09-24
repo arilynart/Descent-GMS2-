@@ -11,6 +11,9 @@ closeSummonButton = 0;
 scrollUpSummonButton = 0;
 scrollDownSummonButton = 0;
 monsterButtons = array_create(0);
+confirmSummonButton = 0;
+dashButton = 0;
+loadButton = 0;
 
 //draw Dialogue Box.
 var dialogueLength = array_length(dialogueArray);
@@ -89,6 +92,7 @@ else if (drawSummons)
 	var monsterX = eighthX;
 	var monsterY = halfY - allyRadius * 6;
 	
+	var drawingHoverSummon = false;
 	for (var i = summonNavIndex; i < ds_list_size(global.BondedMonsters) && i < summonNavIndex + 20; i++)
 	{
 		var monster = ds_list_find_value(global.BondedMonsters, i);
@@ -108,9 +112,14 @@ else if (drawSummons)
 		{
 			summonCharacter.ResetStats(monster);
 			imageIndex = summonCharacter.image_index;
-			
+			drawingHoverSummon = true;
 			DrawSummon(summonCharacter, monster);
 			draw_set_color(c_ltgray);
+		}
+		else if (selectedSummon == i)
+		{
+			imageIndex = summonCharacter.image_index;
+			draw_set_color(c_white);
 		}
 		else draw_set_color(c_gray);
 		
@@ -128,6 +137,37 @@ else if (drawSummons)
 		}
 	}
 	
+	if (!drawingHoverSummon && selectedSummon >= 0)
+	{
+		var monster = ds_list_find_value(global.BondedMonsters, selectedSummon);
+		summonCharacter.ResetStats(monster);
+		DrawSummon(summonCharacter, monster);
+		ds_list_find_value(global.BondedMonsters, i);
+	}
+	
+	if (selectedSummon >= 0)
+	{
+		
+		var confirmX = halfX + quarterX;
+		var confirmY = fullY - allyRadius;
+		confirmSummonButton =
+		{
+			left : confirmX - allyRadius,
+			top : confirmY - allyRadius,
+			right : confirmX + allyRadius,
+			bottom : confirmY + allyRadius
+		}
+		if (mouseX >= confirmSummonButton.left && mouseX <= confirmSummonButton.right
+		 && mouseY >= confirmSummonButton.top && mouseY <= confirmSummonButton.bottom)
+		{
+			draw_set_color(c_ltgray);
+		}
+		else draw_set_color(c_lime);
+		draw_circle(confirmX, confirmY, allyRadius, false);
+		
+		var confirmScale = allyRadius / sprite_get_width(spr_Confirm);
+		draw_sprite_ext(spr_Confirm, 0, confirmX - allyRadius / 2, confirmY - allyRadius / 2, confirmScale, confirmScale, 0, c_black, 1);
+	}
 	
 	var scrollScale = allyRadius / sprite_get_width(spr_ScrollArrow);
 	var scrollX = eighthX + allyRadius * 12;
@@ -707,7 +747,8 @@ else
 		{
 			var turnX = halfX + (allyRadius * 2 * i);
 				
-			draw_set_color(c_gray);
+			if (i > 0) draw_set_color(c_gray);
+			else draw_set_color(c_ltgray);
 			draw_circle(turnX, turnY, allyRadius, false);
 				
 			var turn = ds_list_find_value(global.Turns, i);
@@ -1564,9 +1605,7 @@ else
 		}
 		else
 		{
-			dashButton = 0;
-			loadButton = 0;
-				
+
 			prepLoad = false;
 		}
 			
