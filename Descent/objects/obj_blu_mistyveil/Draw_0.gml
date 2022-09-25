@@ -59,6 +59,20 @@ if (displaying == true)
 				draw_sprite_ext(spr_Cancel, 0, square.x - offsetX, square.y - offsetY, 1, 1, 0, c_red, 1);
 			}
 		break;
+		case WallModes.Flying:
+			var size = array_length(flyingWalls);
+			draw_set_colour(c_aqua);
+			for (var i = 0; i < size; i++)
+			{
+				var drawWall = flyingWalls[i];
+				//show_debug_message("Drawing Wall: " + string(drawWall));
+				draw_line_width(map.gridPad + drawWall.point1.x * map.gridSize, 
+								map.gridPad + drawWall.point1.y * map.gridSize, 
+								map.gridPad + drawWall.point2.x * map.gridSize, 
+								map.gridPad + drawWall.point2.y * map.gridSize, 
+								25);
+			}
+		break;
 	}
 
 }

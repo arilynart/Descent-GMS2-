@@ -170,123 +170,249 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 	
 	//check each border of the sprite's collision based on the direction we are moving
 	
-	if (velocityX > 0 && !position_meeting(bbox_right + velocityX, y, currentSquare))
+	if (characterStats.flying)
 	{
-		if (currentSquare.right == 0 || currentSquare.right.character != 0)
+		if (velocityX > 0 && !position_meeting(bbox_right + velocityX, y, currentSquare))
 		{
-			//show_debug_message("Right Invalid");
-			velocityX = 0;
+			if (currentSquare.flying.right == 0 || currentSquare.flying.right.character != 0)
+			{
+				//show_debug_message("Right Invalid");
+				velocityX = 0;
+		
+			}
+			else
+			{
+				var bottomRightSquare = instance_position(bbox_right, bbox_bottom, obj_Square);
+				var topRightSquare = instance_position(bbox_right, bbox_top, obj_Square);
+				if (bottomRightSquare == currentSquare.flying.down)
+				{
+					if (bottomRightSquare.flying.right == 0 || bottomRightSquare.flying.right.character != 0) velocityX = 0;
+				}
+				if (topRightSquare == currentSquare.flying.up)
+				{
+					if (topRightSquare.flying.right == 0 || topRightSquare.flying.right.character != 0) velocityX = 0;
+				}
+				var bottomMeeting = instance_position(bbox_right + velocityX, bbox_bottom + velocityY, obj_Square);
+				var topMeeting = instance_position(bbox_right + velocityX, bbox_top + velocityY, obj_Square);
+				if (velocityY > 0 && bottomMeeting != currentSquare.flying.right
+				 && !position_meeting(bbox_right + velocityX, bbox_bottom + velocityY, currentSquare))
+				{
+					if (currentSquare.flying.downRight == 0 || currentSquare.flying.downRight.character != 0)
+					{
+						//show_debug_message("Down Right Invalid");
+						velocityY = 0;
+					}
+				}
+				else if (velocityY < 0 && topMeeting != currentSquare.flying.right
+					  && !position_meeting(bbox_right + velocityX, bbox_top + velocityY, currentSquare))
+				{
+					if (currentSquare.flying.upRight == 0 || currentSquare.flying.upRight.character != 0)
+					{
+						//show_debug_message("Up Right Invalid");
+						velocityY = 0;
+					}
+				}
+			}
+			//check the two right corners. If the square either of them are touching does not have a right wall, don't allow the movement.
 		
 		}
-		else
+		else if (velocityX < 0 && !position_meeting(bbox_left + velocityX, y, currentSquare))
 		{
-			var bottomRightSquare = instance_position(bbox_right, bbox_bottom, obj_Square);
-			var topRightSquare = instance_position(bbox_right, bbox_top, obj_Square);
-			if (bottomRightSquare == currentSquare.down)
+			if (currentSquare.flying.left == 0 || currentSquare.flying.left.character != 0)
 			{
-				if (bottomRightSquare.right == 0 || bottomRightSquare.right.character != 0) velocityX = 0;
+				//show_debug_message("Left Invalid");
+				velocityX = 0;
 			}
-			if (topRightSquare == currentSquare.up)
+			else
 			{
-				if (topRightSquare.right == 0 || topRightSquare.right.character != 0) velocityX = 0;
-			}
-			var bottomMeeting = instance_position(bbox_right + velocityX, bbox_bottom + velocityY, obj_Square);
-			var topMeeting = instance_position(bbox_right + velocityX, bbox_top + velocityY, obj_Square);
-			if (velocityY > 0 && bottomMeeting != currentSquare.right
-			 && !position_meeting(bbox_right + velocityX, bbox_bottom + velocityY, currentSquare))
-			{
-				if (currentSquare.downRight == 0 || currentSquare.downRight.character != 0)
+				var bottomLeftSquare = instance_position(bbox_left, bbox_bottom, obj_Square);
+				var topLeftSquare = instance_position(bbox_left, bbox_top, obj_Square);
+				if (bottomLeftSquare == currentSquare.flying.down)
 				{
-					//show_debug_message("Down Right Invalid");
-					velocityY = 0;
+					if (bottomLeftSquare.flying.left == 0 || bottomLeftSquare.flying.left.character != 0) velocityX = 0;
 				}
-			}
-			else if (velocityY < 0 && topMeeting != currentSquare.right
-				  && !position_meeting(bbox_right + velocityX, bbox_top + velocityY, currentSquare))
-			{
-				if (currentSquare.upRight == 0 || currentSquare.upRight.character != 0)
+				if (topLeftSquare == currentSquare.flying.up)
 				{
-					//show_debug_message("Up Right Invalid");
-					velocityY = 0;
+					if (topLeftSquare.flying.left == 0 || topLeftSquare.flying.left.character != 0) velocityX = 0;
 				}
-			}
-		}
-		//check the two right corners. If the square either of them are touching does not have a right wall, don't allow the movement.
-		
-	}
-	else if (velocityX < 0 && !position_meeting(bbox_left + velocityX, y, currentSquare))
-	{
-		if (currentSquare.left == 0 || currentSquare.left.character != 0)
-		{
-			//show_debug_message("Left Invalid");
-			velocityX = 0;
-		}
-		else
-		{
-			var bottomLeftSquare = instance_position(bbox_left, bbox_bottom, obj_Square);
-			var topLeftSquare = instance_position(bbox_left, bbox_top, obj_Square);
-			if (bottomLeftSquare == currentSquare.down)
-			{
-				if (bottomLeftSquare.left == 0 || bottomLeftSquare.left.character != 0) velocityX = 0;
-			}
-			if (topLeftSquare == currentSquare.up)
-			{
-				if (topLeftSquare.left == 0 || topLeftSquare.left.character != 0) velocityX = 0;
-			}
-			var bottomMeeting = instance_position(bbox_left + velocityX, bbox_bottom + velocityY, obj_Square);
-			var topMeeting = instance_position(bbox_left + velocityX, bbox_top + velocityY, obj_Square);
-			if (velocityY > 0 && bottomMeeting != currentSquare.left
-			 && !position_meeting(bbox_left + velocityX, bbox_bottom + velocityY, currentSquare))
-			{
-				if (currentSquare.downLeft == 0 || currentSquare.downLeft.character != 0)
+				var bottomMeeting = instance_position(bbox_left + velocityX, bbox_bottom + velocityY, obj_Square);
+				var topMeeting = instance_position(bbox_left + velocityX, bbox_top + velocityY, obj_Square);
+				if (velocityY > 0 && bottomMeeting != currentSquare.flying.left
+				 && !position_meeting(bbox_left + velocityX, bbox_bottom + velocityY, currentSquare))
 				{
-					//show_debug_message("Down Left Invalid");
-					velocityY = 0;
+					if (currentSquare.flying.downLeft == 0 || currentSquare.flying.downLeft.character != 0)
+					{
+						//show_debug_message("Down Left Invalid");
+						velocityY = 0;
+					}
 				}
-			}
-			else if (velocityY < 0 && topMeeting != currentSquare.left
-				 && !position_meeting(bbox_left + velocityX, bbox_top + velocityY, currentSquare))
-			{
-				if (currentSquare.upLeft == 0 || currentSquare.upLeft.character != 0)
+				else if (velocityY < 0 && topMeeting != currentSquare.flying.left
+					 && !position_meeting(bbox_left + velocityX, bbox_top + velocityY, currentSquare))
 				{
+					if (currentSquare.flying.upLeft == 0 || currentSquare.flying.upLeft.character != 0)
+					{
 					
-					velocityY = 0;
+						velocityY = 0;
+					}
+				}
+			}
+		}
+		if (velocityY > 0 && !position_meeting(x, bbox_bottom + velocityY, currentSquare))
+		{
+			if (currentSquare.flying.down == 0 || currentSquare.flying.down.character != 0) velocityY = 0;
+			else
+			{
+				var bottomRightSquare = instance_position(bbox_right, bbox_bottom, obj_Square);
+				var bottomLeftSquare = instance_position(bbox_left, bbox_bottom, obj_Square);
+				if (bottomRightSquare == currentSquare.flying.right)
+				{
+					if (bottomRightSquare.flying.down == 0 || bottomRightSquare.flying.down.character != 0) velocityY = 0;
+				}
+				if (bottomLeftSquare == currentSquare.flying.left)
+				{
+					if (bottomLeftSquare.flying.down == 0 || bottomLeftSquare.flying.down.character != 0) velocityY = 0;
+				}
+			}
+		}
+	
+		if (velocityY < 0 && !position_meeting(x, bbox_top + velocityY, currentSquare))
+		{
+			if (currentSquare.flying.up == 0 || currentSquare.flying.up.character != 0) velocityY = 0;
+			else
+			{
+				var topRightSquare = instance_position(bbox_right, bbox_top, obj_Square);
+				var topLeftSquare = instance_position(bbox_left, bbox_top, obj_Square);
+				if (topRightSquare == currentSquare.flying.right)
+				{
+					if (topRightSquare.flying.up == 0 || topRightSquare.flying.up.character != 0) velocityY = 0;
+				}
+				if (topLeftSquare == currentSquare.flying.left)
+				{
+					if (topLeftSquare.flying.up == 0 || topLeftSquare.flying.up.character != 0) velocityY = 0;
 				}
 			}
 		}
 	}
-	if (velocityY > 0 && !position_meeting(x, bbox_bottom + velocityY, currentSquare))
+	else
 	{
-		if (currentSquare.down == 0 || currentSquare.down.character != 0) velocityY = 0;
-		else
+		if (velocityX > 0 && !position_meeting(bbox_right + velocityX, y, currentSquare))
 		{
-			var bottomRightSquare = instance_position(bbox_right, bbox_bottom, obj_Square);
-			var bottomLeftSquare = instance_position(bbox_left, bbox_bottom, obj_Square);
-			if (bottomRightSquare == currentSquare.right)
+			if (currentSquare.right == 0 || currentSquare.right.character != 0)
 			{
-				if (bottomRightSquare.down == 0 || bottomRightSquare.down.character != 0) velocityY = 0;
+				//show_debug_message("Right Invalid");
+				velocityX = 0;
+		
 			}
-			if (bottomLeftSquare == currentSquare.left)
+			else
 			{
-				if (bottomLeftSquare.down == 0 || bottomLeftSquare.down.character != 0) velocityY = 0;
+				var bottomRightSquare = instance_position(bbox_right, bbox_bottom, obj_Square);
+				var topRightSquare = instance_position(bbox_right, bbox_top, obj_Square);
+				if (bottomRightSquare == currentSquare.down)
+				{
+					if (bottomRightSquare.right == 0 || bottomRightSquare.right.character != 0) velocityX = 0;
+				}
+				if (topRightSquare == currentSquare.up)
+				{
+					if (topRightSquare.right == 0 || topRightSquare.right.character != 0) velocityX = 0;
+				}
+				var bottomMeeting = instance_position(bbox_right + velocityX, bbox_bottom + velocityY, obj_Square);
+				var topMeeting = instance_position(bbox_right + velocityX, bbox_top + velocityY, obj_Square);
+				if (velocityY > 0 && bottomMeeting != currentSquare.right
+				 && !position_meeting(bbox_right + velocityX, bbox_bottom + velocityY, currentSquare))
+				{
+					if (currentSquare.downRight == 0 || currentSquare.downRight.character != 0)
+					{
+						//show_debug_message("Down Right Invalid");
+						velocityY = 0;
+					}
+				}
+				else if (velocityY < 0 && topMeeting != currentSquare.right
+					  && !position_meeting(bbox_right + velocityX, bbox_top + velocityY, currentSquare))
+				{
+					if (currentSquare.upRight == 0 || currentSquare.upRight.character != 0)
+					{
+						//show_debug_message("Up Right Invalid");
+						velocityY = 0;
+					}
+				}
+			}
+			//check the two right corners. If the square either of them are touching does not have a right wall, don't allow the movement.
+		
+		}
+		else if (velocityX < 0 && !position_meeting(bbox_left + velocityX, y, currentSquare))
+		{
+			if (currentSquare.left == 0 || currentSquare.left.character != 0)
+			{
+				//show_debug_message("Left Invalid");
+				velocityX = 0;
+			}
+			else
+			{
+				var bottomLeftSquare = instance_position(bbox_left, bbox_bottom, obj_Square);
+				var topLeftSquare = instance_position(bbox_left, bbox_top, obj_Square);
+				if (bottomLeftSquare == currentSquare.down)
+				{
+					if (bottomLeftSquare.left == 0 || bottomLeftSquare.left.character != 0) velocityX = 0;
+				}
+				if (topLeftSquare == currentSquare.up)
+				{
+					if (topLeftSquare.left == 0 || topLeftSquare.left.character != 0) velocityX = 0;
+				}
+				var bottomMeeting = instance_position(bbox_left + velocityX, bbox_bottom + velocityY, obj_Square);
+				var topMeeting = instance_position(bbox_left + velocityX, bbox_top + velocityY, obj_Square);
+				if (velocityY > 0 && bottomMeeting != currentSquare.left
+				 && !position_meeting(bbox_left + velocityX, bbox_bottom + velocityY, currentSquare))
+				{
+					if (currentSquare.downLeft == 0 || currentSquare.downLeft.character != 0)
+					{
+						//show_debug_message("Down Left Invalid");
+						velocityY = 0;
+					}
+				}
+				else if (velocityY < 0 && topMeeting != currentSquare.left
+					 && !position_meeting(bbox_left + velocityX, bbox_top + velocityY, currentSquare))
+				{
+					if (currentSquare.upLeft == 0 || currentSquare.upLeft.character != 0)
+					{
+					
+						velocityY = 0;
+					}
+				}
 			}
 		}
-	}
-	
-	if (velocityY < 0 && !position_meeting(x, bbox_top + velocityY, currentSquare))
-	{
-		if (currentSquare.up == 0 || currentSquare.up.character != 0) velocityY = 0;
-		else
+		if (velocityY > 0 && !position_meeting(x, bbox_bottom + velocityY, currentSquare))
 		{
-			var topRightSquare = instance_position(bbox_right, bbox_top, obj_Square);
-			var topLeftSquare = instance_position(bbox_left, bbox_top, obj_Square);
-			if (topRightSquare == currentSquare.right)
+			if (currentSquare.down == 0 || currentSquare.down.character != 0) velocityY = 0;
+			else
 			{
-				if (topRightSquare.up == 0 || topRightSquare.up.character != 0) velocityY = 0;
+				var bottomRightSquare = instance_position(bbox_right, bbox_bottom, obj_Square);
+				var bottomLeftSquare = instance_position(bbox_left, bbox_bottom, obj_Square);
+				if (bottomRightSquare == currentSquare.right)
+				{
+					if (bottomRightSquare.down == 0 || bottomRightSquare.down.character != 0) velocityY = 0;
+				}
+				if (bottomLeftSquare == currentSquare.left)
+				{
+					if (bottomLeftSquare.down == 0 || bottomLeftSquare.down.character != 0) velocityY = 0;
+				}
 			}
-			if (topLeftSquare == currentSquare.left)
+		}
+	
+		if (velocityY < 0 && !position_meeting(x, bbox_top + velocityY, currentSquare))
+		{
+			if (currentSquare.up == 0 || currentSquare.up.character != 0) velocityY = 0;
+			else
 			{
-				if (topLeftSquare.up == 0 || topLeftSquare.up.character != 0) velocityY = 0;
+				var topRightSquare = instance_position(bbox_right, bbox_top, obj_Square);
+				var topLeftSquare = instance_position(bbox_left, bbox_top, obj_Square);
+				if (topRightSquare == currentSquare.right)
+				{
+					if (topRightSquare.up == 0 || topRightSquare.up.character != 0) velocityY = 0;
+				}
+				if (topLeftSquare == currentSquare.left)
+				{
+					if (topLeftSquare.up == 0 || topLeftSquare.up.character != 0) velocityY = 0;
+				}
 			}
 		}
 	}

@@ -35,6 +35,6 @@ BasicAttackExecute = function(square)
 		dealDamage.target = square.character;
 		dealDamage.amount = damage;
 		
-		AddEffect(dealDamage)
+		AddEffect(dealDamage);
 	}
 }

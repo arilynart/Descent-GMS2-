@@ -40,7 +40,27 @@ function StartCombat(index)
 		for (var i = 0; i < combatantSize; i++)
 		{
 			var character = ds_list_find_value(global.Combatants, i);
-			MoveCharacter(character, character.currentSquare);
+			var targetSquare = character.currentSquare;
+			if (!targetSquare.validRange)
+			{
+				if (character.characterStats.flying) character.currentSquare.ActivateFlying(character.currentSquare, 15, character);
+				else character.currentSquare.Activate(character.currentSquare, 15, character);
+				
+				for (var j = 0; j < ds_list_size(character.currentSquare.activatedSquares); j++)
+				{
+					var square = ds_list_find_value(character.currentSquare.activatedSquares, j);
+					
+					if (square != 0 && square.validRange)
+					{
+						targetSquare = square;
+						break;
+					}
+				}
+				
+				MoveCharacter(character, targetSquare);
+				character.currentSquare.Deactivate();
+			}
+			else MoveCharacter(character, targetSquare);
 			
 			//roll initiative
 			var baseInitiative = character.characterStats.tempo * 10;

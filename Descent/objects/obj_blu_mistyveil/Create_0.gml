@@ -6,6 +6,7 @@ wallPoints = ds_list_create();
 
 walls = array_create(0);
 rangeWalls = array_create(0);
+flyingWalls = array_create(0);
 invalidRange = array_create(0);
 interactables = ds_list_create();
 characters = ds_list_create();
@@ -29,7 +30,8 @@ enum RangeWallTypes
 enum WallModes
 {
 	Move,
-	Range
+	Range,
+	Flying
 }
 
 currentMode = WallModes.Move;
@@ -49,6 +51,7 @@ if (file_exists(fileName))
 	walls = loadedData.walls;
 	invalidRange = loadedData.invalidRange;
 	rangeWalls = loadedData.rangeWalls;
+	flyingWalls = loadedData.flyingWalls;
 	mapWidth = loadedData.mapWidth;
 	mapHeight = loadedData.mapHeight;
 }
@@ -157,42 +160,45 @@ var firstEncounterEver =
 	respawn : true,
 	triggers : ds_list_create()
 }
-var trigger0 =
+
+
+ds_list_add(firstEncounterEver.triggers, 
+{
+	x : 6,
+	y : 26
+},
+{
+	x : 7,
+	y : 26
+},
 {
 	x : 8,
-	y : 25
-}
-var trigger1 =
+	y : 26
+},
 {
 	x : 9,
-	y : 25
-}
-var trigger2 =
+	y : 26
+},
 {
 	x : 10,
-	y : 25
-}
-var trigger3 =
+	y : 26
+},
 {
 	x : 11,
-	y : 25
-}
-var trigger4 =
+	y : 26
+},
 {
 	x : 12,
-	y : 25
-}
-var trigger5 =
+	y : 26
+},
 {
 	x : 13,
-	y : 25
-}
-var trigger6 =
+	y : 26
+},
 {
 	x : 14,
-	y : 25
-}
-ds_list_add(firstEncounterEver.triggers, trigger0, trigger1, trigger2, trigger3, trigger4, trigger5, trigger6);
+	y : 26
+});
 
 ds_list_add(encounters, firstEncounterEver);
 
