@@ -397,7 +397,7 @@ function ParseRange(square, parseDistance, source, activeCharacter)
 
 function ActivateFlying(start, maxDistance, activeCharacter) 
 {
-	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
+	show_debug_message("Activating flying from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
 	
 	ds_queue_clear(parseQueue);
 	ds_list_clear(parsedCoordinates);
