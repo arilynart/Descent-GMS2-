@@ -74,6 +74,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.right = squares[targetX, targetY];
 			sq.range.right = squares[targetX, targetY];
+			sq.flying.right = squares[targetX, targetY];
 		}
 		//downRight
 		targetX = i + 1;
@@ -82,6 +83,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.downRight = squares[targetX, targetY];
 			sq.range.downRight = squares[targetX, targetY];
+			sq.flying.downRight = squares[targetX, targetY];
 		}
 		//down
 		targetX = i;
@@ -90,6 +92,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.down = squares[targetX, targetY];
 			sq.range.down = squares[targetX, targetY];
+			sq.flying.down = squares[targetX, targetY];
 		}
 		//downLeft
 		targetX = i - 1;
@@ -98,6 +101,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.downLeft = squares[targetX, targetY];
 			sq.range.downLeft = squares[targetX, targetY];
+			sq.flying.downLeft = squares[targetX, targetY];
 		}
 		//left
 		targetX = i - 1;
@@ -106,6 +110,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.left = squares[targetX, targetY];
 			sq.range.left = squares[targetX, targetY];
+			sq.flying.left = squares[targetX, targetY];
 		}
 		//upLeft
 		targetX = i - 1;
@@ -114,6 +119,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.upLeft = squares[targetX, targetY];
 			sq.range.upLeft = squares[targetX, targetY];
+			sq.flying.upLeft = squares[targetX, targetY];
 		}
 		//up
 		targetX = i;
@@ -122,6 +128,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.up = squares[targetX, targetY];
 			sq.range.up = squares[targetX, targetY];
+			sq.flying.up = squares[targetX, targetY];
 		}
 		//upRight
 		targetX = i + 1;
@@ -130,6 +137,7 @@ for (var i = 0; i < gridWidth; i++)
 		{
 			sq.upRight = squares[targetX, targetY];
 			sq.range.upRight = squares[targetX, targetY];
+			sq.flying.upRight = squares[targetX, targetY];
 		}
 		
 		//show_debug_message("Square gateways set: right: " + string(sq.range.right) 
@@ -602,6 +610,165 @@ for (var i = 0; i < array_length(blueprint.invalidRange); i++)
 	var square = squares[range.x, range.y];
 	square.validRange = false;
 	show_debug_message("Square invalidated at: " + string(range.x) + ", " + string(range.y) + " | Result is: " + string(square.validRange));
+}
+
+var wallSize = array_length(blueprint.flyingWalls);
+for (var i = 0; i < wallSize; i++)
+{
+	var checkedWall = blueprint.flyingWalls[i];
+	//find orientation of wall, then disconnect square accordingly. It can only be vertical or horizontal.
+	
+	var xDiff = abs(checkedWall.point1.x - checkedWall.point2.x);
+	
+	if (xDiff > 0)
+	{
+		var bottomSquare = 0;
+		//horizontal
+		if (checkedWall.point1.x < checkedWall.point2.x)
+		{
+			//oriented normally
+			if (checkedWall.point1.x >= 0 && checkedWall.point1.x < gridWidth 
+				&& checkedWall.point1.y >= 0 && checkedWall.point1.y < gridHeight)
+			{
+				bottomSquare = squares[checkedWall.point1.x, checkedWall.point1.y];
+			}
+		}
+		else
+		{
+			//flipped
+			if (checkedWall.point2.x >= 0 && checkedWall.point2.x < gridWidth 
+				&& checkedWall.point2.y >= 0 && checkedWall.point2.y < gridHeight)
+			{
+				bottomSquare = squares[checkedWall.point2.x, checkedWall.point2.y];
+			}
+		}
+		
+			// x | v | x 
+			//---1~~~2---
+			// v | o | v 
+			
+		if (bottomSquare != 0)
+		{
+			if (bottomSquare.flying.up != 0)
+			{
+				if (bottomSquare.flying.up.flying.down != 0)
+				{
+					bottomSquare.flying.up.flying.down = 0;
+				}
+				if (bottomSquare.flying.up.flying.downLeft != 0)
+				{
+					if (bottomSquare.flying.up.flying.downLeft.flying.upRight != 0)
+					{
+						bottomSquare.flying.up.flying.downLeft.flying.upRight = 0;
+					}
+					bottomSquare.flying.up.flying.downLeft = 0;
+				}
+				if (bottomSquare.flying.up.flying.downRight != 0)
+				{
+					if (bottomSquare.flying.up.flying.downRight.flying.upLeft != 0)
+					{
+						bottomSquare.flying.up.flying.downRight.flying.upLeft = 0;
+
+					}
+					bottomSquare.flying.up.flying.downRight = 0;
+				}
+				bottomSquare.flying.up = 0;
+			}
+			if (bottomSquare.flying.upRight != 0)
+			{
+				if (bottomSquare.flying.upRight.flying.downLeft != 0)
+				{
+					bottomSquare.flying.upRight.flying.downLeft = 0;
+				}
+				bottomSquare.flying.upRight = 0;
+			}
+			if (bottomSquare.flying.upLeft != 0)
+			{
+				if (bottomSquare.flying.upLeft.flying.downRight != 0)
+				{
+					bottomSquare.flying.upLeft.flying.downRight = 0;
+				}
+				bottomSquare.flying.upLeft = 0;
+			}
+		
+		}
+	}
+	else
+	{
+		//vertical
+		
+		var leftSquare = 0;
+		//horizontal
+		if (checkedWall.point1.y < checkedWall.point2.y)
+		{
+			//oriented normally
+			if (checkedWall.point1.x - 1 >= 0 && checkedWall.point1.x - 1 < gridWidth 
+				&& checkedWall.point1.y >= 0 && checkedWall.point1.y < gridHeight)
+			{
+				leftSquare = squares[checkedWall.point1.x - 1, checkedWall.point1.y];
+			}
+
+		}
+		else
+		{
+			//flipped
+			if (checkedWall.point2.x - 1 >= 0 && checkedWall.point2.x - 1 < gridWidth 
+				&& checkedWall.point2.y >= 0 && checkedWall.point2.y < gridHeight)
+			{
+				leftSquare = squares[checkedWall.point2.x - 1, checkedWall.point2.y];
+			}
+		}
+		
+			// x | v | x 
+			//---1~~~2---	(rotate 90 degrees clockwise)
+			// v | o | v 
+		if (leftSquare != 0)
+		{
+			if (leftSquare.flying.right != 0)
+			{
+				if (leftSquare.flying.right.flying.left != 0)
+				{
+					leftSquare.flying.right.flying.left = 0;
+				}
+				if (leftSquare.flying.right.flying.upLeft != 0)
+				{
+					if (leftSquare.flying.right.flying.upLeft.flying.downRight != 0)
+					{
+						leftSquare.flying.right.flying.upLeft.flying.downRight = 0;
+					}
+				
+					leftSquare.flying.right.flying.upLeft = 0;
+				}
+				if (leftSquare.flying.right.flying.downLeft != 0)
+				{
+					if (leftSquare.flying.right.flying.downLeft.flying.upRight != 0)
+					{
+						leftSquare.flying.right.flying.downLeft.flying.upRight = 0;
+					}
+				
+					leftSquare.flying.right.flying.downLeft = 0;
+				}
+
+				leftSquare.flying.right = 0;
+			}
+			if (leftSquare.flying.downRight != 0)
+			{
+				if(leftSquare.flying.downRight.flying.upLeft != 0)
+				{
+					leftSquare.flying.downRight.flying.upLeft = 0;
+				}
+				leftSquare.flying.downRight = 0;
+			}
+			if (leftSquare.flying.upRight != 0)
+			{
+				if (leftSquare.flying.upRight.flying.downLeft != 0)
+				{
+					leftSquare.flying.upRight.flying.downLeft = 0;
+				}
+				leftSquare.flying.upRight = 0;
+			}
+		}
+	}
 }
 
 //interactables

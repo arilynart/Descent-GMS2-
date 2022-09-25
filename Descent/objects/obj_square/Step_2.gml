@@ -2,7 +2,7 @@
 
 
 
-if (position_meeting(mouse_x, mouse_y, id))
+if (position_meeting(mouse_x, mouse_y, id) && map.movingCharacter != 0)
 {
 	//the mouse is on this square
 	

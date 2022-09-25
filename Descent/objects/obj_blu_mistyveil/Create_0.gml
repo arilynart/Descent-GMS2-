@@ -6,6 +6,7 @@ wallPoints = ds_list_create();
 
 walls = array_create(0);
 rangeWalls = array_create(0);
+flyingWalls = array_create(0);
 invalidRange = array_create(0);
 interactables = ds_list_create();
 characters = ds_list_create();
@@ -29,7 +30,8 @@ enum RangeWallTypes
 enum WallModes
 {
 	Move,
-	Range
+	Range,
+	Flying
 }
 
 currentMode = WallModes.Move;
@@ -49,6 +51,7 @@ if (file_exists(fileName))
 	walls = loadedData.walls;
 	invalidRange = loadedData.invalidRange;
 	rangeWalls = loadedData.rangeWalls;
+	flyingWalls = loadedData.flyingWalls;
 	mapWidth = loadedData.mapWidth;
 	mapHeight = loadedData.mapHeight;
 }

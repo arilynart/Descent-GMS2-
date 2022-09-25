@@ -143,6 +143,7 @@ function FindCharacter(class, index)
 					character.tempo = 4;
 					character.element = Elements.FM;
 					character.generation = array_create(0);
+					character.flying = true;
 					
 					//var lusium0 = 
 					//{
@@ -292,6 +293,7 @@ BaseCharacter = function()
 		equippedPacks : array_create(0),
 		equippedWeapon : 0,
 		baseMaxMove : 6,
+		flying : false,
 		unlockedCards : array_create(0),
 		nodeDeck : array_create(0),
 		extraDeck : array_create(0),

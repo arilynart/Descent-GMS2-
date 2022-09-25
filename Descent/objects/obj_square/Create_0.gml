@@ -25,6 +25,18 @@ with (range)
 	up = 0;
 	upRight = 0;
 }
+flying = {}
+with (flying)
+{
+	right = 0;
+	downRight = 0;
+	down = 0;
+	downLeft = 0;
+	left = 0;
+	upLeft = 0;
+	up = 0;
+	upRight = 0;
+}
 
 coordinate = 
 {
@@ -292,8 +304,9 @@ function ActivateRange(start, maxDistance, activeCharacter)
 			currentSquare.activated = true;
 			
 		}
-		var nextDistance = currentSquare.distance + 1
-		ds_list_add(activatedSquares, currentSquare);;
+		ds_list_add(activatedSquares, currentSquare);
+		var nextDistance = currentSquare.distance + 1;
+		
 		
 		var targetX = -1;
 		var targetY = -1;
@@ -381,6 +394,129 @@ function ParseRange(square, parseDistance, source, activeCharacter)
 		ds_list_add(parsedCoordinates, square.coordinate);
 	}
 }
+
+function ActivateFlying(start, maxDistance, activeCharacter) 
+{
+	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
+	
+	ds_queue_clear(parseQueue);
+	ds_list_clear(parsedCoordinates);
+	ds_list_clear(activatedSquares);
+	
+	ds_queue_enqueue(parseQueue, start);
+	ds_list_add(parsedCoordinates, start.coordinate);
+	start.distance = 0;
+	
+	while (!ds_queue_empty(parseQueue))
+	{
+		var currentSquare = ds_queue_dequeue(parseQueue);
+		
+		if (currentSquare.validRange)
+		{
+			if (currentSquare.interaction != 0)
+			{
+				currentSquare.image_blend = interactionColor;
+				currentSquare.image_alpha = 1;
+			}
+			else if (currentSquare.character != 0)
+			{
+				currentSquare.image_alpha = 1;
+				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
+				{
+					currentSquare.image_blend = c_lime;
+				}
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
+				{
+					currentSquare.image_blend = c_red;
+				}
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
+				{
+					currentSquare.image_blend = c_blue;
+				}
+			}
+			else
+			{
+				currentSquare.image_alpha = 0.3;
+				currentSquare.image_blend = c_white;
+			}
+			currentSquare.activated = true;
+			
+		}
+		ds_list_add(activatedSquares, currentSquare);
+		
+		var targetX = -1;
+		var targetY = -1;
+		
+		//straight
+		var nextDistance = currentSquare.distance + 1;
+		
+		if (nextDistance <= maxDistance)
+		{
+			//right
+			targetX = currentSquare.coordinate.x + 1;
+			targetY = currentSquare.coordinate.y;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.right, nextDistance, currentSquare, activeCharacter);
+			}
+			//down
+			targetX = currentSquare.coordinate.x;
+			targetY = currentSquare.coordinate.y + 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.down, nextDistance, currentSquare, activeCharacter);
+			}
+			//left
+			targetX = currentSquare.coordinate.x - 1;
+			targetY = currentSquare.coordinate.y;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.left, nextDistance, currentSquare, activeCharacter);
+			}
+			//up
+			targetX = currentSquare.coordinate.x;
+			targetY = currentSquare.coordinate.y - 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.up, nextDistance, currentSquare, activeCharacter);
+			}
+		}
+		
+		nextDistance = currentSquare.distance + 1.5;
+		if (nextDistance <= maxDistance)
+		{
+			//downright
+			targetX = currentSquare.coordinate.x + 1;
+			targetY = currentSquare.coordinate.y + 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.downRight, nextDistance, currentSquare, activeCharacter);
+			}
+			//downleft
+			targetX = currentSquare.coordinate.x - 1;
+			targetY = currentSquare.coordinate.y + 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.downLeft, nextDistance, currentSquare, activeCharacter);
+			}
+			//upleft
+			targetX = currentSquare.coordinate.x - 1;
+			targetY = currentSquare.coordinate.y - 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.upLeft, nextDistance, currentSquare, activeCharacter);
+			}
+			//upright
+			targetX = currentSquare.coordinate.x + 1;
+			targetY = currentSquare.coordinate.y - 1;
+			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			{
+				ParseSquare(currentSquare.flying.upRight, nextDistance, currentSquare, activeCharacter);
+			}
+		}
+	}
+}
+
 #endregion
 
 Select = function()
@@ -422,7 +558,8 @@ Select = function()
 			
 			global.selectedSquare = self;
 			map.movingCharacter = character;
-			Activate(self, character.maxMove, character);
+			if (character.characterStats.flying) ActivateFlying(self, character.maxMove, character);
+			else Activate(self, character.maxMove, character);
 		}
 	}
 	else if (activated && interaction != 0)

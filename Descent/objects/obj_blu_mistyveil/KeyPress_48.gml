@@ -9,6 +9,7 @@ var saveStruct =
 	walls : self.walls,
 	invalidRange : self.invalidRange,
 	rangeWalls : self.rangeWalls,
+	flyingWalls : self.flyingWalls,
 	mapWidth : self.mapWidth,
 	mapHeight : self.mapHeight
 }

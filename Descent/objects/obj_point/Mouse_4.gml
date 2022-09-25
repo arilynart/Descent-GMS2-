@@ -24,8 +24,18 @@ else if (global.wallBuildPoint2 == 0)
 	}
 	
 	var wallArray = 0;
-	if (map.blueprint.currentMode == WallModes.Move) wallArray = map.blueprint.walls;
-	else wallArray = map.blueprint.rangeWalls;
+	switch (map.blueprint.currentMode)
+	{
+		case WallModes.Move:
+			wallArray = map.blueprint.walls;
+		break;
+		case WallModes.Range:
+			wallArray = map.blueprint.rangeWalls;
+		break;
+		case WallModes.Flying:
+			wallArray = map.blueprint.flyingWalls;
+		break;
+	}
 	
 	//make sure only one of the points is different.
 	var xDiff = abs(global.wallBuildPoint1.x - global.wallBuildPoint2.x);
