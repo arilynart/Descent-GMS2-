@@ -1,8 +1,11 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_Map",
-  "spriteId": null,
+  "name": "obj_Player",
+  "spriteId": {
+    "name": "spr_BaseCharacter",
+    "path": "sprites/spr_BaseCharacter/spr_BaseCharacter.yy",
+  },
   "solid": false,
   "visible": true,
   "managed": true,
@@ -23,13 +26,11 @@
   "physicsShapePoints": [],
   "eventList": [
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,},
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":12,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Monster Collector",
-    "path": "folders/Objects/Monster Collector.yy",
+    "name": "Roguelike",
+    "path": "folders/Objects/Roguelike.yy",
   },
 }
