@@ -28,11 +28,11 @@ function StartCombat(index)
 			ds_list_add(global.Combatants, character);
 		}
 	
-		for (var i = encounter.startIndex; i <= encounter.endIndex; i++)
+		/*for (var i = encounter.startIndex; i <= encounter.endIndex; i++)
 		{
 			var character = ds_list_find_value(map.spawnedCharacters, i);
 			ds_list_add(global.Combatants, character);
-		}
+		}*/
 		
 		randomize();
 		

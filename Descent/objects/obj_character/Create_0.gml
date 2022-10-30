@@ -45,6 +45,8 @@ function AddArtToQueue(card)
 
 ignited = false;
 
+threatCards = ds_list_create();
+
 nodes = ds_list_create();
 extra = ds_list_create();
 removed = ds_list_create();
