@@ -1,9 +1,9 @@
-/// @description turn character select
+/// @description reselect
 
 
 if (global.InCombat)
 {
-	var character = ds_list_find_value(global.Turns, 0).character;
+	var character = global.selectedCharacter;
 	character.currentSquare.Deactivate();
 	character.currentSquare.Select();
 	

@@ -35,6 +35,7 @@ function AddEffect(effect)
 
 function EndEffect()
 {
+	show_debug_message("End Effect.");
 	var firstEffect = ds_list_find_value(global.EffectList, 0);
 	firstEffect.End(firstEffect);
 

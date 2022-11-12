@@ -434,7 +434,7 @@ FindCard = function(class, type, element, rarity, index)
 											array_push(cost1, "FLOW", "CATHEDRAL", "NODE");
 											array_push(card.costList, cost1);
 											card.typeText = "CHAPEL RUNE - FLOW"
-											card.text = "Teleport target character within 6 |spr_Square| to any Chapel Module Space you control. ";
+											card.text = "Teleport target character within 6 |spr_Square|  to any Chapel Module Space you control. ";
 									
 											return card;
 										break;

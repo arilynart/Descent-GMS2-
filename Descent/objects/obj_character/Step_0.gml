@@ -15,6 +15,7 @@ if (global.InCombat)
 			{
 				currentSquare.character = 0;
 				currentSquare = moveTarget;
+				currentSquare.moveTarget = false;
 				moveTarget.character = id;
 			}
 			move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
@@ -44,13 +45,15 @@ if (global.InCombat)
 			speed = 0;
 			//show_debug_message("Queue empty. Ending movement.");
 			moving = false;
+			moveLock = false;
 			
 			if (ds_list_size(global.EffectList) > 0)
 			{
 				EndEffect();
 			}
 			
-			if (maxMove > 0 && global.selectedCharacter == id)
+			if (ds_list_empty(global.EffectList)
+			 && maxMove > 0 && global.selectedCharacter == id)
 			{
 				currentSquare.Select();
 			}

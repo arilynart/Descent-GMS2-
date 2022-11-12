@@ -17,7 +17,8 @@ if (dehighlightArray != 0)
 			if (squareToHighlight.interaction != 0) squareToHighlight.image_blend = interactionColor;
 			else if (squareToHighlight.character != 0)
 			{
-				if (squareToHighlight.character.characterStats.team == CharacterTeams.Ally)
+				if (squareToHighlight.moveTarget) squareToHighlight.image_blend = c_black;
+				else if (squareToHighlight.character.characterStats.team == CharacterTeams.Ally)
 				{
 					squareToHighlight.image_blend = c_lime;
 				}

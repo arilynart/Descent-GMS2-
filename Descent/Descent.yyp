@@ -24,6 +24,7 @@
     {"id":{"name":"DiscardWholeHandEffect","path":"scripts/DiscardWholeHandEffect/DiscardWholeHandEffect.yy",},"order":7,},
     {"id":{"name":"spr_Move","path":"sprites/spr_Move/spr_Move.yy",},"order":2,},
     {"id":{"name":"spr_NodeBgF","path":"sprites/spr_NodeBgF/spr_NodeBgF.yy",},"order":5,},
+    {"id":{"name":"EnemyCardDictionary","path":"scripts/EnemyCardDictionary/EnemyCardDictionary.yy",},"order":1,},
     {"id":{"name":"spr_RuneBgM","path":"sprites/spr_RuneBgM/spr_RuneBgM.yy",},"order":19,},
     {"id":{"name":"spr_primal","path":"sprites/spr_primal/spr_primal.yy",},"order":3,},
     {"id":{"name":"DrawCardEffect","path":"scripts/DrawCardEffect/DrawCardEffect.yy",},"order":4,},

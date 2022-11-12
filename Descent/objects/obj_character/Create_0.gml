@@ -3,6 +3,7 @@
 moveSpeed = 18;
 moveQueue = ds_queue_create();
 moving = false;
+moveLock = false;
 moveTarget = 0;
 maxMove = characterStats.baseMaxMove;
 
@@ -131,4 +132,3 @@ function DealDamage(amount)
 }
 
 #endregion
-

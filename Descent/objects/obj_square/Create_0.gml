@@ -12,6 +12,8 @@ upLeft = 0;
 up = 0;
 upRight = 0;
 
+moveTarget = false;
+
 validRange = true;
 range = {}
 with (range)
@@ -421,7 +423,8 @@ function ActivateFlying(start, maxDistance, activeCharacter)
 			else if (currentSquare.character != 0)
 			{
 				currentSquare.image_alpha = 1;
-				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
+				if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
 				{
 					currentSquare.image_blend = c_lime;
 				}
@@ -552,7 +555,9 @@ function Select()
 		global.selectedCharacter = character;
 		//selected character. highlight grid for movement.
 		if (activated == false && character.moving == false
-		 && global.InCombat && character.maxMove > 0)
+		 && global.InCombat && character.maxMove > 0
+		 && character.characterStats.team == CharacterTeams.Ally
+		 && character.moveLock == false)
 		{
 			show_debug_message("Character can move. Highlighting move options.");
 			if (map.movingCharacter != 0)
@@ -571,10 +576,13 @@ function Select()
 	{
 		interaction.Execute(self, interaction);
 	}
-	else if (activated && map.movingCharacter != 0 && character == 0 && interaction == 0)
+	else if (activated && map.movingCharacter != 0 && character == 0 && interaction == 0 && !moveTarget)
 	{
 		//if a character is already selected and we're waiting to move, move.
 		show_debug_message("Moving " + string(map.movingCharacter) + " to " + string(coordinate));
+		map.movingCharacter.moveLock = true;
+		
+		moveTarget = true;
 		
 		var moveEffect = global.BaseEffect();
 		moveEffect.character = map.movingCharacter;
