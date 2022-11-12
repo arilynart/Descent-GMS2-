@@ -87,7 +87,8 @@ function Activate(start, maxDistance, activeCharacter)
 		var currentSquare = ds_queue_dequeue(parseQueue);
 		currentSquare.activated = true;
 		
-		if (currentSquare.interaction != 0)
+		if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
+		else if (currentSquare.interaction != 0)
 		{
 			currentSquare.image_blend = interactionColor;
 			currentSquare.image_alpha = 1;
@@ -277,7 +278,9 @@ function ActivateRange(start, maxDistance, activeCharacter)
 		
 		if (currentSquare.validRange)
 		{
-			if (currentSquare.interaction != 0)
+			
+			if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
+			else if (currentSquare.interaction != 0)
 			{
 				currentSquare.image_blend = interactionColor;
 				currentSquare.image_alpha = 1;
@@ -415,7 +418,8 @@ function ActivateFlying(start, maxDistance, activeCharacter)
 		
 		if (currentSquare.validRange)
 		{
-			if (currentSquare.interaction != 0)
+			if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
+			else if (currentSquare.interaction != 0)
 			{
 				currentSquare.image_blend = interactionColor;
 				currentSquare.image_alpha = 1;
@@ -423,8 +427,7 @@ function ActivateFlying(start, maxDistance, activeCharacter)
 			else if (currentSquare.character != 0)
 			{
 				currentSquare.image_alpha = 1;
-				if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
-				else if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
+				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
 				{
 					currentSquare.image_blend = c_lime;
 				}

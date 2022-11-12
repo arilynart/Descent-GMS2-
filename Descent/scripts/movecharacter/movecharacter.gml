@@ -14,9 +14,6 @@ function MoveCharacter(character, target)
 	{
 		ds_queue_enqueue(character.moveQueue, target);
 		
-		character.currentSquare.character = 0;
-		character.currentSquare = target;
-		target.character = character;
 		character.moving = true;
 	}
 	else
@@ -49,6 +46,10 @@ function MoveCharacter(character, target)
 		if (ds_list_empty(path))
 		{
 			show_debug_message("No Path Found. Doing Nothing.");
+			
+			target.moveTarget = false;
+			character.moveLock = false;
+			
 			EndEffect();
 		}
 		else
@@ -66,9 +67,6 @@ function MoveCharacter(character, target)
 			}
 		
 			global.cameraTarget.followingCharacter = character;
-			character.currentSquare.character = 0;
-			character.currentSquare = target;
-			target.character = character;
 			character.moving = true;
 		}
 	}
