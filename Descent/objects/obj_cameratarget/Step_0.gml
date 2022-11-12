@@ -9,10 +9,14 @@ var cameraY = camera_get_view_y(camera) + (camera_get_view_height(camera) / 2);
 
 if (global.InCombat && alarm_get(0) <= 0)
 {
+	if !window_has_focus()
+    {
+		moveRight = 0;
+		moveDown = 0;
+    }
+	
 	var velocityX = (moveRight * spd);
 	var velocityY = (moveDown * spd);
-
-
 
 	if (velocityX != 0 && velocityY != 0)
 	{

@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "CardEffects",
+  "name": "SupplyManaEffect",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Effects",
-    "path": "folders/Scripts/Effects.yy",
+    "name": "CardEffects",
+    "path": "folders/Scripts/Effects/CardEffects.yy",
   },
 }

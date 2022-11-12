@@ -518,7 +518,7 @@ else
 		
 		for (var i = 0; i < array_length(handButtons); i++)
 		{
-			var lockSearch = ds_list_find_index(lockedHandCards, i);
+			var lockSearch = ds_list_find_index(global.selectedCharacter.lockedHandCards, i);
 			var button = handButtons[i];
 		
 			if (mouseX >= button.left && mouseX <= button.right
@@ -538,38 +538,35 @@ else
 			if (mouseX >= button.left && mouseX <= button.right
 			 && mouseY >= button.top && mouseY <= button.bottom)
 			{
-				if (ds_list_find_value(global.Turns, 0).character == global.selectedCharacter)
+				var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
+				var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
+				var size = array_length(lusiumCheck);
+				if (size == 1)
 				{
-					var extraCard = ds_list_find_value(global.selectedCharacter.extra, i);
-					var lusiumCheck = global.CheckForViableLusium(global.selectedCharacter, extraCard);
-					var size = array_length(lusiumCheck);
-					if (size == 1)
-					{
-						extraDraw = false;
+					extraDraw = false;
 						
-						//auto select lusium
-						extraCard.playedThisTurn = true;
+					//auto select lusium
+					extraCard.playedThisTurn = true;
 					
-						var runePlay = global.BaseEffect();
-						runePlay.character = global.selectedCharacter;
-						runePlay.index = i;
-						runePlay.lusiumIndex = lusiumCheck[0];
-						runePlay.Start = method(global, global.PlayRuneEffect);
+					var runePlay = global.BaseEffect();
+					runePlay.character = global.selectedCharacter;
+					runePlay.index = i;
+					runePlay.lusiumIndex = lusiumCheck[0];
+					runePlay.Start = method(global, global.PlayRuneEffect);
 					
-						AddEffect(runePlay);
-					}
-					else if (size > 0)
-					{
-						extraDraw = false;
+					AddEffect(runePlay);
+				}
+				else if (size > 0)
+				{
+					extraDraw = false;
 						
-						spendLusium = true;
-						heldRune = i;
-						ds_list_clear(highlightedLusium);
-						for (var j = 0; j < array_length(lusiumCheck); j++)
-						{
-							var lusium = lusiumCheck[j];
-							ds_list_add(highlightedLusium, lusium);
-						}
+					spendLusium = true;
+					heldRune = i;
+					ds_list_clear(highlightedLusium);
+					for (var j = 0; j < array_length(lusiumCheck); j++)
+					{
+						var lusium = lusiumCheck[j];
+						ds_list_add(highlightedLusium, lusium);
 					}
 				}
 				

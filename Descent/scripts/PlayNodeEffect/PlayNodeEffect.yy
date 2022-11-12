@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "FindCard",
+  "name": "PlayNodeEffect",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Cards",
-    "path": "folders/Scripts/Cards.yy",
+    "name": "CardEffects",
+    "path": "folders/Scripts/Effects/CardEffects.yy",
   },
 }

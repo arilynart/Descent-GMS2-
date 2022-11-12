@@ -9,6 +9,7 @@ ds_list_destroy(removed);
 ds_list_destroy(hand);
 ds_list_destroy(discard);
 
+ds_list_destroy(lockedHandCards);
 ds_list_destroy(threatCards);
 
 for (var i = 0; i < ds_list_size(burntLusium); i++)

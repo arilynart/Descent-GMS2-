@@ -519,20 +519,23 @@ function ActivateFlying(start, maxDistance, activeCharacter)
 
 #endregion
 
-Select = function()
+function Select()
 {
 	show_debug_message("Select Square: " + string(coordinate.x) + ", " + string(coordinate.y));
 	if (global.SelectSquareExecute != 0)
 	{
+		show_debug_message("Selected square has an execute method.");
 		if (activated)
 		{
 			if (interaction == 0)
 			{
+				show_debug_message("Square is activated and there is no interaction on square. Executing...");
 				global.SelectSquareExecute(self);
 			}
 		}
 		else
 		{
+			show_debug_message("Square is not activated. Deactivating and resetting.");
 			global.selectedCharacter.currentSquare.Deactivate();
 			global.SelectSquareExecute = 0;
 			global.UiManager.heldAbility = 0;
@@ -542,14 +545,16 @@ Select = function()
 
 	if (character != 0) 
 	{
+		show_debug_message("Selected square has a character.");
 		if (global.selectedCharacter != 0) global.selectedCharacter.currentSquare.Deactivate();
 		
 		global.cameraTarget.followingCharacter = character;
 		global.selectedCharacter = character;
 		//selected character. highlight grid for movement.
-		if (activated == false && character.moving == false && character.aiMind == 0
-		 && global.InCombat && character == ds_list_find_value(global.Turns, 0).character)
+		if (activated == false && character.moving == false
+		 && global.InCombat && character.maxMove > 0)
 		{
+			show_debug_message("Character can move. Highlighting move options.");
 			if (map.movingCharacter != 0)
 			{
 				map.movingCharacter.currentSquare.Deactivate();
@@ -579,7 +584,5 @@ Select = function()
 		AddEffect(moveEffect);
 		
 		map.movingCharacter = 0;
-		
-		AutoEndTurn();
 	}
 }

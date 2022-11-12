@@ -15,6 +15,8 @@ confirmSummonButton = 0;
 dashButton = 0;
 loadButton = 0;
 
+endTurnButton = 0;
+
 //draw Dialogue Box.
 var dialogueLength = array_length(dialogueArray);
 if (displayDialogue && dialogueLength > 0)
@@ -269,7 +271,7 @@ else
 	
 	#region summon button
 	
-	if (global.selectedCharacter == global.Player && (!global.InCombat || ds_list_find_value(global.Turns, 0).character == global.Player))
+	if (global.selectedCharacter == global.Player)
 	{
 	var summonX = 0;
 	var summonY = quarterY;
@@ -735,30 +737,43 @@ else
 		
 	if (global.InCombat)
 	{
-		//draw turn order
+		////draw turn order
 			
-		var turnSize = ds_list_size(global.Turns);
+		//var turnSize = ds_list_size(global.Turns);
 			
-		//draw backdrop
-		var turnY = sixteenthY;
+		////draw backdrop
+		//var turnY = sixteenthY;
 
-		draw_set_color(c_black);
-		draw_rectangle(halfX, -1, halfX + (allyRadius * 2 * (turnSize - 1)), turnY, false);
+		//draw_set_color(c_black);
+		//draw_rectangle(halfX, -1, halfX + (allyRadius * 2 * (turnSize - 1)), turnY, false);
 			
-		for (var i = 0; i < turnSize; i++)
-		{
-			var turnX = halfX + (allyRadius * 2 * i);
+		//for (var i = 0; i < turnSize; i++)
+		//{
+		//	var turnX = halfX + (allyRadius * 2 * i);
 				
-			if (i > 0) draw_set_color(c_gray);
-			else draw_set_color(c_ltgray);
-			draw_circle(turnX, turnY, allyRadius, false);
+		//	if (i > 0) draw_set_color(c_gray);
+		//	else draw_set_color(c_ltgray);
+		//	draw_circle(turnX, turnY, allyRadius, false);
 				
-			var turn = ds_list_find_value(global.Turns, i);
+		//	var turn = ds_list_find_value(global.Turns, i);
 				
-			draw_sprite_ext(turn.character.sprite_index, turn.character.image_index, turnX, turnY, 
-							turn.character.characterStats.uiScale, turn.character.characterStats.uiScale, 
-							image_angle, c_white, 1);
-		}
+		//	draw_sprite_ext(turn.character.sprite_index, turn.character.image_index, turnX, turnY, 
+		//					turn.character.characterStats.uiScale, turn.character.characterStats.uiScale, 
+		//					image_angle, c_white, 1);
+		//}
+		
+		//draw turn counter
+		var tCountString = "Turn " + string(global.TurnCounter) + " ";
+		var tCountX = fullX;
+		var tCountY = 0;
+		
+		draw_set_halign(fa_right);
+		draw_set_valign(fa_top);
+		draw_set_font(fnt_Cambria24);
+		draw_set_color(c_white);
+		
+		draw_text_outline(tCountX, tCountY, tCountString, c_black, 1);
+		draw_text(tCountX, tCountY, tCountString);
 			
 		//draw AP
 		var apScale = thirtySecondY / sprite_get_width(spr_Ap);
@@ -771,52 +786,48 @@ else
 		draw_text(sixteenthY, apY, string(global.selectedCharacter.currentAp));
 			
 
-		if (ds_list_find_value(global.Turns, 0).character.characterStats.team == CharacterTeams.Ally)
-		{
-			//end turn button
-			endTurnButton =
-			{
-				left : 0,
-				top : fullY - quarterY,
-				right : quarterY,
-				bottom : fullY
-			}
-				
-				
-			var endTurnX = 0;
-			var endTurnY = fullY;
-				
-			if (mouseX >= endTurnButton.left && mouseX <= endTurnButton.right
-				&& mouseY >= endTurnButton.top && mouseY <= endTurnButton.bottom)
-			{
-				draw_set_color(c_dkgray);
-			}
-			else draw_set_color(c_black);
-				
-			draw_circle(endTurnX, endTurnY, quarterY, false);
-				
-			draw_set_color(c_white);
-			draw_set_halign(fa_center);
-			draw_set_valign(fa_middle);
-			draw_set_font(fnt_Cambria24);
-			draw_text_transformed(eighthY - font_get_size(draw_get_font()), 
-									fullY - eighthY + font_get_size(draw_get_font()), "End Turn", 
-									1, 1, -45);
-									  
 
-		}
-		else
+		//end turn button
+		endTurnButton =
 		{
-			endTurnButton = 0;
+			left : 0,
+			top : fullY - quarterY,
+			right : quarterY,
+			bottom : fullY
 		}
+				
+				
+		var endTurnX = 0;
+		var endTurnY = fullY;
+				
+		if (mouseX >= endTurnButton.left && mouseX <= endTurnButton.right
+			&& mouseY >= endTurnButton.top && mouseY <= endTurnButton.bottom)
+		{
+			draw_set_color(c_dkgray);
+		}
+		else draw_set_color(c_black);
+				
+		draw_circle(endTurnX, endTurnY, quarterY, false);
+				
+		draw_set_color(c_white);
+		draw_set_halign(fa_center);
+		draw_set_valign(fa_middle);
+		draw_set_font(fnt_Cambria24);
+		draw_text_transformed(eighthY - font_get_size(draw_get_font()), 
+								fullY - eighthY + font_get_size(draw_get_font()), "End Turn", 
+								1, 1, -45);
 			
 		//draw card stuff
 		if (global.selectedCharacter != 0 && array_length(global.selectedCharacter.characterStats.nodeDeck) > 0)
 		{
+			var loadedX = fullX - allyRadius;
+			draw_set_color(c_black);
+			draw_rectangle(loadedX, halfY - (allyRadius * 3), fullX, halfY + allyRadius * 3, false);
+			
 			loadedButtons = array_create(0);
 			for (var i = 0; i < 4; i++)
 			{
-				var loadedX = fullX - allyRadius
+				
 				var loadedY = halfY - (allyRadius * 3) + (i * (allyRadius * 2));
 					
 				var newButton =
@@ -1374,8 +1385,7 @@ else
 		else igniteButton = 0;
 				
 		if (global.selectedCharacter.characterStats.team == CharacterTeams.Ally 
-			&& global.selectedCharacter == ds_list_find_value(global.Turns, 0).character 
-			&& global.selectedCharacter.currentAp > 0)
+		 && global.selectedCharacter.currentAp > 0)
 		{
 			//draw AP spenders
 				
@@ -1601,7 +1611,7 @@ else
 					draw_circle(cancelX, cancelY, allyRadius, false);
 						
 					var cancelScale = allyRadius / sprite_get_width(spr_Cancel);
-					draw_sprite_ext(spr_Cancel, 0, cancelX - (allyRadius / 2), cancelY - (allyRadius / 2), cancelScale, cancelScale, 0, c_black, 1);
+					draw_sprite_ext(spr_Reload, 0, cancelX, cancelY, cancelScale, cancelScale, 0, c_black, 1);
 				}
 			}
 		}

@@ -11,7 +11,7 @@ if (dragCard >= 0)
 		&& mouseY >= button.top && mouseY <= button.bottom)
 	{
 		//supply
-		ds_list_add(lockedHandCards, dragCard);
+		ds_list_add(global.selectedCharacter.lockedHandCards, dragCard);
 	
 		var discard = global.BaseEffect();
 		discard.Start = method(global, global.DiscardFromHandEffect);
@@ -50,7 +50,7 @@ if (dragCard >= 0)
 		}
 		
 	}
-	else if (ds_list_find_value(global.Turns, 0).character == global.selectedCharacter)
+	else
 	{
 		var droppedCard = false;
 		for (var i = 0; i < array_length(loadedButtons); i++)

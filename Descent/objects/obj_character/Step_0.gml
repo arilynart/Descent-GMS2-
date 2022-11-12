@@ -50,7 +50,7 @@ if (global.InCombat)
 				EndEffect();
 			}
 			
-			if (maxMove > 0 && ds_list_find_value(global.Turns, 0).character == id)
+			if (maxMove > 0 && global.selectedCharacter == id)
 			{
 				currentSquare.Select();
 			}
@@ -158,9 +158,18 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 			StartCombat(currentSquare.encounterTrigger);
 	}
 	
+	if !window_has_focus()
+    {
+		moveRight = 0;
+		moveDown = 0;
+    }
+	
 	velocityX = (moveRight * moveSpeed);
 	velocityY = (moveDown * moveSpeed);
+	
 
+	
+	
 	if (velocityX != 0 && velocityY != 0)
 	{
 		velocityX = ceil(velocityX * 0.75);

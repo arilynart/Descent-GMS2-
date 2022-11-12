@@ -53,6 +53,8 @@ removed = ds_list_create();
 hand = ds_list_create();
 discard = ds_list_create();
 
+lockedHandCards = ds_list_create();
+
 function EmptyMana()
 {
 	wPool = 0;
@@ -129,9 +131,4 @@ function DealDamage(amount)
 }
 
 #endregion
-
-//ai variables
-aiMind = 0;
-aiGoal = -1;
-aiThreat = 0;
 

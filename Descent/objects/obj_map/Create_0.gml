@@ -23,13 +23,9 @@ gridPad = gridSize * blueprint.mapPad;
 
 global.InCombat = false;
 global.Combatants = ds_list_create();
-global.Turns = ds_list_create();
 global.BondedMonsters = ds_list_create();
 
 movingCharacter = 0;
-
-aiMindIndices = ds_list_create();
-aiMinds = ds_list_create();
 
 for (var i = 0; i < gridWidth; i++) 
 {
@@ -825,31 +821,6 @@ for (var i = 0; i < characterSize; i++)
 	newCharacter.sprite_index = cha.sprite;
 	
 	ds_list_add(spawnedCharacters, newCharacter);
-	
-	//ai
-	
-	if (cha.aiMindIndex >= 0)
-	{
-		var existingAiIndex = ds_list_find_index(aiMindIndices, cha.aiMindIndex);
-		var targetMind = 0;
-		//if our ai index already exists
-		if (existingAiIndex >= 0)
-		{
-			targetMind = ds_list_find_value(aiMinds, existingAiIndex);
-		}
-		else
-		{
-			//new Ai mind
-			targetMind = instance_create_layer(0, 0, "Instances", obj_AiMind);
-			targetMind.index = cha.aiMindIndex;
-			ds_list_add(aiMindIndices, cha.aiMindIndex);
-			ds_list_add(aiMinds, targetMind);
-		}
-		
-		//give that Ai control over this character
-		ds_list_add(targetMind.characters, newCharacter);
-		newCharacter.aiMind = targetMind;
-	}
 }
 
 #endregion

@@ -37,10 +37,7 @@ function EndEffect()
 {
 	var firstEffect = ds_list_find_value(global.EffectList, 0);
 	firstEffect.End(firstEffect);
-	if (firstEffect.character != 0 && firstEffect.character.aiMind != 0)
-	{
-		AiUpdateGoal(firstEffect.character);
-	}
+
 	ds_list_delete(global.EffectList, 0);
 	PlayEffect();
 

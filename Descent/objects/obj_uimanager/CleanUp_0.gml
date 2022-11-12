@@ -8,7 +8,7 @@
 //manaButtons = ds_list_create();
 //revertManaButtons = ds_list_create();
 
-ds_list_destroy(lockedHandCards);
+
 ds_list_destroy(highlightedLusium);
 ds_list_destroy(hoverHighlightedLusium);
 ds_list_destroy(manaButtons);
