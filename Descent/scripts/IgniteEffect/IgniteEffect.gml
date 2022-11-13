@@ -29,7 +29,7 @@ function IgniteEffect(effect)
 	}
 
 	
-	repeat(5)
+	repeat(4)
 	{
 		var draw = global.BaseEffect();
 		draw.Start = method(global, global.DrawCardEffect);

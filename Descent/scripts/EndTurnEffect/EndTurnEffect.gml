@@ -21,14 +21,14 @@ function EndTurnEffect(effect)
 				if (card != 0 && card.type != CardTypes.Node) card.playedThisTurn = false;
 			}
 		
-			//supply hand, draw new 5
+			//supply hand, draw new 4
 			var discardHandEffect = global.BaseEffect();
 			discardHandEffect.Start = method(global, global.SupplyWholeHandEffect);
 			discardHandEffect.character = char;
 	
 			AddEffect(discardHandEffect);
 	
-			repeat(5)
+			repeat(4)
 			{
 				var draw = global.BaseEffect();
 				draw.Start = method(global, global.DrawCardEffect);

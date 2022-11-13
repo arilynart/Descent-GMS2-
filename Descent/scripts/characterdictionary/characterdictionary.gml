@@ -240,7 +240,7 @@ function FindCharacter(class, index)
 			{
 				case 0:
 					var character = global.BaseCharacter();
-					character.name = "Forsaken Soul";
+					character.name = "FORGOTTEN SOUL";
 					character.aiMindIndex = 0;
 					character.team = CharacterTeams.Enemy;
 					character.class = class;
@@ -249,6 +249,10 @@ function FindCharacter(class, index)
 					character.endurance = 4;
 					character.tempo = 2;
 					character.element = Elements.S;
+					character.innateType = "FORSAKEN - SPIRIT";
+					character.innateDescription = "When Forgotten Soul deals damage to you, if you still have SP after, you lose 1 SP."
+												+ "\n \nAt the start of each turn, Forgotten Soul does 1 damage to each of your allies adjacent to it.";
+					
 					array_push(character.packSlots, 1);
 
 					var starterPack1 = {};

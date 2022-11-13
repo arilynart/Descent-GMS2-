@@ -13,6 +13,7 @@ function MoveCharacter(character, target)
 	if (target == character.currentSquare)
 	{
 		ds_queue_enqueue(character.moveQueue, target);
+		
 		character.moving = true;
 	}
 	else
@@ -45,6 +46,11 @@ function MoveCharacter(character, target)
 		if (ds_list_empty(path))
 		{
 			show_debug_message("No Path Found. Doing Nothing.");
+			
+			target.moveTarget = false;
+			character.moveLock = false;
+			
+			EndEffect();
 		}
 		else
 		{

@@ -816,6 +816,15 @@ else
 		draw_text_transformed(eighthY - font_get_size(draw_get_font()), 
 								fullY - eighthY + font_get_size(draw_get_font()), "End Turn", 
 								1, 1, -45);
+								
+		if (position_meeting(mouse_x, mouse_y, obj_Square))
+		{
+			var hoverSquare = instance_position(mouse_x, mouse_y, obj_Square);
+			if (hoverSquare.character != 0 && hoverSquare.character.characterStats.team != CharacterTeams.Ally)
+			{
+				DrawEnemyStatCard(fullX - quarterX, eighthY, hoverSquare.character);
+			}
+		}
 			
 		//draw card stuff
 		if (global.selectedCharacter != 0 && array_length(global.selectedCharacter.characterStats.nodeDeck) > 0)
@@ -878,11 +887,14 @@ else
 					
 				var loadedQX = loadedX + (allyRadius / 2);
 				var loadedQY = loadedY - (allyRadius / 2);
-					
+				
+				draw_set_font(fnt_Cambria24);
+				
 				draw_set_halign(fa_center);
 				draw_set_valign(fa_middle);
-				draw_text_outline(loadedQX, loadedQY, string(q), c_black, 1);
 				draw_set_color(c_white);
+				
+				draw_text_outline(loadedQX, loadedQY, string(q), c_black, 1);
 				draw_text(loadedQX, loadedQY, string(q));
 			}
 				
