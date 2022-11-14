@@ -1,6 +1,13 @@
 /// @description Initialize variables. Definition for square activation.
 map = instance_find(obj_Map, 0);
 
+enum ParseTypes
+{
+	Standard,
+	Range,
+	Flying
+}
+
 global.grid = true;
 
 right = 0;
@@ -46,16 +53,7 @@ coordinate =
 	y : -1
 }
 
-distance = -1;
-
-closestToTarget = self;
-
 character = 0;
-
-activatedSquares = ds_list_create();
-
-parsedCoordinates = ds_list_create();
-parseQueue = ds_queue_create();
 
 activated = false;
 
@@ -70,457 +68,270 @@ interactionColor = c_fuchsia;
 
 #region Activation
 
-function Activate(start, maxDistance, activeCharacter) 
+Activate = function(maxDistance, activeCharacter, parseType)
 {
-	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
+	//initialize
+	var array = array_create(0);
 	
-	ds_queue_clear(parseQueue);
-	ds_list_clear(parsedCoordinates);
-	ds_list_clear(activatedSquares);
+	var parseQueue = ds_queue_create();
+	var parsedCoordinates = ds_list_create();
 	
-	ds_queue_enqueue(parseQueue, start);
-	ds_list_add(parsedCoordinates, start.coordinate);
-	start.distance = 0;
+	var parsedStart = BaseParse(id, 0, 0);
 	
+	ds_queue_enqueue(parseQueue, parsedStart);
+	
+	//loop
 	while (!ds_queue_empty(parseQueue))
 	{
-		var currentSquare = ds_queue_dequeue(parseQueue);
-		currentSquare.activated = true;
+		var struct = ds_queue_dequeue(parseQueue);
 		
-		if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
-		else if (currentSquare.interaction != 0)
+		switch (parseType)
 		{
-			currentSquare.image_blend = interactionColor;
-			currentSquare.image_alpha = 1;
-		}
-		else if (currentSquare.character != 0)
-		{
-			currentSquare.image_alpha = 1;
-			if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
-			{
-				currentSquare.image_blend = c_lime;
-			}
-			else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
-			{
-				currentSquare.image_blend = c_red;
-			}
-			else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
-			{
-				currentSquare.image_blend = c_blue;
-			}
-		}
-		else
-		{
-			currentSquare.image_alpha = 0.3;
-			currentSquare.image_blend = c_white;
+			case ParseTypes.Standard:
+				var adjacentCheck = struct.square;
+			break;
+			case ParseTypes.Range:
+				var adjacentCheck = struct.square.range;
+			break;
+			case ParseTypes.Flying:
+				var adjacentCheck = struct.square.flying;
+			break;
 		}
 		
-		ds_list_add(activatedSquares, currentSquare);
+		array_push(array, struct);
 		
 		var targetX = -1;
 		var targetY = -1;
 		
-		//straight
-		var nextDistance = currentSquare.distance + 1;
+		var nextDistance = struct.distance + 1;
 		
 		if (nextDistance <= maxDistance)
 		{
 			//right
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y;
+			targetX = struct.coordinate.x + 1;
+			targetY = struct.coordinate.y;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.right, nextDistance, currentSquare, activeCharacter);
+				ParseSquare(adjacentCheck.right, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
 			}
 			//down
-			targetX = currentSquare.coordinate.x;
-			targetY = currentSquare.coordinate.y + 1;
+			targetX = struct.coordinate.x;
+			targetY = struct.coordinate.y + 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.down, nextDistance, currentSquare, activeCharacter);
+				ParseSquare(adjacentCheck.down, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
 			}
 			//left
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y;
+			targetX = struct.coordinate.x - 1;
+			targetY = struct.coordinate.y;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.left, nextDistance, currentSquare, activeCharacter);
+				ParseSquare(adjacentCheck.left, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
 			}
 			//up
-			targetX = currentSquare.coordinate.x;
-			targetY = currentSquare.coordinate.y - 1;
+			targetX = struct.coordinate.x;
+			targetY = struct.coordinate.y - 1;
 			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
 			{
-				ParseSquare(currentSquare.up, nextDistance, currentSquare, activeCharacter);
+				ParseSquare(adjacentCheck.up, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
+			}
+			
+			nextDistance = struct.distance + 1.5;
+			if (nextDistance <= maxDistance)
+			{
+				//downright
+				targetX = struct.coordinate.x + 1;
+				targetY = struct.coordinate.y + 1;
+				if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+				{
+					ParseSquare(adjacentCheck.downRight, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
+				}
+				//downleft
+				targetX = struct.coordinate.x - 1;
+				targetY = struct.coordinate.y + 1;
+				if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+				{
+					ParseSquare(adjacentCheck.downLeft, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
+				}
+				//upleft
+				targetX = struct.coordinate.x - 1;
+				targetY = struct.coordinate.y - 1;
+				if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+				{
+					ParseSquare(adjacentCheck.upLeft, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
+				}
+				//upright
+				targetX = struct.coordinate.x + 1;
+				targetY = struct.coordinate.y - 1;
+				if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+				{
+					ParseSquare(adjacentCheck.upRight, nextDistance, struct, activeCharacter, parseQueue, parsedCoordinates, parseType);
+				}
 			}
 		}
-		
-		nextDistance = currentSquare.distance + 1.5;
-		if (nextDistance <= maxDistance)
+	}
+	
+	//cleanup
+	
+	ds_queue_destroy(parseQueue);
+	ds_list_destroy(parsedCoordinates);
+	
+	//return
+	
+	return array;
+}
+
+BaseParse = function(square, parseDistance, source)
+{
+	var parseStruct =
+	{
+		coordinate : square.coordinate,
+		square : square,
+		distance : parseDistance,
+		closestToTarget : source
+	}
+	return parseStruct;
+}
+
+function ParseSquare(square, parseDistance, source, activeCharacter, parseQueue, parsedCoordinates, parseType)
+{
+	var parseCheck = CheckParseDistance(parsedCoordinates, square, parseDistance);
+	if (square != 0
+	&& (!AlreadyParsed(parsedCoordinates, square) || parseCheck))
+	{
+		if (parseType != ParseTypes.Standard || square.character == 0 || square.character.characterStats.team == activeCharacter.characterStats.team)
 		{
-			//downright
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			var parseStruct = BaseParse(square, parseDistance, source);
+		
+			ds_queue_enqueue(parseQueue, parseStruct);
+			if (parseCheck) DeleteExistingParse(parsedCoordinates, square);
+			ds_list_add(parsedCoordinates, parseStruct);
+		}
+	}
+}
+
+function DeleteExistingParse(parsedCoordinates, square)
+{
+	for (var i = 0; i < ds_list_size(parsedCoordinates); i++)
+	{
+		var checkParse = ds_list_find_value(parsedCoordinates, i);
+		
+		if (checkParse.square == square)
+		{
+			ds_list_delete(parsedCoordinates, i);
+		}
+	}
+}
+
+AlreadyParsed = function(parsedCoordinates, square)
+{
+	for (var i = 0; i < ds_list_size(parsedCoordinates); i++)
+	{
+		var checkParse = ds_list_find_value(parsedCoordinates, i);
+		
+		if (checkParse.square == square)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+CheckParseDistance = function(parsedCoordinates, square, parseDistance)
+{
+	for (var i = 0; i < ds_list_size(parsedCoordinates); i++)
+	{
+		var checkParse = ds_list_find_value(parsedCoordinates, i);
+		
+		if (checkParse.square == square && checkParse.distance > parseDistance)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+function HighlightActivation(array)
+{
+	for (var i = 0; i < array_length(array); i++)
+	{
+		var currentSquare = array[i].square;
+		
+		if (currentSquare.validRange)
+		{
+			currentSquare.activated = true;
+			if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
+			else if (currentSquare.interaction != 0)
 			{
-				ParseSquare(currentSquare.downRight, nextDistance, currentSquare, activeCharacter);
+				currentSquare.image_blend = interactionColor;
+				currentSquare.image_alpha = 0.6;
 			}
-			//downleft
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			else if (currentSquare.character != 0)
 			{
-				ParseSquare(currentSquare.downLeft, nextDistance, currentSquare, activeCharacter);
+				currentSquare.image_alpha = 0.6;
+				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
+				{
+					currentSquare.image_blend = c_lime;
+				}
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
+				{
+					currentSquare.image_blend = c_red;
+				}
+				else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
+				{
+					currentSquare.image_blend = c_blue;
+				}
 			}
-			//upleft
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
+			else
 			{
-				ParseSquare(currentSquare.upLeft, nextDistance, currentSquare, activeCharacter);
-			}
-			//upright
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.upRight, nextDistance, currentSquare, activeCharacter);
+				currentSquare.image_alpha = 0.3;
+				currentSquare.image_blend = c_white;
 			}
 		}
 	}
 }
 
-function Deactivate()
+function Deactivate(array)
 {
-	var size = ds_list_size(activatedSquares);
+	var size = array_length(array);
 	
 	for (var i = 0; i < size; i++)
 	{
-		var sq = ds_list_find_value(activatedSquares, i);
+		var struct = array[i];
+		var sq = struct.square;
 		sq.image_alpha = 0;
 		sq.image_blend = c_white;
-		sq.distance = -1;
 		sq.activated = false;
-		sq.closestToTarget = 0;
 		if (sq.character == map.movingCharacter) map.movingCharacter = 0;
 	}
-	
-	ds_list_clear(activatedSquares);
 }
 
-function ParseSquare(square, parseDistance, source, activeCharacter)
+CheckSquare = function(square, array)
 {
-	//show_debug_message("Parsing Square: " + string(square));
-	if (square != 0 && square.character == 0
-	 && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
-	 || parseDistance < square.distance))
+	show_debug_message("Checking square against array with " + string(array_length(array)) + " squares.");
+	for (var i = 0; i < array_length(array); i++)
 	{
-		//show_debug_message("Square is valid: " + string(square));
+		var currentSquare = array[i].square;
 		
-		square.distance = parseDistance;
-		square.closestToTarget = source;
-		ds_queue_enqueue(parseQueue, square);
-		ds_list_add(parsedCoordinates, square.coordinate);
+		if (square == currentSquare) return array[i];
 	}
-	else if (square != 0 && square.character != 0
-		  && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
-		  || parseDistance < square.distance))
-	{
-		//show_debug_message("Square is invalid.");
-		
-		square.image_alpha = 1;
-		square.activated = true;
-		
-		if (square.interaction != 0)
-		{
-			square.image_blend = interactionColor;
-		}
-		else if (square.character.characterStats.team == CharacterTeams.Ally)
-		{
-			square.image_blend = c_lime;
-		}
-		else if (square.character.characterStats.team == CharacterTeams.Enemy)
-		{
-			square.image_blend = c_red;
-		}
-		else if (square.character.characterStats.team == CharacterTeams.Neutral)
-		{
-			square.image_blend = c_blue;
-		}
-		
-		if (square.character.characterStats.team == activeCharacter.characterStats.team)
-		{
-			ds_queue_enqueue(parseQueue, square);
-		}
-		
-		square.distance = parseDistance;
-		square.closestToTarget = source;
-		ds_list_add(activatedSquares, square);
-		ds_list_add(parsedCoordinates, square.coordinate);
-	}
+	return 0;
 }
 
-function ActivateRange(start, maxDistance, activeCharacter) 
+CheckValidSelection = function(square, array)
 {
-	show_debug_message("Activating grid from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
-	
-	ds_queue_clear(parseQueue);
-	ds_list_clear(parsedCoordinates);
-	ds_list_clear(activatedSquares);
-	
-	ds_queue_enqueue(parseQueue, start);
-	ds_list_add(parsedCoordinates, start.coordinate);
-	start.distance = 0;
-	
-	while (!ds_queue_empty(parseQueue))
+	if (square != 0 && array != 0)
 	{
-		var currentSquare = ds_queue_dequeue(parseQueue);
-		
-		if (currentSquare.validRange)
+		for (var i = 0; i < array_length(array); i++)
 		{
-			
-			if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
-			else if (currentSquare.interaction != 0)
+			var struct = array[i];
+			if (struct != 0 && struct.square == square)
 			{
-				currentSquare.image_blend = interactionColor;
-				currentSquare.image_alpha = 1;
-			}
-			else if (currentSquare.character != 0)
-			{
-				currentSquare.image_alpha = 1;
-				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
-				{
-					currentSquare.image_blend = c_lime;
-				}
-				else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
-				{
-					currentSquare.image_blend = c_red;
-				}
-				else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
-				{
-					currentSquare.image_blend = c_blue;
-				}
-			}
-			else
-			{
-				currentSquare.image_alpha = 0.3;
-				currentSquare.image_blend = c_white;
-			}
-			currentSquare.activated = true;
-			
-		}
-		ds_list_add(activatedSquares, currentSquare);
-		var nextDistance = currentSquare.distance + 1;
-		
-		
-		var targetX = -1;
-		var targetY = -1;
-		
-		//straight
-		
-		
-		if (nextDistance <= maxDistance)
-		{
-			//right
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.right, nextDistance, currentSquare, activeCharacter);
-			}
-			//down
-			targetX = currentSquare.coordinate.x;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.down, nextDistance, currentSquare, activeCharacter);
-			}
-			//left
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.left, nextDistance, currentSquare, activeCharacter);
-			}
-			//up
-			targetX = currentSquare.coordinate.x;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.up, nextDistance, currentSquare, activeCharacter);
-			}
-		}
-		nextDistance = currentSquare.distance + 1.5;
-		if (nextDistance <= maxDistance)
-		{
-			//downright
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.downRight, nextDistance, currentSquare, activeCharacter);
-			}
-			//downleft
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.downLeft, nextDistance, currentSquare, activeCharacter);
-			}
-			//upleft
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.upLeft, nextDistance, currentSquare, activeCharacter);
-			}
-			//upright
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseRange(currentSquare.range.upRight, nextDistance, currentSquare, activeCharacter);
+				return true;
 			}
 		}
 	}
-}
-
-function ParseRange(square, parseDistance, source, activeCharacter)
-{
-	//show_debug_message("Parsing Square: " + string(square));
-	if (square != 0 && ((ds_list_find_index(parsedCoordinates, square.coordinate) < 0 && square.distance < 0) 
-	 || parseDistance < square.distance))
-	{
-		//show_debug_message("Square is valid: " + string(square));
-		
-		square.distance = parseDistance;
-		square.closestToTarget = source;
-		ds_queue_enqueue(parseQueue, square);
-		ds_list_add(parsedCoordinates, square.coordinate);
-	}
-}
-
-function ActivateFlying(start, maxDistance, activeCharacter) 
-{
-	show_debug_message("Activating flying from: " + string(start.coordinate) + " with a distance of " + string(maxDistance));
-	
-	ds_queue_clear(parseQueue);
-	ds_list_clear(parsedCoordinates);
-	ds_list_clear(activatedSquares);
-	
-	ds_queue_enqueue(parseQueue, start);
-	ds_list_add(parsedCoordinates, start.coordinate);
-	start.distance = 0;
-	
-	while (!ds_queue_empty(parseQueue))
-	{
-		var currentSquare = ds_queue_dequeue(parseQueue);
-		
-		if (currentSquare.validRange)
-		{
-			if (currentSquare.moveTarget) currentSquare.image_blend = c_black;
-			else if (currentSquare.interaction != 0)
-			{
-				currentSquare.image_blend = interactionColor;
-				currentSquare.image_alpha = 1;
-			}
-			else if (currentSquare.character != 0)
-			{
-				currentSquare.image_alpha = 1;
-				if (currentSquare.character.characterStats.team == CharacterTeams.Ally)
-				{
-					currentSquare.image_blend = c_lime;
-				}
-				else if (currentSquare.character.characterStats.team == CharacterTeams.Enemy)
-				{
-					currentSquare.image_blend = c_red;
-				}
-				else if (currentSquare.character.characterStats.team == CharacterTeams.Neutral)
-				{
-					currentSquare.image_blend = c_blue;
-				}
-			}
-			else
-			{
-				currentSquare.image_alpha = 0.3;
-				currentSquare.image_blend = c_white;
-			}
-			currentSquare.activated = true;
-			
-		}
-		ds_list_add(activatedSquares, currentSquare);
-		
-		var targetX = -1;
-		var targetY = -1;
-		
-		//straight
-		var nextDistance = currentSquare.distance + 1;
-		
-		if (nextDistance <= maxDistance)
-		{
-			//right
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.right, nextDistance, currentSquare, activeCharacter);
-			}
-			//down
-			targetX = currentSquare.coordinate.x;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.down, nextDistance, currentSquare, activeCharacter);
-			}
-			//left
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.left, nextDistance, currentSquare, activeCharacter);
-			}
-			//up
-			targetX = currentSquare.coordinate.x;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.up, nextDistance, currentSquare, activeCharacter);
-			}
-		}
-		
-		nextDistance = currentSquare.distance + 1.5;
-		if (nextDistance <= maxDistance)
-		{
-			//downright
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.downRight, nextDistance, currentSquare, activeCharacter);
-			}
-			//downleft
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y + 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.downLeft, nextDistance, currentSquare, activeCharacter);
-			}
-			//upleft
-			targetX = currentSquare.coordinate.x - 1;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.upLeft, nextDistance, currentSquare, activeCharacter);
-			}
-			//upright
-			targetX = currentSquare.coordinate.x + 1;
-			targetY = currentSquare.coordinate.y - 1;
-			if (targetX >= 0 && targetX < map.gridWidth && targetY >= 0 && targetY < map.gridHeight)
-			{
-				ParseSquare(currentSquare.flying.upRight, nextDistance, currentSquare, activeCharacter);
-			}
-		}
-	}
+	return false;
 }
 
 #endregion
@@ -542,7 +353,7 @@ function Select()
 		else
 		{
 			show_debug_message("Square is not activated. Deactivating and resetting.");
-			global.selectedCharacter.currentSquare.Deactivate();
+			if (global.selectedCharacter.storedActivation != 0) global.selectedCharacter.currentSquare.Deactivate(global.selectedCharacter.storedActivation);
 			global.SelectSquareExecute = 0;
 			global.UiManager.heldAbility = 0;
 		}
@@ -552,7 +363,7 @@ function Select()
 	if (character != 0) 
 	{
 		show_debug_message("Selected square has a character.");
-		if (global.selectedCharacter != 0) global.selectedCharacter.currentSquare.Deactivate();
+		if (global.selectedCharacter != 0 && global.selectedCharacter.storedActivation != 0) global.selectedCharacter.currentSquare.Deactivate(global.selectedCharacter.storedActivation);
 		
 		global.cameraTarget.followingCharacter = character;
 		global.selectedCharacter = character;
@@ -565,21 +376,26 @@ function Select()
 			show_debug_message("Character can move. Highlighting move options.");
 			if (map.movingCharacter != 0)
 			{
-				map.movingCharacter.currentSquare.Deactivate();
+				map.movingCharacter.currentSquare.Deactivate(map.movingCharacter.storedActivation);
 				map.movingCharacter = 0;
 			}
 			
 			global.selectedSquare = self;
 			map.movingCharacter = character;
-			if (character.characterStats.flying) ActivateFlying(self, character.maxMove, character);
-			else Activate(self, character.maxMove, character);
+			
+			if (character.characterStats.flying) var type = ParseTypes.Flying;
+			else var type = ParseTypes.Standard;
+			
+			character.storedActivation = Activate(character.maxMove, character, type);
+			show_debug_message(string(character) + " stored " + string(array_length(character.storedActivation)) + " squares in activation.");
+			HighlightActivation(character.storedActivation);
 		}
 	}
 	else if (activated && interaction != 0)
 	{
 		interaction.Execute(self, interaction);
 	}
-	else if (activated && map.movingCharacter != 0 && character == 0 && interaction == 0 && !moveTarget)
+	else if (map.movingCharacter != 0  && CheckValidSelection(id, map.movingCharacter.storedActivation) && character == 0 && interaction == 0 && !moveTarget)
 	{
 		//if a character is already selected and we're waiting to move, move.
 		show_debug_message("Moving " + string(map.movingCharacter) + " to " + string(coordinate));
@@ -587,13 +403,21 @@ function Select()
 		
 		moveTarget = true;
 		
+		var activationArray = array_create(0);
+		var length = array_length(map.movingCharacter.storedActivation);
+		array_copy(activationArray, 0, map.movingCharacter.storedActivation, 0, length);
+		
 		var moveEffect = global.BaseEffect();
 		moveEffect.character = map.movingCharacter;
-		moveEffect.target = self;
+		moveEffect.activation = activationArray;
+		moveEffect.target = id;
 		moveEffect.Start = method(global, global.MoveEffect);
 		
 		AddEffect(moveEffect);
 		
+		Deactivate(map.movingCharacter.storedActivation);
+		map.movingCharacter.storedActivation = 0
 		map.movingCharacter = 0;
 	}
 }
+

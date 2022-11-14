@@ -1,7 +1,7 @@
 /// @description Begin Wall Selection
 
 
-if (global.UiManager.displayDialogue) return;
+if (global.UiManager.displayDialogue || !global.UiManager.map.blueprint.displaying) return;
 
 image_blend = c_blue;
 

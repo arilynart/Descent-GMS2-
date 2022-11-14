@@ -4,7 +4,7 @@ function Summon(square)
 {
 	if (square.interaction == 0 && square.character == 0)
 	{
-		global.selectedCharacter.currentSquare.Deactivate();
+		global.selectedCharacter.currentSquare.Deactivate(global.selectedCharacter.storedActivation);
 		global.SelectSquareExecute = 0;
 		
 		var summonStats = ds_list_find_value(global.BondedMonsters, global.UiManager.selectedSummon);

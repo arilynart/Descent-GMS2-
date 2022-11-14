@@ -2,14 +2,16 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 RangedAttackSelect = function(character, ability)
 {
-	character.currentSquare.Deactivate();
-	character.currentSquare.ActivateRange(character.currentSquare, ability.range, character);
+	if (character.storedActivation != 0) character.currentSquare.Deactivate(character.storedActivation);
+	character.storedActivation = character.currentSquare.Activate(ability.range, character, ParseTypes.Range);
+	character.currentSquare.HighlightActivation(character.storedActivation);
 }
 
 MeleeAttackSelect = function(character, ability)
 {
-	character.currentSquare.Deactivate();
-	character.currentSquare.Activate(character.currentSquare, ability.range, character);
+	if (character.storedActivation != 0) character.currentSquare.Deactivate(character.storedActivation);
+	character.storedActivation = character.currentSquare.Activate(ability.range, character, ParseTypes.Range);
+	character.currentSquare.HighlightActivation(character.storedActivation);
 }
 
 BasicAttackExecute = function(square)
@@ -19,9 +21,8 @@ BasicAttackExecute = function(square)
 		//show_debug_message("Executing attack.");
 		var ability = global.UiManager.heldAbility;
 		
-		global.selectedCharacter.currentSquare.Deactivate();
+		if (global.selectedCharacter.storedActivation != 0) global.selectedCharacter.currentSquare.Deactivate(global.selectedCharacter.storedActivation);
 		global.SelectSquareExecute = 0;
-		
 		
 		global.UiManager.heldAbility = 0;
 		
