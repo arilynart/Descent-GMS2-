@@ -254,8 +254,8 @@ function FindCharacter(class, index)
 												+ "\n \nAt the start of each turn, Forgotten Soul does 1 damage to each of your allies adjacent to it.";
 					character.damageThreatModifier = 1;
 					character.healThreatModifier = 2;
-					character.spellThreatValue = 3
-					character.protectThreatModifier = 0;
+					character.spellThreatValue = 1.5;
+					character.protectThreatModifier = 0.25;
 					
 					array_push(character.packSlots, 1);
 

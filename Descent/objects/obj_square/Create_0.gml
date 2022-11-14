@@ -399,7 +399,8 @@ function Select()
 	{
 		interaction.Execute(self, interaction);
 	}
-	else if (map.movingCharacter != 0  && CheckValidSelection(id, map.movingCharacter.storedActivation) && character == 0 && interaction == 0 && !moveTarget)
+	else if (map.movingCharacter != 0  && CheckValidSelection(id, map.movingCharacter.storedActivation) 
+	      && character == 0 && interaction == 0 && !moveTarget && validRange)
 	{
 		//if a character is already selected and we're waiting to move, move.
 		show_debug_message("Moving " + string(map.movingCharacter) + " to " + string(coordinate));

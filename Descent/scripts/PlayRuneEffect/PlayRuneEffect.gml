@@ -39,5 +39,25 @@ function PlayRuneEffect(effect)
 	
 	effect.character.AddArtToQueue(card);
 	
+	//threat
+	
+	for (var i = 0; i < ds_list_size(global.Combatants); i++)
+	{
+		with (ds_list_find_value(global.Combatants, i))
+		{
+			if (characterStats.team == CharacterTeams.Enemy)
+			{
+				var threatValue = characterStats.spellThreatValue;
+			
+				var sourceThreat = FindThreat(effect.character);
+				
+				sourceThreat.threat += threatValue;
+				
+				UpdateThreat();
+			}
+			
+		}
+	}
+	
 	EndEffect();
 }

@@ -82,6 +82,6 @@ function DrawEnemyStatCard(x, y, character)
 	var threatSpriteHeight = sprite_get_height(threatSprite) * character.characterStats.uiScale;
 	
 	draw_sprite_ext(threatSprite, character.threatTarget.image_index,
-					fullX + (threatSpriteWidth / 2), thirtySecondY + (threatSpriteHeight / 2),
+					fullX + (threatSpriteWidth / 2), thirtySecondY + (threatSpriteHeight),
 					character.characterStats.uiScale, character.characterStats.uiScale, 0, c_white, 1);
 }

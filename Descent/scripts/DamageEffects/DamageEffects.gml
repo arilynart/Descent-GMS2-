@@ -3,7 +3,7 @@
 
 DealDamageEffect = function(effect)
 {
-	effect.target.DealDamage(effect.amount);
+	effect.target.DealDamage(effect.amount, effect.character);
 	
 	
 	EndEffect();

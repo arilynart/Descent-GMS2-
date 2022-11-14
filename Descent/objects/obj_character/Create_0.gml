@@ -73,7 +73,7 @@ currentHp = maxHp();
 currentSp = maxSp();
 currentAp = maxAp;
 
-function DealDamage(amount)
+function DealDamage(amount, source)
 {
 	var damage = amount;
 	if (currentSp > 0)
@@ -86,6 +86,29 @@ function DealDamage(amount)
 		currentHp = clamp(currentHp - damage, 0, maxHp);
 		
 		//if (currentHp <= 0) instance_destroy(id);
+	}
+	
+	if (characterStats.team != CharacterTeams.Ally)
+	{
+		var threatIncrease = amount * characterStats.damageThreatModifier;
+		var sourceThreat = FindThreat(source);
+		
+		sourceThreat.threat += threatIncrease;
+		
+		UpdateThreat();
+		
+		for (var i = 0; i < ds_list_size(protectCharacters); i++)
+		{
+			with (ds_list_find_value(protectCharacters, i))
+			{
+				var threatIncrease = amount * characterStats.protectThreatModifier;
+				var sourceThreat = FindThreat(source);
+		
+				sourceThreat.threat += threatIncrease;
+				
+				UpdateThreat();
+			}
+		}
 	}
 }
 
@@ -158,10 +181,14 @@ function UpdateThreat()
 	CO_PARAMS.character = id;
 	
 	return CO_BEGIN
-		highestThreat =
+		if (character.threatTarget != 0) highestThreat = character.FindThreat(character.threatTarget);
+		else
 		{
-			character : 0,
-			threat : 0
+			highestThreat =
+			{
+				character : 0,
+				threat : 0
+			}
 		}
 		
 		i = 0;
@@ -270,6 +297,19 @@ function AddPotentialThreat(character)
 	}
 	
 	ds_list_add(threatPotential, struct);
+}
+
+FindThreat = function(character)
+{
+	for (var i = 0; i < ds_list_size(threatPotential); i++)
+	{
+		var threat = ds_list_find_value(threatPotential, i);
+		
+		if (threat.character == character)
+		{
+			return threat;
+		}
+	}
 }
 
 #endregion
