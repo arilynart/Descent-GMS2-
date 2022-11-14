@@ -13,6 +13,8 @@ ds_list_destroy(lockedHandCards);
 
 ds_list_destroy(threatCards);
 ds_list_destroy(enemyDeck);
+ds_list_destroy(protectCharacters);
+ds_list_destroy(threatPotential);
 
 for (var i = 0; i < ds_list_size(burntLusium); i++)
 {

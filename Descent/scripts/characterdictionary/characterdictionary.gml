@@ -252,6 +252,10 @@ function FindCharacter(class, index)
 					character.innateType = "FORSAKEN - SPIRIT";
 					character.innateDescription = "When Forgotten Soul deals damage to you, if you still have SP after, you lose 1 SP."
 												+ "\n \nAt the start of each turn, Forgotten Soul does 1 damage to each of your allies adjacent to it.";
+					character.damageThreatModifier = 1;
+					character.healThreatModifier = 2;
+					character.spellThreatValue = 3
+					character.protectThreatModifier = 0;
 					
 					array_push(character.packSlots, 1);
 
@@ -308,6 +312,11 @@ BaseCharacter = function()
 		endurance : 1,
 		tempo : 0,
 		generation : 0,
+		protectIndices : array_create(0),
+		damageThreatModifier : 1,
+		healThreatModifier : 1,
+		spellThreatValue : 1,
+		protectThreatModifier : 1
 	}
 	return struct;
 }

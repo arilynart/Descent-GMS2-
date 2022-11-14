@@ -65,16 +65,53 @@ function StartCombat(index)
 			
 			MoveCharacter(character, targetSquare, activation);
 		}
+		
+		SetupCombatantThreat();
 
 		var startTurnEffect = global.BaseEffect();
 		startTurnEffect.Start = method(global, global.StartTurnEffect);
 	
 		AddEffect(startTurnEffect);
 	}
-	
-	
 }
 
+function SetupCombatantThreat()
+{
+	for (var i = 0; i < ds_list_size(global.Combatants); i++)
+	{
+		var character = ds_list_find_value(global.Combatants, i);
+		
+		if (character.characterStats.team != CharacterTeams.Ally)
+		{
+			ds_list_clear(character.threatPotential);
+		
+			for (var j = 0; j < ds_list_size(global.Combatants); j++)
+			{
+				if (j != i)
+				{
+					var otherCharacter = ds_list_find_value(global.Combatants, j);
+		
+					character.AddPotentialThreat(otherCharacter);
+				}
+			}
+			
+			character.UpdateThreat();
+		}
+	}
+}
+
+function UpdateAllThreat()
+{
+	for (var i = 0; i < ds_list_size(global.Combatants); i++)
+	{
+		var character = ds_list_find_value(global.Combatants, i);
+		
+		if (character.characterStats.team != CharacterTeams.Ally)
+		{
+			character.UpdateThreat();
+		}
+	}
+}
 
 global.TurnCounter = 0;
 global.Combatants = ds_list_create();

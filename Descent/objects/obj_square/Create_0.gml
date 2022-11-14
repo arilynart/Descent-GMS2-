@@ -308,7 +308,7 @@ function Deactivate(array)
 
 CheckSquare = function(square, array)
 {
-	show_debug_message("Checking square against array with " + string(array_length(array)) + " squares.");
+	//show_debug_message("Checking square against array with " + string(array_length(array)) + " squares.");
 	for (var i = 0; i < array_length(array); i++)
 	{
 		var currentSquare = array[i].square;

@@ -137,12 +137,15 @@ playerSpawnX = 6;
 playerSpawnY = 6;
 
 var forsakenSoul0 = FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul0.protectIndices = [1, 2];
 forsakenSoul0.spawnX = 12;
 forsakenSoul0.spawnY = 32;
 var forsakenSoul1 = FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul1.protectIndices = [0, 2];
 forsakenSoul1.spawnX = 21;
 forsakenSoul1.spawnY = 29;
 var forsakenSoul2 = FindCharacter(CharacterClass.Monster, 0);
+forsakenSoul2.protectIndices = [0, 1];
 forsakenSoul2.spawnX = 4;
 forsakenSoul2.spawnY = 30;
 

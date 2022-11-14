@@ -823,6 +823,17 @@ for (var i = 0; i < characterSize; i++)
 	ds_list_add(spawnedCharacters, newCharacter);
 }
 
+for (var i = 0; i < ds_list_size(spawnedCharacters); i++)
+{
+	var cha = ds_list_find_value(spawnedCharacters, i);
+	
+	for (var j = 0; j < array_length(cha.characterStats.protectIndices); j++)
+	{
+		var index = cha.characterStats.protectIndices[j];
+		ds_list_add(cha.protectCharacters, ds_list_find_value(spawnedCharacters, index));
+	}
+}
+
 #endregion
 
 #region combat encounters

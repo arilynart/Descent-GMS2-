@@ -149,5 +149,98 @@ function ResetLoaded()
 
 enemyDeck = ds_list_create();
 threatTarget = 0;
+threatPotential = ds_list_create();
+protectCharacters = ds_list_create();
+
+function UpdateThreat()
+{
+	var highestThreat =
+	{
+		character : 0,
+		threat : 0
+	}
+	for (var i = 0; i < ds_list_size(threatPotential); i++)
+	{
+		var threatStruct = ds_list_find_value(threatPotential, i);
+		
+		show_debug_message(string(id) + " checks threat: " + threatStruct.character.characterStats.name + " with threat value " + string(threatStruct.threat));
+		
+		if (threatTarget == 0 && threatStruct.threat > 0 && threatStruct.threat == highestThreat.threat)
+		{
+			var foundHighestThreat = 0;
+			var j1 = 0;
+			while (foundHighestThreat == 0)
+			{
+				var activation = currentSquare.Activate(6 + j1, id, ParseTypes.Range);
+				
+				for (var k = 0; k < array_length(activation); k++)
+				{
+					var parse = activation[k];
+					
+					if (parse != 0 && parse.square.character != 0 && parse.square.character == highestThreat.character)
+					{
+						foundHighestThreat = parse;
+					}
+				}
+				
+				j1++;
+			}
+			
+			var foundTestThreat = 0;
+			var j2 = 0;
+			while (foundTestThreat == 0)
+			{
+				if (j2 > j1)
+				{
+					break;
+				}
+				
+				var activation = currentSquare.Activate(6 + j2, id, ParseTypes.Range);
+				
+				for (var k = 0; k < array_length(activation); k++)
+				{
+					var parse = activation[k];
+					
+					if (parse != 0 && parse.square.character != 0 && parse.square.character == threatStruct.character)
+					{
+						foundTestThreat = parse;
+					}
+				}
+				
+				j2++;
+			}
+			
+			if (j2 > j1) show_debug_message("Potential target is out of first test range. Not a higher threat.");
+			else if (foundTestThreat.distance < foundHighestThreat.distance) highestThreat = threatStruct;
+		}
+		else if (threatStruct.threat > highestThreat.threat)
+		{
+			highestThreat = threatStruct;
+		}
+	}
+
+	if (highestThreat.threat != 0)
+	{
+		show_debug_message(string(id) + " has highest threat: " + highestThreat.character.characterStats.name + " with threat value " + string(highestThreat.threat));
+		threatTarget = highestThreat.character;
+		
+		show_debug_message("Threat Target Set: " + threatTarget.characterStats.name);
+	}
+}
+
+function AddPotentialThreat(character)
+{
+	var startThreat = 0;
+	
+	if (character.characterStats.team != characterStats.team) startThreat = 1;
+	
+	var struct =
+	{
+		character : character,
+		threat : startThreat
+	}
+	
+	ds_list_add(threatPotential, struct);
+}
 
 #endregion

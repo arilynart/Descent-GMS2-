@@ -17,6 +17,7 @@ if (global.InCombat)
 				currentSquare = moveTarget;
 				currentSquare.moveTarget = false;
 				moveTarget.character = id;
+				UpdateAllThreat();
 			}
 			move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
 			//show_debug_message("No target. Dequeueing next target: " + string(moveTarget));

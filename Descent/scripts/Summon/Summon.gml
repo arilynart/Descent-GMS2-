@@ -23,5 +23,21 @@ function Summon(square)
 		array_push(global.Allies, character);
 		
 		global.UiManager.summonCharacter = instance_create_layer(-10000, -10000, "Characters", obj_Character, { characterStats : FindCharacter(CharacterClass.Bondable, 0) });
+		
+		if (global.InCombat)
+		{
+			for (var i = 0; i < ds_list_size(global.Combatants); i++)
+			{
+				var combatant = ds_list_find_value(global.Combatants, i);
+				
+				if (combatant.characterStats.team != CharacterTeams.Ally)
+				{
+					combatant.AddPotentialThreat(character);
+					combatant.UpdateThreat();
+				}
+			}
+			
+			ds_list_add(global.Combatants, character);
+		}
 	}
 }

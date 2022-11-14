@@ -17,7 +17,7 @@ function DrawEnemyStatCard(x, y, character)
 	var eighthY = ceil(y + cardHeight / 8);
 	
 	var sixteenthX = ceil(x + cardWidth / 16);
-	var sixteenthY = ceil(y + cardHeight / 16);
+	//var sixteenthY = ceil(y + cardHeight / 16);
 
 	var thirtySecondY = ceil(y + cardHeight / 32);
 	
@@ -66,4 +66,22 @@ function DrawEnemyStatCard(x, y, character)
 	
 	draw_set_halign(fa_right);
 	draw_text(fullX, thirtySecondY, hpString);
+	
+	//threat
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	draw_set_font(fnt_CardText);
+	
+	draw_set_color(c_white);
+	var threatString = "  TARGETING: ";
+	draw_text_outline(fullX, thirtySecondY, threatString, c_black, 1);
+	draw_text(fullX, thirtySecondY, threatString);
+	
+	var threatSprite = character.threatTarget.sprite_index;
+	var threatSpriteWidth = sprite_get_width(threatSprite) * character.characterStats.uiScale;
+	var threatSpriteHeight = sprite_get_height(threatSprite) * character.characterStats.uiScale;
+	
+	draw_sprite_ext(threatSprite, character.threatTarget.image_index,
+					fullX + (threatSpriteWidth / 2), thirtySecondY + (threatSpriteHeight / 2),
+					character.characterStats.uiScale, character.characterStats.uiScale, 0, c_white, 1);
 }
