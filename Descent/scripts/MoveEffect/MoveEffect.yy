@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "MovementEffects",
+  "name": "MoveEffect",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Effects",
-    "path": "folders/Scripts/Effects.yy",
+    "name": "MovementEffects",
+    "path": "folders/Scripts/Effects/MovementEffects.yy",
   },
 }

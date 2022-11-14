@@ -28,11 +28,11 @@ function StartCombat(index)
 			ds_list_add(global.Combatants, character);
 		}
 	
-		/*for (var i = encounter.startIndex; i <= encounter.endIndex; i++)
+		for (var i = encounter.startIndex; i <= encounter.endIndex; i++)
 		{
 			var character = ds_list_find_value(map.spawnedCharacters, i);
 			ds_list_add(global.Combatants, character);
-		}*/
+		}
 		
 		randomize();
 		
@@ -40,27 +40,30 @@ function StartCombat(index)
 		for (var i = 0; i < combatantSize; i++)
 		{
 			var character = ds_list_find_value(global.Combatants, i);
+			show_debug_message("Checking combatant: " + string(character));
+			var activation = 0;
 			var targetSquare = character.currentSquare;
+			
+			if (character.characterStats.flying) var type = ParseTypes.Flying;
+			else var type = ParseTypes.Standard;
+			
 			if (!targetSquare.validRange)
 			{
-				if (character.characterStats.flying) character.currentSquare.ActivateFlying(character.currentSquare, 15, character);
-				else character.currentSquare.Activate(character.currentSquare, 15, character);
-				
-				for (var j = 0; j < ds_list_size(character.currentSquare.activatedSquares); j++)
+				activation = character.currentSquare.Activate(15, character, type);
+				for (var j = 0; j < array_length(activation); j++)
 				{
-					var square = ds_list_find_value(character.currentSquare.activatedSquares, j);
+					var struct = activation[j];
 					
-					if (square != 0 && square.validRange)
+					if (struct != 0 && struct.square.validRange)
 					{
-						targetSquare = square;
+						targetSquare = struct.square;
 						break;
 					}
 				}
-				
-				MoveCharacter(character, targetSquare);
-				character.currentSquare.Deactivate();
 			}
-			else MoveCharacter(character, targetSquare);
+			else activation = character.currentSquare.Activate(0, character, type);
+			
+			MoveCharacter(character, targetSquare, activation);
 		}
 
 		var startTurnEffect = global.BaseEffect();

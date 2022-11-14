@@ -17,6 +17,8 @@ moveDown = 0;
 velocityX = 0;
 velocityY = 0;
 
+storedActivation = 0;
+
 function ResetStats(stats)
 {
 	characterStats = stats;
