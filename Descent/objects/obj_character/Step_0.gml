@@ -10,7 +10,7 @@ if (global.InCombat)
 	{
 		if (moveTarget == 0 && ds_queue_empty(moveQueue) == false)
 		{
-			moveTarget = ds_queue_dequeue(moveQueue);
+			moveTarget = ds_queue_dequeue(moveQueue).square;
 			if (ds_queue_empty(moveQueue))
 			{
 				currentSquare.character = 0;
@@ -63,13 +63,18 @@ if (global.InCombat)
 else if (global.selectedCharacter == id && !global.SquareLock)
 {
 	var otherSquare = instance_position(x, y, obj_Square);
+	if (storedActivation != 0) currentSquare.Deactivate(storedActivation);
+	storedActivation = array_create(0);
+	
 	if (currentSquare != otherSquare)
 	{
 		currentSquare.character = 0;
-		currentSquare.Deactivate();
 		currentSquare = otherSquare;
 		otherSquare.character = id;
+		
 	}
+	
+	
 	//check for nearby interactables
 	if (otherSquare.interaction != 0)
 	{
@@ -77,7 +82,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.activated = true;
 		otherSquare.image_blend = otherSquare.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare, 0, otherSquare));
 	}
 	//downright
 	if (otherSquare.downRight != 0 && otherSquare.downRight.interaction != 0)
@@ -86,7 +91,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.downRight.activated = true;
 		otherSquare.downRight.image_blend = otherSquare.downRight.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.downRight);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.downRight, 0, otherSquare.downRight));
 	}
 	//down
 	if (otherSquare.down != 0 && otherSquare.down.interaction != 0)
@@ -95,7 +100,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.down.activated = true;
 		otherSquare.down.image_blend = otherSquare.down.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.down);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.down, 0, otherSquare.down));
 	}
 	//downleft
 	if (otherSquare.downLeft != 0 && otherSquare.downLeft.interaction != 0)
@@ -104,7 +109,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.downLeft.activated = true;
 		otherSquare.downLeft.image_blend = otherSquare.downLeft.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.downLeft);
+		array_push(storedActivation, BaseParse(otherSquare.downLeft, 0, otherSquare.downLeft));
 	}
 	//left
 	if (otherSquare.left != 0 && otherSquare.left.interaction != 0)
@@ -113,7 +118,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.left.activated = true;
 		otherSquare.left.image_blend = otherSquare.left.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.left);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.left, 0, otherSquare.left));
 	}
 	//upleft
 	if (otherSquare.upLeft != 0 && otherSquare.upLeft.interaction != 0)
@@ -122,7 +127,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.upLeft.activated = true;
 		otherSquare.upLeft.image_blend = otherSquare.upLeft.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.upLeft);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.upLeft, 0, otherSquare.upLeft));
 	}
 	//up
 	if (otherSquare.up != 0 && otherSquare.up.interaction != 0)
@@ -131,7 +136,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.up.activated = true;
 		otherSquare.up.image_blend = otherSquare.up.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.up);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.up, 0, otherSquare.up));
 	}
 	//upright
 	if (otherSquare.upRight != 0 && otherSquare.upRight.interaction != 0)
@@ -140,7 +145,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.upRight.activated = true;
 		otherSquare.upRight.image_blend = otherSquare.upRight.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.upRight);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.upRight, 0, otherSquare.upRight));
 	}
 	//right
 	if (otherSquare.right != 0 && otherSquare.right.interaction != 0)
@@ -149,7 +154,7 @@ else if (global.selectedCharacter == id && !global.SquareLock)
 		otherSquare.right.activated = true;
 		otherSquare.right.image_blend = otherSquare.right.interactionColor;
 		
-		ds_list_add(otherSquare.activatedSquares, otherSquare.right);
+		array_push(storedActivation, otherSquare.BaseParse(otherSquare.right, 0, otherSquare.right));
 	}
 	
 	//show_debug_message("Current Square: " + string(currentSquare.coordinate.x) + ", " + string(currentSquare.coordinate.y));

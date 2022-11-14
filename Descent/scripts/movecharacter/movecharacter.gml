@@ -2,38 +2,38 @@
 /// @param {index} character The character to move.
 /// @param {index} target The square to move to.
 
-function MoveCharacter(character, target)
+function MoveCharacter(character, target, activation)
 {
+	show_debug_message("MoveCharacter");
 	var foundCharacter = false;
 	var path = ds_list_create();
-
-	ds_list_add(path, target);
-	var parsedSquare = target;
+	
+	var parsedStruct = target.CheckSquare(target, activation);
+	
+	ds_list_add(path, parsedStruct);
 	
 	if (target == character.currentSquare)
 	{
-		ds_queue_enqueue(character.moveQueue, target);
+		ds_queue_enqueue(character.moveQueue, parsedStruct);
 		
 		character.moving = true;
 	}
-	else
+	else if (parsedStruct != 0)
 	{
 		while (foundCharacter == false)
 		{
-			if (parsedSquare.closestToTarget != 0)
+			if (parsedStruct.closestToTarget != 0)
 			{
-				var square = parsedSquare.closestToTarget;
-				parsedSquare.closestToTarget = 0;
-				ds_list_add(path, square);
-				if (square.character == character)
+				var struct = parsedStruct.closestToTarget;
+				ds_list_add(path, struct);
+				if (struct.square.character == character)
 				{
 					foundCharacter = true;
-					square.character.maxMove -= ds_list_find_value(path, 0).distance;
-					square.Deactivate();
+					struct.square.character.maxMove -= ds_list_find_value(path, 0).distance;
 				}
 				else
 				{
-					parsedSquare = square;
+					parsedStruct = struct;
 				}
 			}
 			else
@@ -45,7 +45,7 @@ function MoveCharacter(character, target)
 	
 		if (ds_list_empty(path))
 		{
-			show_debug_message("No Path Found. Doing Nothing.");
+			show_debug_message("No Path Found. Doing Nothing. Line ~48.");
 			
 			target.moveTarget = false;
 			character.moveLock = false;
@@ -54,8 +54,9 @@ function MoveCharacter(character, target)
 		}
 		else
 		{
-			show_debug_message("Path Found. Executing.");
 			var pathLength = ds_list_size(path);
+			show_debug_message("Path Found. Executing path with " + string(pathLength) + " squares.");
+			
 			//send character along path until the end.
 			for (var i = 1; i <= pathLength; i++)
 			{
@@ -66,9 +67,18 @@ function MoveCharacter(character, target)
 				ds_queue_enqueue(character.moveQueue, sq);
 			}
 		
-			global.cameraTarget.followingCharacter = character;
+			if (character == global.selectedCharacter) global.cameraTarget.followingCharacter = character;
 			character.moving = true;
 		}
+	}
+	else 
+	{
+		show_debug_message("No Path Found. Doing Nothing. Line ~75.");
+			
+		target.moveTarget = false;
+		character.moveLock = false;
+			
+		EndEffect();
 	}
 	
 	ds_list_destroy(path);

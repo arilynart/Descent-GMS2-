@@ -53,8 +53,9 @@ else if (drawSummons)
 		 && mouseY >= button.top && mouseY <= button.bottom)
 		{
 			//confirm summon
-			global.Player.currentSquare.Deactivate();
-			global.Player.currentSquare.ActivateRange(global.Player.currentSquare, 1.5, global.Player);
+			if (global.Player.storedActivation != 0) global.Player.currentSquare.Deactivate(global.Player.storedActivation);
+			global.Player.storedActivation = global.Player.currentSquare.Activate(1.5, global.Player, ParseTypes.Range);
+			global.Player.currentSquare.HighlightActivation(global.Player.storedActivation);
 			
 			drawSummons = false;
 			
