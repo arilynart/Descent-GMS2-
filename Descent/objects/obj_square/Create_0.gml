@@ -4,6 +4,7 @@ map = instance_find(obj_Map, 0);
 enum ParseTypes
 {
 	Standard,
+	Melee,
 	Range,
 	Flying
 }
@@ -88,6 +89,9 @@ Activate = function(maxDistance, activeCharacter, parseType)
 		switch (parseType)
 		{
 			case ParseTypes.Standard:
+				var adjacentCheck = struct.square;
+			break;
+			case ParseTypes.Melee:
 				var adjacentCheck = struct.square;
 			break;
 			case ParseTypes.Range:

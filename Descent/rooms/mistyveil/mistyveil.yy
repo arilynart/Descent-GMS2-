@@ -20,6 +20,7 @@
         {"resourceType":"GMRInstanceLayer","resourceVersion":"1.0","name":"Points","instances":[
             {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_215946D1","properties":[],"isDnd":false,"objectId":{"name":"obj_blu_MistyVeil","path":"objects/obj_blu_MistyVeil/obj_blu_MistyVeil.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":786.0,"y":8068.0,},
             {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_695FC5F7","properties":[],"isDnd":false,"objectId":{"name":"obj_Map","path":"objects/obj_Map/obj_Map.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":786.0,"y":8068.0,},
+            {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_6646217E","properties":[],"isDnd":false,"objectId":{"name":"oCoroutineManager","path":"objects/oCoroutineManager/oCoroutineManager.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":512.0,"y":544.0,},
           ],"visible":true,"depth":-100599,"userdefinedDepth":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"gridX":32,"gridY":32,"layers":[],"hierarchyFrozen":false,"effectEnabled":true,"effectType":null,"properties":[],},
       ],"hierarchyFrozen":false,"effectEnabled":true,"effectType":null,"properties":[],},
     {"resourceType":"GMRLayer","resourceVersion":"1.0","name":"TilesetsAbove","visible":true,"depth":-100499,"userdefinedDepth":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"gridX":32,"gridY":32,"layers":[
@@ -149,6 +150,7 @@
     {"name":"inst_5143481F","path":"rooms/MistyVeil/MistyVeil.yy",},
     {"name":"inst_215946D1","path":"rooms/MistyVeil/MistyVeil.yy",},
     {"name":"inst_695FC5F7","path":"rooms/MistyVeil/MistyVeil.yy",},
+    {"name":"inst_6646217E","path":"rooms/MistyVeil/MistyVeil.yy",},
   ],
   "inheritCreationOrder": false,
   "sequenceId": null,

@@ -13,11 +13,11 @@ if (global.InCombat)
 			moveTarget = ds_queue_dequeue(moveQueue).square;
 			if (ds_queue_empty(moveQueue))
 			{
+				if (moveTarget != currentSquare) UpdateAllThreat();
 				currentSquare.character = 0;
 				currentSquare = moveTarget;
 				currentSquare.moveTarget = false;
 				moveTarget.character = id;
-				UpdateAllThreat();
 			}
 			move_towards_point(moveTarget.x, moveTarget.y, moveSpeed);
 			//show_debug_message("No target. Dequeueing next target: " + string(moveTarget));

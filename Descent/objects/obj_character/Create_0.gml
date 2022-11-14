@@ -154,78 +154,107 @@ protectCharacters = ds_list_create();
 
 function UpdateThreat()
 {
-	var highestThreat =
-	{
-		character : 0,
-		threat : 0
-	}
-	for (var i = 0; i < ds_list_size(threatPotential); i++)
-	{
-		var threatStruct = ds_list_find_value(threatPotential, i);
-		
-		show_debug_message(string(id) + " checks threat: " + threatStruct.character.characterStats.name + " with threat value " + string(threatStruct.threat));
-		
-		if (threatTarget == 0 && threatStruct.threat > 0 && threatStruct.threat == highestThreat.threat)
+	
+	CO_PARAMS.character = id;
+	
+	return CO_BEGIN
+		highestThreat =
 		{
-			var foundHighestThreat = 0;
-			var j1 = 0;
-			while (foundHighestThreat == 0)
-			{
-				var activation = currentSquare.Activate(6 + j1, id, ParseTypes.Range);
-				
-				for (var k = 0; k < array_length(activation); k++)
-				{
-					var parse = activation[k];
-					
-					if (parse != 0 && parse.square.character != 0 && parse.square.character == highestThreat.character)
-					{
-						foundHighestThreat = parse;
-					}
-				}
-				
-				j1++;
-			}
-			
-			var foundTestThreat = 0;
-			var j2 = 0;
-			while (foundTestThreat == 0)
-			{
-				if (j2 > j1)
-				{
-					break;
-				}
-				
-				var activation = currentSquare.Activate(6 + j2, id, ParseTypes.Range);
-				
-				for (var k = 0; k < array_length(activation); k++)
-				{
-					var parse = activation[k];
-					
-					if (parse != 0 && parse.square.character != 0 && parse.square.character == threatStruct.character)
-					{
-						foundTestThreat = parse;
-					}
-				}
-				
-				j2++;
-			}
-			
-			if (j2 > j1) show_debug_message("Potential target is out of first test range. Not a higher threat.");
-			else if (foundTestThreat.distance < foundHighestThreat.distance) highestThreat = threatStruct;
+			character : 0,
+			threat : 0
 		}
-		else if (threatStruct.threat > highestThreat.threat)
-		{
-			highestThreat = threatStruct;
-		}
-	}
+		
+		i = 0;
+		REPEAT ds_list_size(character.threatPotential) THEN
+		
+			threatStruct = ds_list_find_value(character.threatPotential, i);
+		
+			show_debug_message(string(character) + " checks threat: " + threatStruct.character.characterStats.name + " with threat value " + string(threatStruct.threat));
+		
+			IF (threatStruct.threat > 0 && threatStruct.threat == highestThreat.threat) THEN
+				foundHighestThreat = 0;
+				j1 = 0;
+				
+				WHILE (foundHighestThreat == 0) THEN
+				
+					//show_debug_message("Searching grid for highest threat... " + string(highestThreat.character));
+				
+					var activation = character.currentSquare.Activate(6 + j1, character, ParseTypes.Melee);
+				
+					//show_debug_message("Finished activation with range " + string(6 + j1) + " and " + string(array_length(activation)) + " squares found.");
+					
+					for (var k = 0; k < array_length(activation); k++)
+					{
+						var parse = activation[k];
+						
+						//show_debug_message("Checking parse at: " + string(k) + " Character: " + string(parse.square.character));
+					
+						if (parse.square.character != 0 && parse.square.character == highestThreat.character)
+						{
+							
+							foundHighestThreat = parse;
+							//show_debug_message("Found the highest threat. " + string(foundHighestThreat));
+						}
+					}
+					
+					YIELD 0 THEN
+					
+					j1++;
+					
+				END
+			
+				foundTestThreat = 0;
+				j2 = 0;
+				breaking = false;
+				
+				WHILE (foundTestThreat == 0 && !breaking) THEN
+					
+					show_debug_message("Breaking: " + string(breaking) + " full value: " + string(foundTestThreat == 0 && !breaking));
+					if (j2 > j1) 
+					{
+						breaking = true;
+					}
+					
+				
+					if (!breaking)
+					{
+						var activation = character.currentSquare.Activate(6 + j2, character, ParseTypes.Melee);
+				
+						for (var k = 0; k < array_length(activation); k++)
+						{
+							var parse = activation[k];
+					
+							if (parse != 0 && parse.square.character != 0 && parse.square.character == threatStruct.character)
+							{
+								foundTestThreat = parse;
+							}
+						}
+					}
+				
+					YIELD 0 THEN
+					
+					j2++;
+				
+				END
+				
+				if (breaking) show_debug_message("Potential target is out of first test range. Not a higher threat.");
+				else if (foundTestThreat.distance < foundHighestThreat.distance) highestThreat = threatStruct;
+			ELSE_IF (threatStruct.threat > highestThreat.threat) THEN
+				highestThreat = threatStruct;
+			END_IF
+			
+			i++;
+		END
 
-	if (highestThreat.threat != 0)
-	{
-		show_debug_message(string(id) + " has highest threat: " + highestThreat.character.characterStats.name + " with threat value " + string(highestThreat.threat));
-		threatTarget = highestThreat.character;
+		if (highestThreat.threat != 0)
+		{
+			show_debug_message(string(character) + " has highest threat: " + highestThreat.character.characterStats.name + " with threat value " + string(highestThreat.threat));
+			character.threatTarget = highestThreat.character;
 		
-		show_debug_message("Threat Target Set: " + threatTarget.characterStats.name);
-	}
+			show_debug_message("Threat Target Set: " + character.threatTarget.characterStats.name);
+		}
+		
+	CO_END
 }
 
 function AddPotentialThreat(character)
