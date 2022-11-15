@@ -620,6 +620,19 @@ else
 		}
 	}
 	
+	for (var i = 0; i < array_length(threatCardButtons); i++)
+	{
+		var button = threatCardButtons[i];
+		
+		if (mouseX >= button.left && mouseX <= button.right
+		 && mouseY >= button.top && mouseY <= button.bottom)
+		{
+			PlayAttackCard(global.selectedCharacter, i);
+			
+			return;
+		}
+	}
+	
 	
 	
 	for (var i = 0; (i < 6 && i < array_length(global.Allies)); i++)

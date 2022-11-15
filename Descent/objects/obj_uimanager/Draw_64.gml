@@ -15,6 +15,8 @@ confirmSummonButton = 0;
 dashButton = 0;
 loadButton = 0;
 
+threatCardButtons = array_create(0);
+
 endTurnButton = 0;
 
 //draw Dialogue Box.
@@ -786,36 +788,48 @@ else
 		draw_text(sixteenthY, apY, string(global.selectedCharacter.currentAp));
 			
 
-
+		var noThreatCards = true;
+		
+		for (var i = 0; i < array_length(global.Allies); i ++)
+		{
+			var character = global.Allies[i];
+			
+			if (ds_list_size(character.threatCards) > 0) noThreatCards = false;
+		}
+		
 		//end turn button
-		endTurnButton =
+		if (noThreatCards)
 		{
-			left : 0,
-			top : fullY - quarterY,
-			right : quarterY,
-			bottom : fullY
+			endTurnButton =
+			{
+				left : 0,
+				top : fullY - quarterY,
+				right : quarterY,
+				bottom : fullY
+			}
+				
+				
+			var endTurnX = 0;
+			var endTurnY = fullY;
+				
+			if (mouseX >= endTurnButton.left && mouseX <= endTurnButton.right
+				&& mouseY >= endTurnButton.top && mouseY <= endTurnButton.bottom)
+			{
+				draw_set_color(c_dkgray);
+			}
+			else draw_set_color(c_black);
+				
+			draw_circle(endTurnX, endTurnY, quarterY, false);
+				
+			draw_set_color(c_white);
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_font(fnt_Cambria24);
+			draw_text_transformed(eighthY - font_get_size(draw_get_font()), 
+									fullY - eighthY + font_get_size(draw_get_font()), "End Turn", 
+									1, 1, -45);
+								
 		}
-				
-				
-		var endTurnX = 0;
-		var endTurnY = fullY;
-				
-		if (mouseX >= endTurnButton.left && mouseX <= endTurnButton.right
-			&& mouseY >= endTurnButton.top && mouseY <= endTurnButton.bottom)
-		{
-			draw_set_color(c_dkgray);
-		}
-		else draw_set_color(c_black);
-				
-		draw_circle(endTurnX, endTurnY, quarterY, false);
-				
-		draw_set_color(c_white);
-		draw_set_halign(fa_center);
-		draw_set_valign(fa_middle);
-		draw_set_font(fnt_Cambria24);
-		draw_text_transformed(eighthY - font_get_size(draw_get_font()), 
-								fullY - eighthY + font_get_size(draw_get_font()), "End Turn", 
-								1, 1, -45);
 								
 		if (position_meeting(mouse_x, mouse_y, obj_Square))
 		{
@@ -1404,10 +1418,38 @@ else
 			var threatCardY = halfY;
 			for (var i = 0; i < ds_list_size(global.selectedCharacter.threatCards); i++)
 			{
-				var threatCardX = eighthY + (allyRadius * 3 * i);
+				var threatCardX = eighthY + (allyRadius * 2 * i);
 				
-				draw_set_color(c_maroon);
+				var button =
+				{
+					left : threatCardX - allyRadius,
+					top : threatCardY - allyRadius,
+					right : threatCardX + allyRadius,
+					bottom : threatCardY + allyRadius,
+				}
+				
+				array_push(threatCardButtons, button);
+				
+				var card = ds_list_find_value(global.selectedCharacter.threatCards, i);
+				
+				if (mouseX >= button.left && mouseX <= button.right
+				  && mouseY >= button.top && mouseY <= button.bottom)
+				{
+					DrawAttackCard(fullX - quarterX, eighthY, card);
+					draw_set_color(c_ltgray);
+				}
+				else
+				{
+					draw_set_color(c_maroon);
+				}
 				draw_circle(threatCardX, threatCardY, allyRadius, false);
+				
+				
+				
+				var artScale = allyRadius / sprite_get_width(card.art);
+				draw_sprite_ext(card.art, 0, threatCardX, threatCardY, artScale, artScale, 0, c_white, 1);
+				
+
 				
 			}
 			

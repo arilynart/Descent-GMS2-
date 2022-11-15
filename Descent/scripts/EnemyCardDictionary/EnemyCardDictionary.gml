@@ -17,6 +17,9 @@ BaseAttackCard = function(monsterIndex, type, rarity, index)
 		typeText : "EMPTY TYPE - UNSET",
 		frame : spr_NodeBgM,
 		art : spr_Cancel,
+		titleFontScale : 1,
+		typeFontScale : 1,
+		textFont : fnt_CardText,
 		monsterIndex : monsterIndex,
 		type : type,
 		rarity : rarity,
@@ -49,11 +52,12 @@ FindEnemyCard = function(monsterIndex, type, rarity, index)
 									
 									card.title = "DRAINING MIST";
 									card.typeText = "BASIC ATTACK - SPIRIT";
-									card.text = "Advance 6 |spr_Square| . "
+									card.text = "Advance 6 |spr_Square|  . "
 											  + "\n \nMelee - The attacker deals 3 damage to you. If you still have SP after taking damage, discard a card. "
-											  + "\n \nIf the attacker was out of range for the previous action, Advance 6 |spr_Square| . ";
+											  + "\n \nIf the attacker was out of range for the previous action, Advance 6 |spr_Square|  . ";
 									card.frame = spr_RuneBgS;
 									card.art = spr_ArtMonster000BasicC000;
+									card.textFont = fnt_CardTextSmaller;
 									
 									return card;
 								break;

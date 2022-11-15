@@ -98,6 +98,8 @@ extraDrawButton = 0;
 extraButtons = array_create(0);
 handButtons = array_create(0);
 
+threatCardButtons = array_create(0);
+
 heldRune = -1;
 highlightedLusium = ds_list_create();
 hoverHighlightedLusium = ds_list_create();
