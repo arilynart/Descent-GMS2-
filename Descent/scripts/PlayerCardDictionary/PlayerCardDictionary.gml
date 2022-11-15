@@ -205,7 +205,7 @@ FindCard = function(class, type, element, rarity, index)
 											array_push(cost1, "ESSENCE", "NODE");
 											array_push(card.costList, cost1);
 											card.typeText = "FUNDAMENTAL RUNE - ESSENCE"
-											card.text = "Supply the total supply value of all node cards you use to evoke this rune to a bonded monster within 6 |spr_Square| . ";
+											card.text = "Supply the total supply value of all node cards you use to evoke this rune to an ally within 6 |spr_Square| . ";
 									
 											return card;
 										break;
@@ -261,8 +261,10 @@ FindCard = function(class, type, element, rarity, index)
 											card.typeText = "BONDING RUNE - DIVINITY"
 											card.text = "Permanent.\n \nWhen a bonded monster within " 
 													  + "6 |spr_Square|  deals damage, you can discard this "
-													  + "card to allow that monster to make another attack " 
-													  + "this turn without spending |spr_Ap| . ";
+													  + "card. If you do, the next weapon attack that monster makes " 
+													  + "this turn can be done without spending |spr_Ap| . ";
+													  
+											card.textFont = fnt_CardTextSmall;
 									
 											return card;
 										break;
@@ -305,9 +307,10 @@ FindCard = function(class, type, element, rarity, index)
 											array_push(cost1, "BOND", "RUNE");
 											array_push(card.costList, cost1, cost1);
 											card.typeText = "BONDING MANIFEST - DIVINITY & ESSENCE"
-											card.text = "+X for each BOND card you control.\n \nWhen a bonded monster within 6 |spr_Square|  deals damage, "
-												+ "you can discard this card to deal 2X damage to that same target. ";
+											card.text = "When you discard a BOND RUNE from play, put a charge stack on this card.\n \nWhen a bonded monster within             " 
+													  + "6 |spr_Square|   deals damage, you can discard this card to deal damage equal to double the number of charge stacks on this card to that same target. ";
 											
+											card.textFont = fnt_CardTextSmaller;
 											card.titleFontScale = 0.9;
 											card.typeFontScale = 0.72;
 											

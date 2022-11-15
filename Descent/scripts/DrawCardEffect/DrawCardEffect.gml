@@ -9,6 +9,8 @@ function DrawCardEffect(effect)
 		//reshuffle, remove top 2
 		effect.character.nodes = RandomizeList(effect.character.discard);
 		
+		effect.character.discard = ds_list_create();
+		
 		repeat(2)
 		{
 			var topCard = ds_list_find_value(effect.character.nodes, 0);

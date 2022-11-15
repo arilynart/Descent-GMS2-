@@ -280,7 +280,8 @@ function UpdateThreat()
 		
 			show_debug_message("Threat Target Set: " + character.threatTarget.characterStats.name);
 		}
-		
+	CO_ON_COMPLETE
+		global.CombatantsWithThreat++;
 	CO_END
 }
 

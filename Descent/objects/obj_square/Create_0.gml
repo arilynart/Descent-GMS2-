@@ -373,7 +373,7 @@ function Select()
 		global.selectedCharacter = character;
 		//selected character. highlight grid for movement.
 		if (activated == false && character.moving == false
-		 && global.InCombat && character.maxMove > 0
+		 && global.InCombat && global.TurnCounter > 0 && character.maxMove > 0
 		 && character.characterStats.team == CharacterTeams.Ally
 		 && character.moveLock == false)
 		{

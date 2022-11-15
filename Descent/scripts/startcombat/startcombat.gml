@@ -20,6 +20,7 @@ function StartCombat(index)
 		
 		global.InCombat = true;
 		global.TurnCounter = 0;
+		randomize();
 
 		var allySize = array_length(global.Allies);
 		for (var i = 0; i < allySize; i++)
@@ -32,9 +33,20 @@ function StartCombat(index)
 		{
 			var character = ds_list_find_value(map.spawnedCharacters, i);
 			ds_list_add(global.Combatants, character);
+			
+			for (var j = 0; j < array_length(character.characterStats.attackCards); j++)
+			{
+				
+				var cardData = character.characterStats.attackCards[j];
+				var foundCard = global.FindEnemyCard(cardData.monsterIndex, cardData.type, cardData.rarity, cardData.index);
+				foundCard.owner = character;
+				ds_list_add(character.enemyDeck, foundCard);
+			}
+			
+			character.enemyDeck = RandomizeList(character.enemyDeck);
 		}
 		
-		randomize();
+		
 		
 		var combatantSize = ds_list_size(global.Combatants)
 		for (var i = 0; i < combatantSize; i++)
@@ -67,51 +79,9 @@ function StartCombat(index)
 		}
 		
 		SetupCombatantThreat();
-
-		var startTurnEffect = global.BaseEffect();
-		startTurnEffect.Start = method(global, global.StartTurnEffect);
-	
-		AddEffect(startTurnEffect);
 	}
 }
 
-function SetupCombatantThreat()
-{
-	for (var i = 0; i < ds_list_size(global.Combatants); i++)
-	{
-		var character = ds_list_find_value(global.Combatants, i);
-		
-		if (character.characterStats.team != CharacterTeams.Ally)
-		{
-			ds_list_clear(character.threatPotential);
-		
-			for (var j = 0; j < ds_list_size(global.Combatants); j++)
-			{
-				if (j != i)
-				{
-					var otherCharacter = ds_list_find_value(global.Combatants, j);
-		
-					character.AddPotentialThreat(otherCharacter);
-				}
-			}
-			
-			character.UpdateThreat();
-		}
-	}
-}
-
-function UpdateAllThreat()
-{
-	for (var i = 0; i < ds_list_size(global.Combatants); i++)
-	{
-		var character = ds_list_find_value(global.Combatants, i);
-		
-		if (character.characterStats.team != CharacterTeams.Ally)
-		{
-			character.UpdateThreat();
-		}
-	}
-}
 
 global.TurnCounter = 0;
 global.Combatants = ds_list_create();

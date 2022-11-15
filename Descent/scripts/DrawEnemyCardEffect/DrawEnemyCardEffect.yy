@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "StartCombat",
+  "name": "DrawEnemyCardEffect",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Threat Management",
-    "path": "folders/Scripts/Threat Management.yy",
+    "name": "CardEffects",
+    "path": "folders/Scripts/Effects/CardEffects.yy",
   },
 }

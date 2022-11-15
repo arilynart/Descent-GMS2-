@@ -794,8 +794,6 @@ player.sprite_index = player.characterStats.sprite;
 global.selectedCharacter = player;
 
 var ahlya = FindCharacter(CharacterClass.Bondable, 0);
-var test = FindCharacter(CharacterClass.Monster, 0);
-
 
 global.Allies = array_create(0);
 

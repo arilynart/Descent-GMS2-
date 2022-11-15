@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "StartCombat",
+  "name": "SetupCombatantThreat",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

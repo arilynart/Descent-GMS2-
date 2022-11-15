@@ -257,6 +257,16 @@ function FindCharacter(class, index)
 					character.spellThreatValue = 1.5;
 					character.protectThreatModifier = 0.25;
 					
+					var attackCard0 =
+					{
+						monsterIndex : 0,
+						type : EnemyCardTypes.Basic,
+						rarity : CardRarities.Common,
+						index : 0
+					}
+					
+					repeat (15) array_push(character.attackCards, attackCard0);
+					
 					array_push(character.packSlots, 1);
 
 					var starterPack1 = {};
@@ -316,7 +326,9 @@ BaseCharacter = function()
 		damageThreatModifier : 1,
 		healThreatModifier : 1,
 		spellThreatValue : 1,
-		protectThreatModifier : 1
+		protectThreatModifier : 1,
+		attacksPerTurn : 1,
+		attackCards : array_create(0)
 	}
 	return struct;
 }
