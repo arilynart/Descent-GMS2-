@@ -175,6 +175,8 @@ threatTarget = 0;
 threatPotential = ds_list_create();
 protectCharacters = ds_list_create();
 
+OnMoveEnd = 0;
+
 function UpdateThreat()
 {
 	

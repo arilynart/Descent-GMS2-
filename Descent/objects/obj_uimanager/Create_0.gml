@@ -7,6 +7,7 @@ fnt_Bold = font_add("sitka-small.ttf", 18, true, false, 32, 128);
 global.UiManager = self;
 global.UiLock = false;
 global.SquareLock = false;
+global.ControlEnemyLock = false;
 
 #region colors
 

@@ -25,8 +25,6 @@ BaseAttackCard = function(monsterIndex, type, rarity, index)
 		rarity : rarity,
 		index : index,
 		actions : array_create(0),
-		performedActions : array_create(0),
-		reverseActions : array_create(0)
 	}
 	
 	return card;
@@ -58,6 +56,24 @@ FindEnemyCard = function(monsterIndex, type, rarity, index)
 									card.frame = spr_RuneBgS;
 									card.art = spr_ArtMonster000BasicC000;
 									card.textFont = fnt_CardTextSmaller;
+									
+									
+									var action0Data =
+									{
+										targetRange : 1.5,
+										movementType : ParseTypes.Standard,
+										amount : 6,
+										startSquare : 0
+									}
+									var action0 =
+									{
+										Select : method(global, AdvanceAction),
+										Perform : 0,
+										Reverse : method(global, AdvanceReverse),
+										data : action0Data
+									}
+									
+									array_push(card.actions, action0);
 									
 									return card;
 								break;

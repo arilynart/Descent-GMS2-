@@ -312,7 +312,7 @@ function Deactivate(array)
 
 CheckSquare = function(square, array)
 {
-	//show_debug_message("Checking square against array with " + string(array_length(array)) + " squares.");
+	show_debug_message("Checking square against array with " + string(array_length(array)) + " squares.");
 	for (var i = 0; i < array_length(array); i++)
 	{
 		var currentSquare = array[i].square;
@@ -367,6 +367,8 @@ function Select()
 	if (character != 0) 
 	{
 		show_debug_message("Selected square has a character.");
+		if (global.ControlEnemyLock) return;
+		
 		if (global.selectedCharacter != 0 && global.selectedCharacter.storedActivation != 0) global.selectedCharacter.currentSquare.Deactivate(global.selectedCharacter.storedActivation);
 		
 		global.cameraTarget.followingCharacter = character;
@@ -399,7 +401,7 @@ function Select()
 	{
 		interaction.Execute(self, interaction);
 	}
-	else if (map.movingCharacter != 0  && CheckValidSelection(id, map.movingCharacter.storedActivation) 
+	else if (activated && map.movingCharacter != 0  && CheckValidSelection(id, map.movingCharacter.storedActivation) 
 	      && character == 0 && interaction == 0 && !moveTarget && validRange)
 	{
 		//if a character is already selected and we're waiting to move, move.

@@ -58,6 +58,13 @@ if (global.InCombat)
 			{
 				currentSquare.Select();
 			}
+			
+			if (OnMoveEnd != 0)
+			{
+				OnMoveEnd();
+					
+				OnMoveEnd = 0;
+			}
 		}
 	}
 }
